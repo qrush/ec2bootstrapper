@@ -1,0 +1,1 @@
+﻿<%@ WebService Language="C#" CodeBehind="Ec2FileUpload.asmx.cs" Class="Ec2FileUpload.Ec2FileUpload" %>
