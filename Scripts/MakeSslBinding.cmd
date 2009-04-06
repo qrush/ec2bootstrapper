@@ -1,8 +1,11 @@
+
 set IIS6RESKIT="%SystemDrive%\program files\iis resources"
-set SUBJECT=%COMPUTERNAME%
+:set SUBJECT=%COMPUTERNAME%
+set SUBJECT=%1%
 set VALIDDAYS=730
 set KEYBITS=2048
 set CERFILE=server.crt
+set CERFILEBIN=server.crt.bin
 set WEBROOT=%SystemDrive%\inetpub\wwwroot
 
 :
@@ -18,13 +21,14 @@ set WEBROOT=%SystemDrive%\inetpub\wwwroot
 : Export the public part
 :
 
-certutil.exe -store MY %SUBJECT% %CERFILE%
+certutil.exe -store MY %SUBJECT% %CERFILEBIN%
+
 
 :
 : Copy the certificate file to where a client can download it
 :
 
-copy /y %CERFILE% %WEBROOT%
+copy /y %CERFILEBIN% %WEBROOT%\%CERFILE%
 
 : certutil.exe -addstore ROOT %CERFILE%
 
@@ -32,4 +36,4 @@ copy /y %CERFILE% %WEBROOT%
 : Clean up
 :
 
-del %CERFILE%
+:del %CERFILEBIN%

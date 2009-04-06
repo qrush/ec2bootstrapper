@@ -18,12 +18,11 @@ namespace Ec2FileUpload
     public class Ec2FileUpload : System.Web.Services.WebService
     {
         [WebMethod]
-        public bool UploadAndInstallMsiFile(
+        public int UploadAndInstallMsiFile(
             string fileName,
             string encodedFile)
         {
-            bool status = false;
-            WindowsImpersonationContext impersonation = null;
+            int error = -1;
 
             try
             {
@@ -31,55 +30,49 @@ namespace Ec2FileUpload
                 // Impersonate the caller
                 //
 
-                impersonation =
-                    ((WindowsIdentity)HttpContext.Current.User.Identity).Impersonate();
-
-                //
-                // Create a temporary file
-                //
-
-                string tempFileName = Path.GetTempPath() + "\\" + fileName;
-
-                //
-                // Write out the caller data
-                //
-
-                FileStream stream = new FileStream(
-                    tempFileName, FileMode.Create, FileAccess.Write);
-                byte[] fileData = Convert.FromBase64String(encodedFile);
-                stream.Write(fileData, 0, fileData.Length);
-                stream.Close();
-
-                //
-                // Execute the file as an MSI package
-                //
-
-                ProcessStartInfo startInfo = new ProcessStartInfo(
-                    "msiexec.exe");
-                startInfo.Arguments = "/i " + tempFileName + " /quiet";
-
-                Process msiExec = Process.Start(startInfo);
-                msiExec.WaitForExit();
-
-                //
-                // Report status
-                //
-
-                if (0 == msiExec.ExitCode)
+                using (((WindowsIdentity)HttpContext.Current.User.Identity).Impersonate())
                 {
+
+                    //
+                    // Create a temporary file
+                    //
+                    string tempFileName = Path.GetTempPath() + "\\" + fileName;
+
+                    //
+                    // Write out the caller data
+                    //
+
+                    FileStream stream = new FileStream(
+                        tempFileName, FileMode.Create, FileAccess.Write);
+                    byte[] fileData = Convert.FromBase64String(encodedFile);
+                    stream.Write(fileData, 0, fileData.Length);
+                    stream.Close();
+
+                    //
+                    // Execute the file as an MSI package
+                    //
+                    ProcessStartInfo startInfo = new ProcessStartInfo(
+                        "msiexec.exe ");
+                    startInfo.Arguments = "/i " + tempFileName + " /quiet";
+
+                    Process msiExec = Process.Start(startInfo);
+                    msiExec.WaitForExit();
+
+                    //
+                    // Report status
+                    //
+
+                    error = msiExec.ExitCode;
+
                     File.Delete(tempFileName);
-                    status = true;
                 }
             }
             catch (IOException)
             {
-            }
-            finally
-            {
-                impersonation.Undo();
+                error = -2;
             }
 
-            return status;
+            return error;
         }
     }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="https://ec2-174-129-102-73.compute-1.amazonaws.com/ec2fileupload.asmx?disco" filename="ec2fileupload.disco" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="https://ec2-174-129-102-73.compute-1.amazonaws.com/ec2fileupload.asmx?wsdl" filename="ec2fileupload.wsdl" />
+  </Results>
+</DiscoveryClientResultsFile>
