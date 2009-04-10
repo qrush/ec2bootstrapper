@@ -10,6 +10,7 @@ namespace Ec2Bootstrapper
     //
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             if (checkEnvironment() == false)
@@ -19,7 +20,6 @@ namespace Ec2Bootstrapper
             string secretKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
 
             Ec2Bootstrapperlib.CEc2Bootstrapper.Run(accessKey, secretKey);
-
         }
 
         static bool checkEnvironmentVariable(string var)

@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using Amazon.EC2;
 using Amazon.EC2.Util;
 using Amazon.EC2.Model;
-using Amazon.EC2.Mock;
 
 namespace Ec2Bootstrapperlib
 {
@@ -20,17 +19,16 @@ namespace Ec2Bootstrapperlib
         public string secretAccessKey;
         public string instanceId;
         public string publicDns;
-        public string securityGroupName;
     };
 
     public class CEc2Bootstrapper
     {
-        const string amiImageId = "ami-0529ce6c";
-        const string certFile = "server.crt";
-        const string securityGroupName = "JWSecureEc2FileLoad";
+        const string amiImageId               = "ami-0529ce6c";
+        const string certFile                 = "server.crt";
+        const string securityGroupName        = "JWSecureEc2FileLoad";
         const string securityGroupDescription = "Used for msi upload";
-        const string keyName = "JWSecureFileUploadKey";
-        const string keyFileName = "JWSecureFileUploadKey.pem";
+        const string keyName                  = "JWSecureFileUploadKey";
+        const string keyFileName              = "JWSecureFileUploadKey.pem";
 
         CEc2Context contxt;
         AmazonEC2 service;
@@ -44,7 +42,6 @@ namespace Ec2Bootstrapperlib
                 bootStrapper.LaunchInstance();
                 bootStrapper.GetSiteUrl();
                 bootStrapper.DownloadAndInstallCertificate();
-                bootStrapper.GetAdministratorPassord();
                 bootStrapper.UploadAndInstallMsi();
             }
             catch (AmazonEC2Exception ex)
@@ -195,7 +192,7 @@ namespace Ec2Bootstrapperlib
                     "Ec2Install.msi", Convert.ToBase64String(fileBytes));
                 if (error != 0)
                 {
-                    throw new Exception("Error: upload failed");
+                    throw new Exception("Error: UploadAndInstallMsiFile failed with error code " + error.ToString());
                 }
             }
             catch (Exception ex)
@@ -302,7 +299,6 @@ namespace Ec2Bootstrapperlib
         {
             try
             {
-                //contxt.instanceId = "i-9e7d1df7";
                 DescribeInstancesRequest request = new DescribeInstancesRequest();
                 request.InstanceId.Add(contxt.instanceId);
                 DescribeInstancesResponse response = service.DescribeInstances(request);
