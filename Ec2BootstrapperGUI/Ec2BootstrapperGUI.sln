@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ec2BootstrapperGUI", "Ec2BootstrapperGUI\Ec2BootstrapperGUI.csproj", "{0894F48C-92E7-4F67-A38C-6CD3E9C33B38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ec2Bootstrapperlib", "..\Ec2Bootstrapperlib\Ec2Bootstrapperlib.csproj", "{BC74D0AD-82F2-4FEA-A6D9-BD4F923A7C03}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0894F48C-92E7-4F67-A38C-6CD3E9C33B38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0894F48C-92E7-4F67-A38C-6CD3E9C33B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0894F48C-92E7-4F67-A38C-6CD3E9C33B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0894F48C-92E7-4F67-A38C-6CD3E9C33B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC74D0AD-82F2-4FEA-A6D9-BD4F923A7C03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC74D0AD-82F2-4FEA-A6D9-BD4F923A7C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC74D0AD-82F2-4FEA-A6D9-BD4F923A7C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC74D0AD-82F2-4FEA-A6D9-BD4F923A7C03}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

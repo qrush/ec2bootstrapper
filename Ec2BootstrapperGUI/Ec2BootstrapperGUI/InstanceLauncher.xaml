@@ -1,0 +1,115 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="Ec2BootstrapperGUI.InstanceLauncher"
+	x:Name="Window"
+    xmlns:src="clr-namespace:Ec2BootstrapperGUI"
+    Title="Launch Instance Step 2"
+	d:DesignWidth="640" d:DesignHeight="480" Height="480" Width="640"
+    Closing="window_Closing">
+    
+    <Grid Name="LauncherLayout" SizeChanged="launcherLayout_SizeChanged">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Padding="5" Grid.Row="0">
+                <Grid Margin="5,0,5,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="146"/>
+                        <ColumnDefinition Width="116"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.ColumnSpan="3"
+                        Style="{StaticResource titleStyle}" Margin="8,20,8,8">Finish this form and then click the launch button:</Label> 
+
+                    <Label Grid.Row="1" Grid.Column="0" Margin="0,0,8,0" HorizontalAlignment="Right"                           
+                        Style="{StaticResource smallTitleStyle}">AMI Name:</Label>
+                    <Label Grid.Row="2" Grid.Column="0" Margin="0,0,8,0" HorizontalAlignment="Right"                              
+                        Style="{StaticResource smallTitleStyle}">Number of Instances*:</Label>
+                    <Label Name="AmiIdLb" Grid.Row="1" Grid.Column="1" Content="amiId" Grid.ColumnSpan="2"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="1" Grid.ColumnSpan="2" TextWrapping="Wrap"/>
+
+                    <Label Grid.Row="3" Grid.Column="0"  HorizontalAlignment="Right"     
+                       Style="{StaticResource smallTitleStyle}" Margin="5">Instance Type:</Label>
+                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="8,5,0,5" Name="Small" Content="small (m1.small)" IsChecked="True" Click="small_Click"/>
+                    <CheckBox Grid.Row="3" Grid.Column="2" Margin="8,5,0,5" Name="Medium" Content="High-CPU Medium (c1.medium)" Click="medium_Click" />
+
+                    <Label Grid.Row="4" Grid.Column="0"  
+                       Style="{StaticResource smallTitleStyle}" HorizontalAlignment="Right"     
+                               Margin="5">Key Pair Name*:</Label>
+                    <Label Grid.Row="5" Grid.Column="0" 
+                       Style="{StaticResource smallTitleStyle}" HorizontalAlignment="Right"     
+                               Margin="5">Security Groups:</Label>
+                    <Label Grid.Row="6" Grid.Column="0"   
+                       Style="{StaticResource smallTitleStyle}" HorizontalAlignment="Right"     
+                               Margin="5">Availability Zone:</Label>
+                    <ComboBox Name="KeyPairComb" Grid.Row="4" 
+                              ItemsSource="{Binding Path=keyPairs, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"
+                              Grid.Column="1" Margin="8,5,0,5" 
+                              Grid.ColumnSpan="2" 
+                              Style="{StaticResource comboBoxStyle}" 
+                              TabIndex="3"/>
+                    <ComboBox Name="SecurityGroupComb" Grid.Row="5" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2"
+                              ItemsSource="{Binding Path=securityGroups, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"
+                              Style="{StaticResource comboBoxStyle}" TabIndex="4"/>
+                    <ComboBox Name="ZoneComb" Grid.Row="6" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2" 
+                              ItemsSource="{Binding Path=zones, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"
+                              Style="{StaticResource comboBoxStyle}" TabIndex="5"/>
+                </Grid>
+            </Border>
+            <Border Padding="5" Grid.Row="1">
+                <Grid Margin="5,0,5,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="306"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="You will be charged the hourly rate for any instances &#xd;&#xa;you launch until you successfully shut them down."/>
+                    <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Content="* Required field"/>
+                </Grid>
+            </Border>
+            <Border Padding="5" Grid.Row="2">
+                <Grid Margin="5,0,5,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Name="BackButton" Grid.Column="0" Content="Back"  Click="backButton_Click" Margin="88,0,82,0" />
+                    <Button Name="LaunchButton" Grid.Column="1" Content="Launch" Margin="88,0,82,0" Click="launchButton_Click" />
+                </Grid>
+            </Border>
+        </Grid>
+        <StatusBar Name="StatusBarDb" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <StatusBarItem>
+                <ProgressBar Name="LaunchProgBar" IsIndeterminate="False" Width="640" HorizontalAlignment="Left" Orientation="Horizontal" Height="20" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

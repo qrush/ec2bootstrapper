@@ -36,6 +36,7 @@
       <HintPath>..\Ec2Lib\Amazon.EC2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -56,9 +57,15 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CEc2Bootstrapper.cs" />
+    <Compile Include="CAwsConfig.cs" />
+    <Compile Include="CEc2Ami.cs" />
+    <Compile Include="CEc2Instance.cs" />
+    <Compile Include="CEc2Service.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

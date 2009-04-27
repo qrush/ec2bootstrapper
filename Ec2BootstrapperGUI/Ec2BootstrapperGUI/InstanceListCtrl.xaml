@@ -1,0 +1,63 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+    xmlns:src="clr-namespace:Ec2BootstrapperGUI"
+    xmlns:lib="clr-namespace:Ec2Bootstrapperlib;assembly=Ec2Bootstrapperlib"
+	x:Class="Ec2BootstrapperGUI.InstanceList"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480"
+    xmlns:Ec2BootstrapperGUI="clr-namespace:Ec2BootstrapperGUI">
+
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type lib:CEc2Instance}">
+            <Border BorderThickness="1" BorderBrush="Gray"
+                    Padding="7" Name="border" Margin="3" Loaded="border_Loaded">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Expander Margin="0,0,8,0"
+                              Header="{Binding Path=header}"
+                              Content="{Binding Path=content}"
+                               Name="imageIdCol">
+                        <Expander.ContextMenu>
+                            <ContextMenu Opened="contextMenu_Opened">
+                                <MenuItem Header="Get Administrator's Password" Click="password_Click"/>
+                                <Separator/>
+                                <MenuItem Name="RemoteConn" Header="Remote Connect" Click="remoteConnect_Click"/>
+                                <MenuItem Header="Deploy" Click="deploy_Click" />
+                                <MenuItem Header="Reboot" Click="reboot_Click" />
+                                <Separator/> 
+                                <MenuItem Header="Terminate" Click="terminate_Click"/>                                    
+                            </ContextMenu>
+                        </Expander.ContextMenu>
+                    </Expander>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+	<Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+		<Label Grid.Row="0" Style="{StaticResource titleStyle}" Name='AllInstLabel' Content="All of your instances:"/>
+        <StackPanel Grid.Row="1">
+            <ListView Name="instancesLV" Margin="8,8,8,0" 
+                    IsSynchronizedWithCurrentItem="True"
+                    ItemsSource="{Binding Path=instances, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceList}}, Mode=OneWay}"
+                    SizeChanged="instancesLV_SizeChanged"
+                    SelectionChanged="instancesLV_SelectionChanged"/>
+        </StackPanel>
+	</Grid>
+</UserControl>

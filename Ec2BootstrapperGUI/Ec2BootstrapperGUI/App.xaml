@@ -1,0 +1,67 @@
+﻿<Application
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="Ec2BootstrapperGUI.App" StartupUri="Dashbord.xaml"
+    xmlns:lib="clr-namespace:Ec2Bootstrapperlib;assembly=Ec2Bootstrapperlib" 
+    xmlns:System="clr-namespace:System;assembly=Mscorlib">
+	<Application.Resources>
+		<!-- Resources scoped at the Application level should be defined here. -->
+		<!-- <ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Simple Styles.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>-->
+
+        <Style x:Key="smallTitleStyle" TargetType="Label">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="DimGray"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+
+        <Style x:Key="comboBoxItemStyle" TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="#333333" />
+        </Style>
+
+        <Style x:Key="comboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Foreground" Value="#333333" />
+        </Style>
+
+        <Style x:Key="titleStyle" TargetType="Label">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="DodgerBlue"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+
+        <Style TargetType="{x:Type ListViewItem}">
+            <Style.Triggers>
+                <Trigger Property="Selector.IsSelected" Value="True">
+                    <Setter Property="Background" Value="Red" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="textStyleTextBlock" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#333333" />
+        </Style>
+
+        <Style x:Key="smallTitleStyleTextBlock" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="DimGray"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+
+        <Style x:Key="checkBoxStyle" TargetType="{x:Type CheckBox}">
+            <Setter Property="Foreground" Value="#333333" />
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="titleStyleTextBox" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="DodgerBlue"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        
+    </Application.Resources>
+</Application>

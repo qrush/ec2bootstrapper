@@ -1,0 +1,31 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="Ec2BootstrapperGUI.RegisterOrConfig"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480">
+    
+	<Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+		<Label Grid.Row="0" Style="{StaticResource titleStyle}"  Content="Be prepared before using EC2 bootstrapper:"/>
+		<Label Grid.Row="1">
+            <TextBlock>
+                <Run Text="Step 1: Register with "/>
+                <Hyperlink Name="Register" Click="registerHyperlink_Click">
+                    <Run Text="Amazon Web Service"/>
+                </Hyperlink>
+            </TextBlock>
+        </Label> 
+		<Label Grid.Row="2" Content="Step 2: Go to Tools | AWS Configuration... to fill in necessary information."/>
+	</Grid>
+</UserControl>

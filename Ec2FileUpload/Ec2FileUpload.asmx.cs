@@ -183,8 +183,8 @@ namespace Ec2FileUpload
                     if (ret == false)
                         return Marshal.GetLastWin32Error();
 
-                    error = 0;
                     File.Delete(tempFileName);
+                    error = 0;
                 }
             }
             catch (IOException)

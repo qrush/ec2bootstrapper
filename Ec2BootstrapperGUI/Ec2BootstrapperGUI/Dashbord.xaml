@@ -1,0 +1,45 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="Ec2BootstrapperGUI.Dashboard"
+	x:Name="Window"
+	Title="EC2 Bootstrapper"
+	Width="640" Height="480" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:Ec2BootstrapperGUI="clr-namespace:Ec2BootstrapperGUI">
+
+	<Grid x:Name="LayoutRoot" SizeChanged="layoutRoot_SizeChanged">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="31"/>
+        </Grid.RowDefinitions>
+		<Menu Grid.Row="0" VerticalAlignment="Top" >
+			<MenuItem Header="File">
+                <MenuItem Header="Launch Instance..." Click="launchInstance_Click"/>
+				<MenuItem Name="DeployMenu" Header="Deploy..." Click="deploy_Click" IsEnabled="False"/>
+                <Separator/>
+                <MenuItem Header="Exit" Click="exit_Click"/>
+			</MenuItem>
+			<MenuItem Header="View">
+				<MenuItem Header="Refresh" Click="refreshMenu_Click"/>
+			</MenuItem>
+			<MenuItem Header="Tools">
+				<MenuItem Header="AWS Configuration..." Click="configureMenu_Click"/>
+                <Separator/>
+                <MenuItem Header="Remote Desktop Connection" Click="remoteConnect_Click"/>
+			</MenuItem>
+			<MenuItem Header="Help">
+				<MenuItem Name="About" Header="About EC2 Bootstrapper" Click="aboutMenu_Click"/>
+			</MenuItem>
+		</Menu>
+		<Grid Grid.Row="1" Name="clientR" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        <StatusBar Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <StatusBarItem>
+                <ProgressBar Name="ProgBar" IsIndeterminate="False" Width="640" HorizontalAlignment="Left" Orientation="Horizontal" Height="20" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

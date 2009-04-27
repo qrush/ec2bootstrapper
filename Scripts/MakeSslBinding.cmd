@@ -28,7 +28,9 @@ certutil.exe -store MY %SUBJECT% %CERFILEBIN%
 : Copy the certificate file to where a client can download it
 :
 
-copy /y %CERFILEBIN% %WEBROOT%\%CERFILE%
+certutil -encode %CERFILEBIN% %CERFILE%
+
+copy /y %CERFILE% %WEBROOT%\%CERFILE%
 
 : certutil.exe -addstore ROOT %CERFILE%
 
@@ -36,4 +38,5 @@ copy /y %CERFILEBIN% %WEBROOT%\%CERFILE%
 : Clean up
 :
 
-:del %CERFILEBIN%
+del %CERFILEBIN%
+del %CERFILE%

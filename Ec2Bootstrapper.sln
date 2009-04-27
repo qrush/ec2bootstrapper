@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ec2Bootstrapperlib", "Ec2Bo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ec2Bootstrapper", "Ec2Bootstrapper\Ec2Bootstrapper.csproj", "{73DA308A-9CF2-48AF-A630-539FBDD74175}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ec2BootstrapperGUI", "Ec2BootstrapperGUI\Ec2BootstrapperGUI\Ec2BootstrapperGUI.csproj", "{0894F48C-92E7-4F67-A38C-6CD3E9C33B38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ec2CertGenerator", "Ec2CertGenerator\Ec2CertGenerator.csproj", "{87B9BC15-6FF7-44E8-AB75-A8A23928EC86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{73DA308A-9CF2-48AF-A630-539FBDD74175}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73DA308A-9CF2-48AF-A630-539FBDD74175}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73DA308A-9CF2-48AF-A630-539FBDD74175}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0894F48C-92E7-4F67-A38C-6CD3E9C33B38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0894F48C-92E7-4F67-A38C-6CD3E9C33B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0894F48C-92E7-4F67-A38C-6CD3E9C33B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0894F48C-92E7-4F67-A38C-6CD3E9C33B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87B9BC15-6FF7-44E8-AB75-A8A23928EC86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87B9BC15-6FF7-44E8-AB75-A8A23928EC86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87B9BC15-6FF7-44E8-AB75-A8A23928EC86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87B9BC15-6FF7-44E8-AB75-A8A23928EC86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

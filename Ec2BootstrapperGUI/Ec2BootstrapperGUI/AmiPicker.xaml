@@ -1,0 +1,99 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="Ec2BootstrapperGUI.AmiPicker"
+	x:Name="Window"
+	Title="Launch Instance Step 1"
+    xmlns:src="clr-namespace:Ec2BootstrapperGUI"
+    xmlns:lib="clr-namespace:Ec2Bootstrapperlib;assembly=Ec2Bootstrapperlib"
+	Width="640" Height="480" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+    
+    <Window.Resources>
+         <DataTemplate DataType="{x:Type lib:CEc2Ami}">
+            <Border BorderThickness="1" BorderBrush="Gray"
+                    Padding="7" Name="border" Margin="3" Width="550" Loaded="border_Loaded" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="86"/>
+                        <ColumnDefinition Width="86"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,8,0"
+                               Name="imageIdCol"
+                               Style="{StaticResource smallTitleStyleTextBlock}">imageId:</TextBlock>
+                    <TextBlock Name="imageIdContentCol" Grid.Row="0" Grid.Column="1" 
+                        Text="{Binding Path=imageId}" 
+                        Style="{StaticResource textStyleTextBlock}"/>
+                    
+                    <TextBlock Grid.Row="0" Grid.Column="2" Margin="0,0,8,0"
+                               Name="platformCol"
+                               Style="{StaticResource smallTitleStyleTextBlock}">platform:</TextBlock>
+                    <TextBlock Name="platformContentCol" Grid.Row="0" Grid.Column="3" 
+                        Text="{Binding Path=platform}" 
+                        Style="{StaticResource textStyleTextBlock}"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,8,0"
+                               Name="manifestCol"
+                               Style="{StaticResource smallTitleStyleTextBlock}">manifest:</TextBlock>
+                    <TextBlock Name="manifestContentCol" Grid.Row="1" Grid.Column="1"
+                        Text="{Binding Path=imageLocation}" 
+                               Grid.ColumnSpan="3"
+                        Style="{StaticResource textStyleTextBlock}"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid Name="AMILayOut">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="52" />
+            <RowDefinition Height="Auto" MinHeight="32" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" MinHeight="70" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="3"
+             Style="{StaticResource titleStyleTextBox}" Margin="8,20,8,8">Please select an AMI and then click Next</TextBlock>
+        <CheckBox Name="QuickStartAmis" Grid.Row="1" Grid.Column="0" Margin="78,8,19,0"
+                  Style="{StaticResource checkBoxStyle}" 
+                  Height="16" 
+                  VerticalAlignment="Top"
+                  IsChecked="True" 
+                  Click="quickStartAmis_Click" >Quick AMIs</CheckBox>
+        <CheckBox Name="OwnAmis" Grid.Row="1" Grid.Column="1" Margin="45,8,45,0"
+                  Style="{StaticResource checkBoxStyle}" 
+                  Height="16" 
+                  VerticalAlignment="Top"
+                  Click="ownAmis_Click">My AMIs</CheckBox>
+        <CheckBox Name="Community" Grid.Row="1" Grid.Column="3" 
+                  Margin="8"
+                  Style="{StaticResource checkBoxStyle}"
+                  Click="community_Click">Community AMIs</CheckBox>
+
+        <ListView Name="Amis" Grid.Row="2" Grid.ColumnSpan="3" Margin="8,8,8,0" 
+                    IsSynchronizedWithCurrentItem="True"
+                    ItemsSource="{Binding Path=amis, RelativeSource={RelativeSource AncestorType={x:Type src:AmiPicker}}, Mode=OneWay}"
+                    SizeChanged="amis_SizeChanged" SelectionChanged="amis_SelectionChanged"/>
+        
+        <Button Name="CancelButton" Grid.Row="3" Grid.Column="0" Content="Cancel" Margin="47,8,40,0" Height="26" VerticalAlignment="Top" Click="cancelButton_Click" />
+        <Button Name="NextButton" Grid.Row="3" Grid.Column="3" Content="Next" Margin="47,8,40,0" Height="26" VerticalAlignment="Top" Click="nextButton_Click" />
+        <StatusBar Grid.Row="4" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <StatusBarItem>
+                <ProgressBar Name="AmiProgBar" IsIndeterminate="False" Width="640" HorizontalAlignment="Left" Orientation="Horizontal" Height="20" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
