@@ -407,8 +407,7 @@ namespace Ec2Bootstrapperlib
         {
             try
             {
-                string ec2BootstrapperDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                    "\\Ec2Bootstrapper";
+                string ec2BootstrapperDir = getEc2BootstrapperDirectory();
                 if (Directory.Exists(ec2BootstrapperDir) == false)
                     Directory.CreateDirectory(ec2BootstrapperDir);
 
@@ -533,10 +532,10 @@ namespace Ec2Bootstrapperlib
             }
         }
 
-        private string getKeyFilePath()
+        private string getEc2BootstrapperDirectory()
         {
             return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                         "\\" + jwKeyPairFileName;
+                         "\\Ec2Bootstrapper";
         }
 
         private void createKayPair()
@@ -544,7 +543,13 @@ namespace Ec2Bootstrapperlib
             try
             {
                 //check if key pair exists; 
-                string keyFilePath = getKeyFilePath();
+                string keyFileDir = getEc2BootstrapperDirectory();
+                if(Directory.Exists(keyFileDir) == false)
+                {
+                    Directory.CreateDirectory(keyFileDir);
+                }
+
+                string keyFilePath = keyFileDir + "\\" + jwKeyPairFileName;
                 if (File.Exists(keyFilePath))
                     return;
 
