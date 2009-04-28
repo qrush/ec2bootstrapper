@@ -165,10 +165,5 @@ namespace Ec2BootstrapperGUI
         {
             StatusDesc.Content = status;
         }
-
-        private void layoutRoot_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            StatusBar.Width = LayoutRoot.ActualWidth;            
-        }
     }
 }

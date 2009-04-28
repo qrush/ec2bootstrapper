@@ -37,7 +37,7 @@ namespace Ec2BootstrapperGUI
             {
                 if (_instances.Count == 0)
                 {
-                    _dashboard.showStatus("Contacting Amazon...");
+                    _dashboard.showStatus(ConstantString.ContactAmazon);
                     Thread oThread = new Thread(new ThreadStart(getInstances));
                     instancesLV.BorderThickness = new Thickness(0);
                     oThread.Start();
@@ -53,11 +53,11 @@ namespace Ec2BootstrapperGUI
             if (_instances.Count != 0)
             {
                 instancesLV.BorderThickness = new Thickness(1);
-                _dashboard.showStatus("Done");
+                _dashboard.showStatus(ConstantString.Done);
             }
             else
             {
-                _dashboard.showStatus("No instance found");
+                _dashboard.showStatus(ConstantString.NoInstance);
             }
         }
 

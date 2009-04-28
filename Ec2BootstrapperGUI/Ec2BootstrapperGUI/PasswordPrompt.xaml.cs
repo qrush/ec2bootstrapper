@@ -38,8 +38,16 @@ namespace Ec2BootstrapperGUI
         private delegate void SetStatusDone();
 
         private void installRemotely()
-        {            
-            _instance.uploadAndInstallMsi(_password);
+        {
+            try
+            {
+                _instance.uploadAndInstallMsi(_password);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
             Dispatcher.Invoke(new SetStatusDone(setStatusDone));
         }
@@ -55,15 +63,14 @@ namespace Ec2BootstrapperGUI
                     throw new Exception("no valid instance");
                 }
 
-                StatusBk.Text = "In progress";
+                StatusBk.Text = ConstantString.ContactAmazon;
 
                 //access from another thread
                 _password = AdminPassword.Password;
+                enableProgressBar();
 
                 Thread oThread = new Thread(new ThreadStart(installRemotely));
                 oThread.Start();
-
-                enableProgressBar();
             }
             catch (Exception ex)
             {
@@ -96,7 +103,7 @@ namespace Ec2BootstrapperGUI
 
         private void setStatusDone()
         {
-            StatusBk.Text = "Done successfully";
+            StatusBk.Text = ConstantString.Done;
             OkButton.IsEnabled = true;
             AdminPassword.IsEnabled = true;
         }

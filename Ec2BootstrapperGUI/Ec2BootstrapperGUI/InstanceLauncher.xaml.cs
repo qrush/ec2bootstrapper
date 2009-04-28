@@ -147,6 +147,7 @@ namespace Ec2BootstrapperGUI
 
         private void enableProgressBar()
         {
+            StatusDesc.Content = ConstantString.ContactAmazon;
             LaunchProgBar.Visibility = Visibility.Visible;
             LaunchProgBar.IsIndeterminate = true;
             Duration duration = new Duration(TimeSpan.FromSeconds(10));
@@ -159,6 +160,7 @@ namespace Ec2BootstrapperGUI
             LaunchProgBar.IsIndeterminate = false;
             LaunchProgBar.BeginAnimation(System.Windows.Controls.ProgressBar.ValueProperty, null);
             LaunchProgBar.Visibility = Visibility.Hidden;
+            StatusDesc.Content = ConstantString.Done;
         }
 
         private void launch()
@@ -195,12 +197,5 @@ namespace Ec2BootstrapperGUI
             oThread.Start();
             enableProgressBar();
         }
-
-        private void launcherLayout_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            StatusBarDb.Width = LauncherLayout.ActualWidth;
-        }
-
-        //default key pair and security group if default ami
     }
 }

@@ -11,7 +11,7 @@
 	d:DesignWidth="640" d:DesignHeight="480" Height="480" Width="640"
     Closing="window_Closing">
     
-    <Grid Name="LauncherLayout" SizeChanged="launcherLayout_SizeChanged">
+    <Grid Name="LauncherLayout">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="25"/>

@@ -10,7 +10,7 @@
     mc:Ignorable="d"
     xmlns:Ec2BootstrapperGUI="clr-namespace:Ec2BootstrapperGUI">
 
-	<Grid x:Name="LayoutRoot" SizeChanged="layoutRoot_SizeChanged">
+	<Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="44"/>
             <RowDefinition Height="*"/>

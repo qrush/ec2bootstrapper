@@ -94,7 +94,6 @@ namespace Ec2BootstrapperGUI
 
         private void amis_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            AmiStatus.Width = AMILayOut.ActualWidth;
             foreach (Border b in _lstBorders)
             {
                 b.Width = Amis.ActualWidth - 15;
@@ -213,6 +212,7 @@ namespace Ec2BootstrapperGUI
 
         private void enableProgressBar()
         {
+            StatusDesc.Content = ConstantString.ContactAmazon;
             AmiProgBar.Visibility = Visibility.Visible;
             AmiProgBar.IsIndeterminate = true;
             Duration duration = new Duration(TimeSpan.FromSeconds(10));
@@ -225,6 +225,11 @@ namespace Ec2BootstrapperGUI
             AmiProgBar.IsIndeterminate = false;
             AmiProgBar.BeginAnimation(System.Windows.Controls.ProgressBar.ValueProperty, null);
             AmiProgBar.Visibility = Visibility.Hidden;
+
+            if (_amis == null || _amis.Count == 0)
+                StatusDesc.Content = ConstantString.NoAmi;
+            else
+                StatusDesc.Content = ConstantString.Done;
         }
     }
 }

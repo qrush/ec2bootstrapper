@@ -60,6 +60,7 @@
       <DependentUpon>AmiPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="CBeginInvokeOC.cs" />
+    <Compile Include="Constent.cs" />
     <Compile Include="Cuebanner.cs" />
     <Compile Include="InstanceLauncher.xaml.cs">
       <DependentUpon>InstanceLauncher.xaml</DependentUpon>
