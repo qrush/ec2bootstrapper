@@ -161,9 +161,14 @@ namespace Ec2BootstrapperGUI
             ProgBar.Visibility = Visibility.Hidden; 
         }
 
+        public void showStatus(string status)
+        {
+            StatusDesc.Content = status;
+        }
+
         private void layoutRoot_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ProgBar.Width = LayoutRoot.ActualWidth;            
+            StatusBar.Width = LayoutRoot.ActualWidth;            
         }
     }
 }

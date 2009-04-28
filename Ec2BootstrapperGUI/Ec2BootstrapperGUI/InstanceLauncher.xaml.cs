@@ -61,25 +61,32 @@ namespace Ec2BootstrapperGUI
 
         private void fetchInforThread()
         {
-            CEc2Service serv = new CEc2Service(_dashboard.awsConfig);
-            if (_securityGroups.Count == 0)
-            {  
-                List<string> sgs = serv.descrbibeSecurityGroups();
-                foreach (string sg in sgs)
-                    _securityGroups.Add(sg);
+            try
+            {
+                CEc2Service serv = new CEc2Service(_dashboard.awsConfig);
+                if (_securityGroups.Count == 0)
+                {
+                    List<string> sgs = serv.descrbibeSecurityGroups();
+                    foreach (string sg in sgs)
+                        _securityGroups.Add(sg);
 
+                }
+                if (_keyPairs.Count == 0)
+                {
+                    List<string> kps = serv.descrbibeKeyPairs();
+                    foreach (string kp in kps)
+                        _keyPairs.Add(kp);
+                }
+                if (_zones.Count == 0)
+                {
+                    List<string> zs = serv.descrbibeZones();
+                    foreach (string z in zs)
+                        _zones.Add(z);
+                }
             }
-            if(_keyPairs.Count == 0)
+            catch (Exception ex)
             {
-                List<string> kps = serv.descrbibeKeyPairs();
-                foreach (string kp in kps)
-                    _keyPairs.Add(kp);
-            }
-            if (_zones.Count == 0)
-            {
-                List<string> zs = serv.descrbibeZones();
-                foreach (string z in zs)
-                    _zones.Add(z);
+                MessageBox.Show(ex.Message);
             }
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
         }
@@ -156,12 +163,19 @@ namespace Ec2BootstrapperGUI
 
         private void launch()
         {
-            CEc2Instance inst = new CEc2Instance(_dashboard.awsConfig);
-            inst.imageId = _amiId;
-            inst.keyPairName = _selectedKeyPair;
-            inst.securityGroups = _selectedSecurityGroups;
-            
-            inst.launch();
+            try
+            {
+                CEc2Instance inst = new CEc2Instance(_dashboard.awsConfig);
+                inst.imageId = _amiId;
+                inst.keyPairName = _selectedKeyPair;
+                inst.securityGroups = _selectedSecurityGroups;
+
+                inst.launch();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
         }
@@ -184,7 +198,7 @@ namespace Ec2BootstrapperGUI
 
         private void launcherLayout_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            LaunchProgBar.Width = LauncherLayout.ActualWidth;
+            StatusBarDb.Width = LauncherLayout.ActualWidth;
         }
 
         //default key pair and security group if default ami

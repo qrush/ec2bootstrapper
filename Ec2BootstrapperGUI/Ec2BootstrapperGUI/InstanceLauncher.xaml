@@ -34,6 +34,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="146"/>
@@ -41,56 +42,49 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.ColumnSpan="3"
-                        Style="{StaticResource titleStyle}" Margin="8,20,8,8">Finish this form and then click the launch button:</Label> 
+                        Style="{StaticResource titleStyle}" Margin="8,20,8,8">Finish this form and then click the launch button:</Label>
+                    
+                    <Label Grid.Row="1" Grid.ColumnSpan="3"
+                        Margin="8,0,8,0">Note: You don't have to choose anything if you don't know how.</Label>
 
-                    <Label Grid.Row="1" Grid.Column="0" Margin="0,0,8,0" HorizontalAlignment="Right"                           
+                    <Label Grid.Row="2" Grid.Column="0" Margin="0,0,8,0" HorizontalAlignment="Right"                           
                         Style="{StaticResource smallTitleStyle}">AMI Name:</Label>
-                    <Label Grid.Row="2" Grid.Column="0" Margin="0,0,8,0" HorizontalAlignment="Right"                              
-                        Style="{StaticResource smallTitleStyle}">Number of Instances*:</Label>
-                    <Label Name="AmiIdLb" Grid.Row="1" Grid.Column="1" Content="amiId" Grid.ColumnSpan="2"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Text="1" Grid.ColumnSpan="2" TextWrapping="Wrap"/>
+                    <Label Name="AmiIdLb" Grid.Row="2" Grid.Column="1" Content="amiId" Grid.ColumnSpan="2"/>
+                    
+                    <Label Grid.Row="3" Grid.Column="0" Margin="0,0,8,0" HorizontalAlignment="Right"                              
+                        Style="{StaticResource smallTitleStyle}">Number of Instances:</Label>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="1" Grid.ColumnSpan="2" TextWrapping="Wrap"/>
 
-                    <Label Grid.Row="3" Grid.Column="0"  HorizontalAlignment="Right"     
+                    <Label Grid.Row="4" Grid.Column="0"  HorizontalAlignment="Right"     
                        Style="{StaticResource smallTitleStyle}" Margin="5">Instance Type:</Label>
-                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="8,5,0,5" Name="Small" Content="small (m1.small)" IsChecked="True" Click="small_Click"/>
-                    <CheckBox Grid.Row="3" Grid.Column="2" Margin="8,5,0,5" Name="Medium" Content="High-CPU Medium (c1.medium)" Click="medium_Click" />
+                    <CheckBox Grid.Row="4" Grid.Column="1" Margin="8,5,0,5" Name="Small" Content="small (m1.small)" IsChecked="True" Click="small_Click"/>
+                    <CheckBox Grid.Row="4" Grid.Column="2" Margin="8,5,0,5" Name="Medium" Content="High-CPU Medium (c1.medium)" Click="medium_Click" />
 
-                    <Label Grid.Row="4" Grid.Column="0"  
+                    <Label Grid.Row="5" Grid.Column="0"  
                        Style="{StaticResource smallTitleStyle}" HorizontalAlignment="Right"     
-                               Margin="5">Key Pair Name*:</Label>
-                    <Label Grid.Row="5" Grid.Column="0" 
+                               Margin="5">Key Pair Name:</Label>
+                    <Label Grid.Row="6" Grid.Column="0" 
                        Style="{StaticResource smallTitleStyle}" HorizontalAlignment="Right"     
                                Margin="5">Security Groups:</Label>
-                    <Label Grid.Row="6" Grid.Column="0"   
+                    <Label Grid.Row="7" Grid.Column="0"   
                        Style="{StaticResource smallTitleStyle}" HorizontalAlignment="Right"     
                                Margin="5">Availability Zone:</Label>
-                    <ComboBox Name="KeyPairComb" Grid.Row="4" 
+                    <ComboBox Name="KeyPairComb" Grid.Row="5" 
                               ItemsSource="{Binding Path=keyPairs, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"
                               Grid.Column="1" Margin="8,5,0,5" 
                               Grid.ColumnSpan="2" 
                               Style="{StaticResource comboBoxStyle}" 
                               TabIndex="3"/>
-                    <ComboBox Name="SecurityGroupComb" Grid.Row="5" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2"
+                    <ComboBox Name="SecurityGroupComb" Grid.Row="6" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2"
                               ItemsSource="{Binding Path=securityGroups, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"
                               Style="{StaticResource comboBoxStyle}" TabIndex="4"/>
-                    <ComboBox Name="ZoneComb" Grid.Row="6" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2" 
+                    <ComboBox Name="ZoneComb" Grid.Row="7" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2" 
                               ItemsSource="{Binding Path=zones, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"
                               Style="{StaticResource comboBoxStyle}" TabIndex="5"/>
                 </Grid>
             </Border>
             <Border Padding="5" Grid.Row="1">
-                <Grid Margin="5,0,5,10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="306"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Content="You will be charged the hourly rate for any instances &#xd;&#xa;you launch until you successfully shut them down."/>
-                    <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Content="* Required field"/>
-                </Grid>
+                <Label Content="Note: You will be charged the hourly rate for any instances you launch until you successfully shut them down."/>
             </Border>
             <Border Padding="5" Grid.Row="2">
                 <Grid Margin="5,0,5,10">
@@ -106,10 +100,14 @@
                 </Grid>
             </Border>
         </Grid>
-        <StatusBar Name="StatusBarDb" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <StatusBar Name="StatusBarDb" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+            <StatusBarItem Name="StatusDesc" Width="140">Ready</StatusBarItem>
+            <Separator/>
             <StatusBarItem>
-                <ProgressBar Name="LaunchProgBar" IsIndeterminate="False" Width="640" HorizontalAlignment="Left" Orientation="Horizontal" Height="20" />
+                <ProgressBar Name="LaunchProgBar" IsIndeterminate="False" Width="400" HorizontalAlignment="Left" Orientation="Horizontal" Height="20" />
             </StatusBarItem>
+            <Separator/>
+            <StatusBarItem Width="Auto"></StatusBarItem>
         </StatusBar>
     </Grid>
 </Window>

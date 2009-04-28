@@ -90,10 +90,14 @@
         
         <Button Name="CancelButton" Grid.Row="3" Grid.Column="0" Content="Cancel" Margin="47,8,40,0" Height="26" VerticalAlignment="Top" Click="cancelButton_Click" />
         <Button Name="NextButton" Grid.Row="3" Grid.Column="3" Content="Next" Margin="47,8,40,0" Height="26" VerticalAlignment="Top" Click="nextButton_Click" />
-        <StatusBar Grid.Row="4" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <StatusBar Name="AmiStatus" Grid.Row="4" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+            <StatusBarItem Name="StatusDesc" Width="140">Ready</StatusBarItem>
+            <Separator/>
             <StatusBarItem>
-                <ProgressBar Name="AmiProgBar" IsIndeterminate="False" Width="640" HorizontalAlignment="Left" Orientation="Horizontal" Height="20" />
+                <ProgressBar Name="AmiProgBar" BorderThickness="0" IsIndeterminate="False" Width="400" HorizontalAlignment="Left" Orientation="Horizontal" Height="20" />
             </StatusBarItem>
+            <Separator/>
+            <StatusBarItem Width="Auto"></StatusBarItem>
         </StatusBar>
     </Grid>
 </Window>

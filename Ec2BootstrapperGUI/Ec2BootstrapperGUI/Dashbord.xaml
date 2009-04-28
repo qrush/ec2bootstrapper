@@ -36,10 +36,14 @@
 			</MenuItem>
 		</Menu>
 		<Grid Grid.Row="1" Name="clientR" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-        <StatusBar Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <StatusBar Name="StatusBar" Grid.Row="2" BorderThickness="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+            <StatusBarItem Name="StatusDesc" Width="140">Ready</StatusBarItem>
+            <Separator/>
             <StatusBarItem>
-                <ProgressBar Name="ProgBar" IsIndeterminate="False" Width="640" HorizontalAlignment="Left" Orientation="Horizontal" Height="20" />
+                <ProgressBar Name="ProgBar" Grid.Column="1" IsIndeterminate="False" Width="400" Height="20" />
             </StatusBarItem>
+            <Separator/>
+            <StatusBarItem Width="Auto"></StatusBarItem>
         </StatusBar>
     </Grid>
 </Window>

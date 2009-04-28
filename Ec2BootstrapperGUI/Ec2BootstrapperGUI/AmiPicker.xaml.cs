@@ -94,7 +94,7 @@ namespace Ec2BootstrapperGUI
 
         private void amis_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            AmiProgBar.Width = AMILayOut.ActualWidth;
+            AmiStatus.Width = AMILayOut.ActualWidth;
             foreach (Border b in _lstBorders)
             {
                 b.Width = Amis.ActualWidth - 15;
@@ -151,9 +151,17 @@ namespace Ec2BootstrapperGUI
 
         private void setOwnAmis()
         {
-            fetchMyAmis();
-            foreach (CEc2Ami item in _myAmis)
-                _amis.Add(item);
+            try
+            {
+                fetchMyAmis();
+                foreach (CEc2Ami item in _myAmis)
+                    _amis.Add(item);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
         }
 
@@ -174,9 +182,16 @@ namespace Ec2BootstrapperGUI
 
         private void setCommunityAmis()
         {
-            fetchCommunityAmis();
-            foreach (CEc2Ami item in _commAmis)
-                _amis.Add(item);
+            try
+            {
+                fetchCommunityAmis();
+                foreach (CEc2Ami item in _commAmis)
+                    _amis.Add(item);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
         }
 

@@ -3,6 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	x:Class="Ec2BootstrapperGUI.AwsConfiguration"
 	x:Name="Window"
+    xmlns:src="clr-namespace:Ec2BootstrapperGUI"
 	Title="AwsConfiguration"
 	Width="640" Height="480">
 
@@ -23,6 +24,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="138"/>
                 <ColumnDefinition/>
+                <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource titleStyle}" 
                Grid.ColumnSpan="2">Please fill in all of the following information:</Label>
@@ -33,13 +35,36 @@
             <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 Instance Private Key"/>
             <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 User Private Key"/>
             <Label Grid.Row="7" Grid.Column="0" HorizontalAlignment="Right" Content="Java Home"/>
-            <TextBox Name="AwsAccessKey" Grid.Row="1" Grid.Column="1" Margin="8,5,0,5" Text="0AB01MP523456875ABCD" TextWrapping="NoWrap"/>
-            <TextBox Name="AwsSecreteKey" Grid.Row="2" Grid.Column="1" Margin="8,5,0,5" Text="LKDHG+hhjjyt123456789uyetrewdfslKldeOiUg" TextWrapping="NoWrap"/>
-            <TextBox Name="Ec2CertPath" Grid.Row="3" Grid.Column="1" Margin="8,5,0,5" Text="D:\ec2\cert-OWIW7KUyGO9UpTYSKUINJHBE4SOKG6RF.pem" TextWrapping="NoWrap"/>
-            <TextBox Name="Ec2Home" Grid.Row="4" Grid.Column="1" Margin="8,5,0,5" Text="D:\ec2-api-tools-1.3-34128" TextWrapping="NoWrap"/>
-            <TextBox Name="Ec2InstancePrivateKey" Grid.Row="5" Grid.Column="1" Text="C:\Users\user1\AppData\Local\JWSecureFileUploadKey.pem" Margin="8,5,0,5" TextWrapping="NoWrap"/>
-            <TextBox Name="Ec2UserPrivateKey" Grid.Row="6" Grid.Column="1" Text="D:\ec2\pk-OWIW7KUyGO9UpTYSKUINJHBE4SOKG6RF.pem" Margin="8,5,0,5" TextWrapping="NoWrap"/>
-            <TextBox Name="JavaHome" Grid.Row="7" Grid.Column="1" Margin="8,5,0,5" Text="C:\Program Files\Java\jre6" TextWrapping="NoWrap"/>
+            <TextBox Name="AwsAccessKey" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="8,5,0,5" TextChanged="Config_TextChanged" TextWrapping="NoWrap">
+                <src:CueBannerService.CueBanner>0DT984JRKUIFNRMER645</src:CueBannerService.CueBanner>
+            </TextBox>
+            <TextBox Name="AwsSecreteKey" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="8,5,0,5" TextChanged="Config_TextChanged" TextWrapping="NoWrap">
+                <src:CueBannerService.CueBanner>mHJD98+LOIUnHGF78LKDhgsIHD897i+=OILDJKSDD</src:CueBannerService.CueBanner>
+            </TextBox>
+            <TextBox Name="Ec2CertPath" Grid.Row="3" Grid.Column="1" Margin="8,5,0,5" TextChanged="Config_TextChanged" TextWrapping="NoWrap">
+                <src:CueBannerService.CueBanner>D:\ec2\cert-OWIW73PRHOB4VTYS6FFNP6BE4SOKG6RF.pem</src:CueBannerService.CueBanner>
+            </TextBox>
+            <TextBox Name="Ec2Home" Grid.Row="4" Grid.Column="1" Margin="8,5,0,5" TextChanged="Config_TextChanged" TextWrapping="NoWrap">
+                <src:CueBannerService.CueBanner>C:\ec2-api-tools-1.3-34128</src:CueBannerService.CueBanner>
+            </TextBox>
+            <TextBox Name="Ec2InstancePrivateKey" Grid.Row="5" Grid.Column="1" Margin="8,5,0,5" TextChanged="Config_TextChanged" TextWrapping="NoWrap">
+                <src:CueBannerService.CueBanner>C:\Users\(user)\AppData\Local\JWSecureFileUploadKey.pem</src:CueBannerService.CueBanner>
+            </TextBox>
+
+            <TextBox Name="Ec2UserPrivateKey" Grid.Row="6" Grid.Column="1" Margin="8,5,0,5" TextChanged="Config_TextChanged" TextWrapping="NoWrap">
+                <src:CueBannerService.CueBanner>D:\ec2\pk-OWIW7KUyGO9UpTYSKUINJHBE4SOKG6RF.pem</src:CueBannerService.CueBanner>
+            </TextBox>
+
+            <TextBox Name="JavaHome" Grid.Row="7" Grid.Column="1" Margin="8,5,0,5" TextChanged="Config_TextChanged" TextWrapping="NoWrap">
+                <src:CueBannerService.CueBanner>C:\Program Files\Java\jre6</src:CueBannerService.CueBanner>
+            </TextBox>
+            
+            <Button Margin="0,8,0,5" Name="CertPathBt" Content="..." Grid.Column="2" Grid.Row="3" Click="CertPathBt_Click"/>
+            <Button Margin="0,8,0,5" Name="Ec2HomeBt" Content="..." Grid.Column="2" Grid.Row="4" Click="Ec2HomeBt_Click"/>
+            <Button Margin="0,8,0,5" Name="Ec2InstPrivKeyBt" Content="..." Grid.Column="2" Grid.Row="5" Click="Ec2InstPrivKeyBt_Click"/>
+            <Button Margin="0,8,0,5" Name="Ec2UserPrivKeyBt" Content="..." Grid.Column="2" Grid.Row="6" Click="Ec2UserPrivKeyBt_Click"/>
+            <Button Margin="0,8,0,5" Name="JavaHomeBt" Content="..." Grid.Column="2" Grid.Row="7" Click="JavaHomeBt_Click"/>
+
             <Button Name="SaveButton" Grid.Row="8" Grid.Column="1" Content="Save" Click="saveButton_Click" Margin="288,5,62,5" />
         </Grid>
     </Border>

@@ -14,7 +14,7 @@
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type lib:CEc2Instance}">
             <Border BorderThickness="1" BorderBrush="Gray"
-                    Padding="7" Name="border" Margin="3" Loaded="border_Loaded">
+                    Padding="7" Name="ListBorder" Margin="3" Loaded="border_Loaded">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>

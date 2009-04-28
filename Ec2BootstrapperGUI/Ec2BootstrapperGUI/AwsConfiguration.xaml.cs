@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Ec2Bootstrapperlib;
+using System.Windows.Forms;
 
 namespace Ec2BootstrapperGUI
 {
@@ -37,8 +38,9 @@ namespace Ec2BootstrapperGUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                System.Windows.MessageBox.Show(ex.Message);
             }
+            SaveButton.IsEnabled = false;
         }
 
         public void setDashboard(Dashboard db)
@@ -68,8 +70,64 @@ namespace Ec2BootstrapperGUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                System.Windows.MessageBox.Show(ex.Message);
             }
+        }
+
+        private void CertPathBt_Click(object sender, RoutedEventArgs e)
+        {
+            Ec2CertPath.Text = GetFilePath();
+        }
+
+        private void Ec2HomeBt_Click(object sender, RoutedEventArgs e)
+        {
+            Ec2Home.Text = GetDirectoryPath();
+        }
+
+        private void Ec2InstPrivKeyBt_Click(object sender, RoutedEventArgs e)
+        {
+            Ec2InstancePrivateKey.Text = GetFilePath();
+        }
+
+        private void Ec2UserPrivKeyBt_Click(object sender, RoutedEventArgs e)
+        {
+            Ec2UserPrivateKey.Text = GetFilePath();
+        }
+
+        private void JavaHomeBt_Click(object sender, RoutedEventArgs e)
+        {
+            JavaHome.Text = GetDirectoryPath();
+        }
+
+        string GetFilePath()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Key files (*.pem)|*.pem";
+            if (System.Windows.Forms.DialogResult.OK != ofd.ShowDialog())
+            {
+                System.Windows.MessageBox.Show("Error: open file dialog failed");
+                return "";
+            }
+            return ofd.FileName;
+        }
+
+        string GetDirectoryPath()
+        {
+            FolderBrowserDialog folder = new FolderBrowserDialog();
+            if (folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                return folder.SelectedPath;
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Error: FolderBrowserDialog failed");
+                return "";
+            }
+        }
+
+        private void Config_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SaveButton.IsEnabled = true;
         }
     }
 }
