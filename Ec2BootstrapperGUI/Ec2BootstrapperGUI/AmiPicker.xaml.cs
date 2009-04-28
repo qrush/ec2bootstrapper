@@ -22,7 +22,6 @@ namespace Ec2BootstrapperGUI
     public partial class AmiPicker : Window
     {
         List<Border> _lstBorders = new List<Border>();
-        InstanceLauncher launcher;
         List<CEc2Ami> _commAmis;
         List<CEc2Ami> _quickAmis;
         List<CEc2Ami> _myAmis;
@@ -104,7 +103,7 @@ namespace Ec2BootstrapperGUI
         {
             if (Amis.SelectedItem != null)
             {
-                launcher = new InstanceLauncher();
+                InstanceLauncher launcher = new InstanceLauncher();
                 launcher.amiPicker = this;
                 launcher.dashboard = _dashboard;
                 launcher.amiId = ((CEc2Ami)Amis.SelectedItem).imageId;
@@ -116,8 +115,6 @@ namespace Ec2BootstrapperGUI
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            if(launcher != null)
-                launcher.Close();
             this.Close();
         }
 

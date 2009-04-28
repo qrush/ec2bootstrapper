@@ -8,8 +8,7 @@
 	x:Name="Window"
     xmlns:src="clr-namespace:Ec2BootstrapperGUI"
     Title="Launch Instance Step 2"
-	d:DesignWidth="640" d:DesignHeight="480" Height="480" Width="640"
-    Closing="window_Closing">
+	d:DesignWidth="640" d:DesignHeight="480" Height="480" Width="640">
     
     <Grid Name="LauncherLayout">
         <Grid.RowDefinitions>

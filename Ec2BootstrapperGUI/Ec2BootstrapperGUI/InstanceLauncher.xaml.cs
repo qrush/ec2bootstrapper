@@ -58,6 +58,12 @@ namespace Ec2BootstrapperGUI
         }
 
         private delegate void StopProgressbarCallback();
+        private delegate void DisableLaunchButton();
+
+        private void disableLaunchButton()
+        {
+            LaunchButton.IsEnabled = false;
+        }
 
         private void fetchInforThread()
         {
@@ -87,7 +93,9 @@ namespace Ec2BootstrapperGUI
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                Dispatcher.Invoke(new DisableLaunchButton(disableLaunchButton));
             }
+
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
         }
 
@@ -116,14 +124,8 @@ namespace Ec2BootstrapperGUI
             if (_amipicker != null)
             {
                 _amipicker.Show();
-                this.Hide();
+                this.Close();
             }
-        }
-
-        private void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if(_amipicker != null)
-                _amipicker.Close();
         }
 
         private void small_Click(object sender, RoutedEventArgs e)
@@ -141,6 +143,8 @@ namespace Ec2BootstrapperGUI
             set
             {
                 _dashboard = value;
+                //once dashboard set, we have access to config info
+                //hence we can fetch information from ams
                 fetchInformationFromAms();
             }
         }
