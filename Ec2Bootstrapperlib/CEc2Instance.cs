@@ -99,7 +99,7 @@ namespace Ec2Bootstrapperlib
 
         public CEc2Instance(CAwsConfig amsConfig)
         {
-            setDefaults();
+            //setDefaults();
             _awsConfig = amsConfig;
             _service = new AmazonEC2Client(_awsConfig.awsAccessKey, _awsConfig.awsSecretKey);
         }
@@ -240,14 +240,7 @@ namespace Ec2Bootstrapperlib
             }
             catch (AmazonEC2Exception ex)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("Caught Exception: " + ex.Message);
-                sb.Append(" Response Status Code: " + ex.StatusCode);
-                sb.Append(" Error Code: " + ex.ErrorCode);
-                sb.Append(" Error Type: " + ex.ErrorType);
-                sb.Append(" Request ID: " + ex.RequestId);
-                sb.Append(" XML: " + ex.XML);
-                throw new Exception(sb.ToString());
+                throw new Exception("Caught Exception: " + ex.XML);
             }
         }
 
@@ -262,14 +255,7 @@ namespace Ec2Bootstrapperlib
             }
             catch (AmazonEC2Exception ex)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("Caught Exception: " + ex.Message);
-                sb.Append(" Response Status Code: " + ex.StatusCode);
-                sb.Append(" Error Code: " + ex.ErrorCode);
-                sb.Append(" Error Type: " + ex.ErrorType);
-                sb.Append(" Request ID: " + ex.RequestId);
-                sb.Append(" XML: " + ex.XML);
-                throw new Exception(sb.ToString());
+                throw new Exception("Caught Exception: " + ex.XML);
             }
         }
 
@@ -486,14 +472,7 @@ namespace Ec2Bootstrapperlib
             }
             catch (AmazonEC2Exception ex)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("Caught Exception: " + ex.Message);
-                sb.Append(" Response Status Code: " + ex.StatusCode);
-                sb.Append(" Error Code: " + ex.ErrorCode);
-                sb.Append(" Error Type: " + ex.ErrorType);
-                sb.Append(" Request ID: " + ex.RequestId);
-                sb.Append(" XML: " + ex.XML);
-                throw new Exception(sb.ToString());
+                throw new Exception("Caught Exception: " + ex.XML);
             }
         }
 
@@ -521,14 +500,7 @@ namespace Ec2Bootstrapperlib
             }
             catch (AmazonEC2Exception ex)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("Caught Exception: " + ex.Message);
-                sb.Append(" Response Status Code: " + ex.StatusCode);
-                sb.Append(" Error Code: " + ex.ErrorCode);
-                sb.Append(" Error Type: " + ex.ErrorType);
-                sb.Append(" Request ID: " + ex.RequestId);
-                sb.Append(" XML: " + ex.XML);
-                throw new Exception(sb.ToString());
+                throw new Exception("Caught Exception: " + ex.XML);
             }
         }
 
@@ -577,14 +549,7 @@ namespace Ec2Bootstrapperlib
             }
             catch (AmazonEC2Exception ex)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("Caught Exception: " + ex.Message);
-                sb.Append(" Response Status Code: " + ex.StatusCode);
-                sb.Append(" Error Code: " + ex.ErrorCode);
-                sb.Append(" Error Type: " + ex.ErrorType);
-                sb.Append(" Request ID: " + ex.RequestId);
-                sb.Append(" XML: " + ex.XML);
-                throw new Exception(sb.ToString());
+                throw new Exception("Caught Exception: " + ex.XML);
             }
         }
     }
