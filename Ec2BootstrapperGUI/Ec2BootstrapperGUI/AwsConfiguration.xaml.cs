@@ -32,7 +32,6 @@ namespace Ec2BootstrapperGUI
                 AwsSecreteKey.Text = _config.read("AwsSecreteKey");
                 Ec2CertPath.Text = _config.read("Ec2CertPath");
                 Ec2Home.Text = _config.read("Ec2Home");
-                Ec2InstancePrivateKey.Text = _config.read("Ec2InstancePrivateKey");
                 Ec2UserPrivateKey.Text = _config.read("Ec2UserPrivateKey");
                 JavaHome.Text = _config.read("JavaHome");
             }
@@ -58,7 +57,6 @@ namespace Ec2BootstrapperGUI
                     _config.write("AwsSecreteKey", AwsSecreteKey.Text);
                     _config.write("Ec2CertPath", Ec2CertPath.Text);
                     _config.write("Ec2Home", Ec2Home.Text);
-                    _config.write("Ec2InstancePrivateKey", Ec2InstancePrivateKey.Text);
                     _config.write("Ec2UserPrivateKey", Ec2UserPrivateKey.Text);
                     _config.write("JavaHome", JavaHome.Text);
                     _config.commit();
@@ -74,32 +72,27 @@ namespace Ec2BootstrapperGUI
             }
         }
 
-        private void CertPathBt_Click(object sender, RoutedEventArgs e)
+        private void certPathBt_Click(object sender, RoutedEventArgs e)
         {
-            Ec2CertPath.Text = GetFilePath();
+            Ec2CertPath.Text = getFilePath();
         }
 
-        private void Ec2HomeBt_Click(object sender, RoutedEventArgs e)
+        private void ec2HomeBt_Click(object sender, RoutedEventArgs e)
         {
-            Ec2Home.Text = GetDirectoryPath();
+            Ec2Home.Text = getDirectoryPath();
         }
 
-        private void Ec2InstPrivKeyBt_Click(object sender, RoutedEventArgs e)
+        private void ec2UserPrivKeyBt_Click(object sender, RoutedEventArgs e)
         {
-            Ec2InstancePrivateKey.Text = GetFilePath();
+            Ec2UserPrivateKey.Text = getFilePath();
         }
 
-        private void Ec2UserPrivKeyBt_Click(object sender, RoutedEventArgs e)
+        private void javaHomeBt_Click(object sender, RoutedEventArgs e)
         {
-            Ec2UserPrivateKey.Text = GetFilePath();
+            JavaHome.Text = getDirectoryPath();
         }
 
-        private void JavaHomeBt_Click(object sender, RoutedEventArgs e)
-        {
-            JavaHome.Text = GetDirectoryPath();
-        }
-
-        string GetFilePath()
+        string getFilePath()
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Key files (*.pem)|*.pem";
@@ -111,7 +104,7 @@ namespace Ec2BootstrapperGUI
             return ofd.FileName;
         }
 
-        string GetDirectoryPath()
+        string getDirectoryPath()
         {
             FolderBrowserDialog folder = new FolderBrowserDialog();
             if (folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -125,9 +118,29 @@ namespace Ec2BootstrapperGUI
             }
         }
 
-        private void Config_TextChanged(object sender, TextChangedEventArgs e)
+        private void config_TextChanged(object sender, TextChangedEventArgs e)
         {
             SaveButton.IsEnabled = true;
+        }
+
+        private void textBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            CueBannerTextBox tb = (CueBannerTextBox)sender;
+            if (tb.Text.Length == 0 || tb.Text == tb.PromptText)
+            {
+                tb.UsePrompt = true;
+                tb.Text = tb.PromptText;
+            }
+        }
+
+        private void textBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            CueBannerTextBox tb = (CueBannerTextBox)sender;
+            if (tb.UsePrompt)
+            {
+                tb.UsePrompt = false;
+                tb.Text = string.Empty;
+            }
         }
     }
 }

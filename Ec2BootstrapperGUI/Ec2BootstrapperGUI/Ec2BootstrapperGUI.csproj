@@ -62,6 +62,7 @@
     <Compile Include="CBeginInvokeOC.cs" />
     <Compile Include="Constent.cs" />
     <Compile Include="Cuebanner.cs" />
+    <Compile Include="CueBannerTextBox.cs" />
     <Compile Include="InstanceLauncher.xaml.cs">
       <DependentUpon>InstanceLauncher.xaml</DependentUpon>
     </Compile>
