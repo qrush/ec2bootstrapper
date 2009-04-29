@@ -121,11 +121,7 @@ namespace Ec2BootstrapperGUI
 
         private void backButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_amipicker != null)
-            {
-                _amipicker.Show();
-                this.Close();
-            }
+            this.Close();
         }
 
         private void small_Click(object sender, RoutedEventArgs e)
@@ -200,6 +196,14 @@ namespace Ec2BootstrapperGUI
             Thread oThread = new Thread(new ThreadStart(launch));
             oThread.Start();
             enableProgressBar();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (_amipicker != null)
+            {
+                _amipicker.Show();
+            }
         }
     }
 }

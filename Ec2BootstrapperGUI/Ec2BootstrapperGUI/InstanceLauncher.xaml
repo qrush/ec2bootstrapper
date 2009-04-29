@@ -8,7 +8,8 @@
 	x:Name="Window"
     xmlns:src="clr-namespace:Ec2BootstrapperGUI"
     Title="Launch Instance Step 2"
-	d:DesignWidth="640" d:DesignHeight="480" Height="480" Width="640">
+	d:DesignWidth="640" d:DesignHeight="480" Height="480" Width="640"
+    Closed="Window_Closed">
     
     <Grid Name="LauncherLayout">
         <Grid.RowDefinitions>
@@ -16,7 +17,7 @@
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0"  Width="580">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -26,7 +27,6 @@
             <Border Padding="5" Grid.Row="0">
                 <Grid Margin="5,0,5,10">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -48,36 +48,32 @@
 
                     <Label Grid.Row="2" Grid.Column="0" Margin="0,0,8,0" HorizontalAlignment="Right"                           
                         Style="{StaticResource smallTitleStyle}">AMI Name:</Label>
-                    <Label Name="AmiIdLb" Grid.Row="2" Grid.Column="1" Content="amiId" Grid.ColumnSpan="2"/>
+                    <Label Name="AmiIdLb" Grid.Row="2" Grid.Column="1" Content="(amiId)" Grid.ColumnSpan="2"/>
                     
-                    <Label Grid.Row="3" Grid.Column="0" Margin="0,0,8,0" HorizontalAlignment="Right"                              
-                        Style="{StaticResource smallTitleStyle}">Number of Instances:</Label>
-                    <TextBlock Grid.Row="3" Grid.Column="1" Text="1" Grid.ColumnSpan="2" TextWrapping="Wrap"/>
-
-                    <Label Grid.Row="4" Grid.Column="0"  HorizontalAlignment="Right"     
+                    <Label Grid.Row="3" Grid.Column="0"  HorizontalAlignment="Right"     
                        Style="{StaticResource smallTitleStyle}" Margin="5">Instance Type:</Label>
-                    <CheckBox Grid.Row="4" Grid.Column="1" Margin="8,5,0,5" Name="Small" Content="small (m1.small)" IsChecked="True" Click="small_Click"/>
-                    <CheckBox Grid.Row="4" Grid.Column="2" Margin="8,5,0,5" Name="Medium" Content="High-CPU Medium (c1.medium)" Click="medium_Click" />
+                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="8,5,0,5" Name="Small" Content="small (m1.small)" IsChecked="True" Click="small_Click"/>
+                    <CheckBox Grid.Row="3" Grid.Column="2" Margin="8,5,0,5" Name="Medium" Content="High-CPU Medium (c1.medium)" Click="medium_Click" />
 
-                    <Label Grid.Row="5" Grid.Column="0"  
+                    <Label Grid.Row="4" Grid.Column="0"  
                        Style="{StaticResource smallTitleStyle}" HorizontalAlignment="Right"     
                                Margin="5">Key Pair Name:</Label>
-                    <Label Grid.Row="6" Grid.Column="0" 
+                    <Label Grid.Row="5" Grid.Column="0" 
                        Style="{StaticResource smallTitleStyle}" HorizontalAlignment="Right"     
                                Margin="5">Security Groups:</Label>
-                    <Label Grid.Row="7" Grid.Column="0"   
+                    <Label Grid.Row="6" Grid.Column="0"   
                        Style="{StaticResource smallTitleStyle}" HorizontalAlignment="Right"     
                                Margin="5">Availability Zone:</Label>
-                    <ComboBox Name="KeyPairComb" Grid.Row="5" 
+                    <ComboBox Name="KeyPairComb" Grid.Row="4" 
                               ItemsSource="{Binding Path=keyPairs, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"
                               Grid.Column="1" Margin="8,5,0,5" 
                               Grid.ColumnSpan="2" 
                               Style="{StaticResource comboBoxStyle}" 
                               TabIndex="3"/>
-                    <ComboBox Name="SecurityGroupComb" Grid.Row="6" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2"
+                    <ComboBox Name="SecurityGroupComb" Grid.Row="5" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2"
                               ItemsSource="{Binding Path=securityGroups, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"
                               Style="{StaticResource comboBoxStyle}" TabIndex="4"/>
-                    <ComboBox Name="ZoneComb" Grid.Row="7" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2" 
+                    <ComboBox Name="ZoneComb" Grid.Row="6" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2" 
                               ItemsSource="{Binding Path=zones, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"
                               Style="{StaticResource comboBoxStyle}" TabIndex="5"/>
                 </Grid>
@@ -88,7 +84,7 @@
             <Border Padding="5" Grid.Row="2">
                 <Grid Margin="5,0,5,10">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
+                        <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
