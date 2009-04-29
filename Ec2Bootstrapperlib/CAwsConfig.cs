@@ -13,7 +13,6 @@ namespace Ec2Bootstrapperlib
         string _awsSecretKey;
         string _ec2CertPath;
         string _ec2Home;
-        string _ec2InstancePrivateKeyFile;
         string _ec2UserPrivateKeyFile;
         string _javaHome;
 
@@ -62,11 +61,6 @@ namespace Ec2Bootstrapperlib
             get { return _ec2Home; }
         }
 
-        public string ec2InstancePrivateKeyFile
-        {
-            get { return _ec2InstancePrivateKeyFile; }
-        }
-
         public string ec2UserPrivateKeyFile
         {
             get { return _ec2UserPrivateKeyFile; }
@@ -84,7 +78,6 @@ namespace Ec2Bootstrapperlib
             _ec2CertPath = read("Ec2CertPath");
             _ec2Home = read("Ec2Home");
             _ec2UserPrivateKeyFile = read("Ec2UserPrivateKey");
-            _ec2InstancePrivateKeyFile = read("Ec2InstancePrivateKey");
             _javaHome = read("JavaHome");
         }
 
@@ -92,10 +85,9 @@ namespace Ec2Bootstrapperlib
         {
             try
             {
-                return !(string.IsNullOrEmpty(_ec2InstancePrivateKeyFile) ||
-                   string.IsNullOrEmpty(_ec2Home) ||
-                   string.IsNullOrEmpty(_awsSecretKey) ||
-                   string.IsNullOrEmpty(_awsAccessKey) ||
+                return !(string.IsNullOrEmpty(_ec2Home) ||
+                   string.IsNullOrEmpty(_awsSecretKey)  ||
+                   string.IsNullOrEmpty(_awsAccessKey)  ||
                    string.IsNullOrEmpty(_ec2CertPath)   ||
                    string.IsNullOrEmpty(_javaHome));
             }

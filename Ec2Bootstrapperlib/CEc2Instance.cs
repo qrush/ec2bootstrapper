@@ -269,7 +269,7 @@ namespace Ec2Bootstrapperlib
                     new System.Diagnostics.ProcessStartInfo(
                         "cmd", @"/c ec2-get-password.cmd " +
                         _instanceId +
-                        " -k " + _awsConfig.ec2InstancePrivateKeyFile); //GetKeyFilePath());
+                        " -k " + getEc2BootstrapperDirectory() + "\\" + jwKeyPairFileName);
 
                 procStartInfo.WorkingDirectory = _awsConfig.ec2Home + @"\bin";
 
