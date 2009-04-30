@@ -147,7 +147,7 @@ namespace Ec2BootstrapperGUI
 
         private void enableProgressBar()
         {
-            StatusDesc.Content = ConstantString.ContactAmazon;
+            StatusDesc.Content = ConstantString.Launching;
             LaunchProgBar.Visibility = Visibility.Visible;
             LaunchProgBar.IsIndeterminate = true;
             Duration duration = new Duration(TimeSpan.FromSeconds(10));
@@ -200,10 +200,10 @@ namespace Ec2BootstrapperGUI
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (_amipicker != null)
-            {
-                _amipicker.Show();
-            }
+            //if (_amipicker != null)
+            //{
+            //    _amipicker.Show();
+            //}
         }
     }
 }

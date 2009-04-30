@@ -108,8 +108,7 @@ namespace Ec2BootstrapperGUI
                 launcher.dashboard = _dashboard;
                 launcher.amiId = ((CEc2Ami)Amis.SelectedItem).imageId;
 
-                launcher.Show();
-                this.Hide();
+                launcher.ShowDialog();
             }
         }
 

@@ -120,7 +120,8 @@ namespace Ec2BootstrapperGUI
         private void configureMenu_Click(object sender, RoutedEventArgs e)
         {
             AwsConfiguration config = new AwsConfiguration();
-            config.Show();
+            config.dashboard = this;
+            config.ShowDialog();
         }
 
         private void remoteConnect_Click(object sender, RoutedEventArgs e)

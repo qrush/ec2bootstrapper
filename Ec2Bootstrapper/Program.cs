@@ -36,6 +36,7 @@ namespace Ec2Bootstrapper
             string secretKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
 
             Ec2Bootstrapperlib.CEc2Instance instance = new Ec2Bootstrapperlib.CEc2Instance();
+            instance.imageId = Ec2Bootstrapperlib.CEc2Instance.deployableAmiImageId;
             instance.launch();
             instance.uploadAndInstallMsi(args[0]);
         }

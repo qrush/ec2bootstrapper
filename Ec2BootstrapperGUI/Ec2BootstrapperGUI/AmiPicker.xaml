@@ -4,6 +4,7 @@
 	x:Class="Ec2BootstrapperGUI.AmiPicker"
 	x:Name="Window"
 	Title="Launch Instance Step 1"
+    ResizeMode="NoResize"
     xmlns:src="clr-namespace:Ec2BootstrapperGUI"
     xmlns:lib="clr-namespace:Ec2Bootstrapperlib;assembly=Ec2Bootstrapperlib"
 	Width="640" Height="480" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"

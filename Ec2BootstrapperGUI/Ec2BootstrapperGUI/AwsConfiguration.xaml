@@ -5,6 +5,7 @@
 	x:Name="Window"
     xmlns:src="clr-namespace:Ec2BootstrapperGUI"
 	Title="AwsConfiguration"
+    ResizeMode="NoResize"
 	Width="640" Height="480">
 
     <Border Padding="10" Width="580">

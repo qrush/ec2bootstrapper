@@ -91,15 +91,8 @@ namespace Ec2Bootstrapperlib
             set {_keyPairName = value; }
         }
 
-        void setDefaults()
-        {
-            _keyPairName = jwKeyPairName;
-            _amiId = jwAmiImageId;
-        }
-
         public CEc2Instance(CAwsConfig amsConfig)
         {
-            //setDefaults();
             _awsConfig = amsConfig;
             _service = new AmazonEC2Client(_awsConfig.awsAccessKey, _awsConfig.awsSecretKey);
         }
@@ -269,7 +262,7 @@ namespace Ec2Bootstrapperlib
                     new System.Diagnostics.ProcessStartInfo(
                         "cmd", @"/c ec2-get-password.cmd " +
                         _instanceId +
-                        " -k " + getEc2BootstrapperDirectory() + "\\" + jwKeyPairFileName);
+                        " -k " + CAwsConfig.getEc2BootstrapperDirectory() + "\\" + jwKeyPairFileName);
 
                 procStartInfo.WorkingDirectory = _awsConfig.ec2Home + @"\bin";
 
@@ -280,7 +273,7 @@ namespace Ec2Bootstrapperlib
                 if (!procStartInfo.EnvironmentVariables.ContainsKey("JAVA_HOME"))
                     procStartInfo.EnvironmentVariables.Add("JAVA_HOME", _awsConfig.javaHome);
                 if (!procStartInfo.EnvironmentVariables.ContainsKey("EC2_PRIVATE_KEY"))
-                    procStartInfo.EnvironmentVariables.Add("EC2_PRIVATE_KEY", _awsConfig.ec2UserPrivateKeyFile);//@"D:\data\ec2\pk-OWIW73PRHOB4VTYS6FFNP6BE4SOKG6RF.pem");
+                    procStartInfo.EnvironmentVariables.Add("EC2_PRIVATE_KEY", _awsConfig.ec2UserPrivateKeyFile);
 
                 //redirected to the Process.StandardOutput StreamReader.
                 procStartInfo.RedirectStandardOutput = true;
@@ -393,7 +386,7 @@ namespace Ec2Bootstrapperlib
         {
             try
             {
-                string ec2BootstrapperDir = getEc2BootstrapperDirectory();
+                string ec2BootstrapperDir = CAwsConfig.getEc2BootstrapperDirectory();
                 if (Directory.Exists(ec2BootstrapperDir) == false)
                     Directory.CreateDirectory(ec2BootstrapperDir);
 
@@ -504,18 +497,12 @@ namespace Ec2Bootstrapperlib
             }
         }
 
-        private string getEc2BootstrapperDirectory()
-        {
-            return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                         "\\Ec2Bootstrapper";
-        }
-
         private void createKayPair()
         {
             try
             {
                 //check if key pair exists; 
-                string keyFileDir = getEc2BootstrapperDirectory();
+                string keyFileDir = CAwsConfig.getEc2BootstrapperDirectory();
                 if(Directory.Exists(keyFileDir) == false)
                 {
                     Directory.CreateDirectory(keyFileDir);

@@ -42,9 +42,9 @@ namespace Ec2BootstrapperGUI
             SaveButton.IsEnabled = false;
         }
 
-        public void setDashboard(Dashboard db)
+        public Dashboard dashboard
         {
-            _dashboard = db;
+            set { _dashboard = value; }
         }
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
@@ -60,10 +60,11 @@ namespace Ec2BootstrapperGUI
                     _config.write("Ec2UserPrivateKey", Ec2UserPrivateKey.Text);
                     _config.write("JavaHome", JavaHome.Text);
                     _config.commit();
-                    this.Close();
 
                     if (_dashboard != null)
                         _dashboard.checkConfig();
+
+                    this.Close();
                 }
             }
             catch (Exception ex)

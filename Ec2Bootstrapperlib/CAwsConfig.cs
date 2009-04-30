@@ -22,16 +22,10 @@ namespace Ec2Bootstrapperlib
         {
             try
             {
-                string configFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                if (!configFile.EndsWith("/") && !configFile.EndsWith("\\"))
-                {
-                    configFile += @"\";
-                }
-
-                configFile += @"Ec2Bootstrapper\";
+                string configFile = getEc2BootstrapperDirectory();
                 string thisExe = System.IO.Path.GetFileName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
 
-                configFile += thisExe + ".config";
+                configFile += "\\" + thisExe + ".config";
                 _config = ConfigurationManager.OpenExeConfiguration(configFile);
 
                 readAll();
@@ -39,6 +33,12 @@ namespace Ec2Bootstrapperlib
             catch (Exception)
             {
             }
+        }
+
+        static public string getEc2BootstrapperDirectory()
+        {
+            return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                         "\\JWSecure\\Ec2Bootstrapper";
         }
 
         public string awsAccessKey

@@ -70,6 +70,7 @@ namespace Ec2BootstrapperGUI
                 enableProgressBar();
 
                 Thread oThread = new Thread(new ThreadStart(installRemotely));
+                oThread.SetApartmentState(ApartmentState.STA);
                 oThread.Start();
             }
             catch (Exception ex)

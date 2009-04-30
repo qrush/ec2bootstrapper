@@ -8,6 +8,7 @@
 	x:Name="Window"
     xmlns:src="clr-namespace:Ec2BootstrapperGUI"
     Title="Launch Instance Step 2"
+    ResizeMode="NoResize"
 	d:DesignWidth="640" d:DesignHeight="480" Height="480" Width="640"
     Closed="Window_Closed">
     
@@ -79,7 +80,7 @@
                 </Grid>
             </Border>
             <Border Padding="5" Grid.Row="1">
-                <Label Content="Note: You will be charged the hourly rate for any instances you launch until you successfully shut them down."/>
+                <TextBlock Text="Note: You will be charged the hourly rate for any instances you launch until you successfully shut them down. Once it's started launching you can close this dialog box and check the status on the main page." TextWrapping="Wrap"/>
             </Border>
             <Border Padding="5" Grid.Row="2">
                 <Grid Margin="5,0,5,10">
