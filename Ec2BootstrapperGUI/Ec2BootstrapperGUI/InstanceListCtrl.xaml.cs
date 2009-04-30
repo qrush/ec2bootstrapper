@@ -175,6 +175,15 @@ namespace Ec2BootstrapperGUI
         {
             try
             {
+                MessageBoxResult result = MessageBox.Show(
+                    "You are about to terminate the selected instance. Are you sure you want to continue?",
+                    "Terminate Instance",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.No);
+                if (result == MessageBoxResult.No)
+                    return;
+
                 ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
                 string header = ((Expander)cm.PlacementTarget).Header.ToString();
 
