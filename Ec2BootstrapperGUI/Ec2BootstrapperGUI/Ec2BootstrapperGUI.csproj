@@ -75,9 +75,6 @@
     <Compile Include="Dashbord.xaml.cs">
       <DependentUpon>Dashbord.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InstructionCtrl.xaml.cs">
-      <DependentUpon>InstructionCtrl.xaml</DependentUpon>
-    </Compile>
     <Page Include="About.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -99,10 +96,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="InstanceListCtrl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="InstructionCtrl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

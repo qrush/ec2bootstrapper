@@ -22,6 +22,7 @@ namespace Ec2BootstrapperGUI
 	{
         CEc2Instance _instance;
         string _password;
+        bool succeed = true;
 
 		public PasswordPrompt()
 		{
@@ -46,6 +47,7 @@ namespace Ec2BootstrapperGUI
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                succeed = false;
             }
 
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
@@ -104,7 +106,17 @@ namespace Ec2BootstrapperGUI
 
         private void setStatusDone()
         {
-            StatusBk.Text = ConstantString.Done;
+            if (succeed == true)
+            {
+                MessageBox.Show("You have successfully deployed your program to your instance.", "Deploy Result", MessageBoxButton.OK, MessageBoxImage.Information);
+                StatusBk.Text = ConstantString.Done;
+                this.Close();
+            }
+            else
+            {
+                StatusBk.Text = ConstantString.DeployFailed;
+            }
+
             OkButton.IsEnabled = true;
             AdminPassword.IsEnabled = true;
         }

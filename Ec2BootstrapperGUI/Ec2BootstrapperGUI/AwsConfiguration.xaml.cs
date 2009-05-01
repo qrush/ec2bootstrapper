@@ -143,5 +143,17 @@ namespace Ec2BootstrapperGUI
                 tb.Text = string.Empty;
             }
         }
+
+        private void registerHyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("http://aws.amazon.com");
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

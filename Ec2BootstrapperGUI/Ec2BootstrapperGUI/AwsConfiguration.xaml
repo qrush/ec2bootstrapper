@@ -20,6 +20,7 @@
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="128"/>
@@ -28,13 +29,20 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource titleStyle}" 
                Grid.ColumnSpan="2">Please fill in all of the following information:</Label>
-            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Content="AWS Access Key"/>
-            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="AWS Secrete Key"/>
-            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 Certificate Path"/>
-            <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 Home"/>
-            <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 User Private Key"/>
-            <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" Content="Java Home"/>
-            <src:CueBannerTextBox x:Name="AwsAccessKey" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="8,5,0,5"
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="18,5,0,5">
+                <Run Text="Note: If you have not registered with Amazon yet, please do so at "/>
+                <Hyperlink Name="Register" Click="registerHyperlink_Click">
+                    <Run Text="Amazon Web Service."/>
+                </Hyperlink>
+            </TextBlock>
+
+            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="AWS Access Key"/>
+            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="AWS Secrete Key"/>
+            <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 Certificate Path"/>
+            <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 Home"/>
+            <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 User Private Key"/>
+            <Label Grid.Row="7" Grid.Column="0" HorizontalAlignment="Right" Content="Java Home"/>
+            <src:CueBannerTextBox x:Name="AwsAccessKey" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="8,5,0,5"
                                   PromptText="Example: 0DT984JRKUIFNRMER645"
                                   LostFocus="textBox_LostFocus"
                                   GotFocus="textBox_GotFocus"
@@ -44,34 +52,34 @@
                                   PromptText="Example: mHJD98+LOIUnHGF78LKDhgsIHD897i+=OILDJKSDD"
                                   LostFocus="textBox_LostFocus"
                                   GotFocus="textBox_GotFocus"
-                                  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" 
+                                  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" 
                                   Margin="8,5,0,5" TextChanged="config_TextChanged" TextWrapping="NoWrap">
             </src:CueBannerTextBox>
             <src:CueBannerTextBox x:Name="Ec2CertPath"
                                   PromptText="Example: D:\ec2\cert-OWIW73PRHOB4VTYS6FFNP6BE4SOKG6RF.pem" 
                                   LostFocus="textBox_LostFocus"
                                   GotFocus="textBox_GotFocus"
-                                  Grid.Row="3" Grid.Column="1" Margin="8,5,0,5" 
+                                  Grid.Row="4" Grid.Column="1" Margin="8,5,0,5" 
                                   TextChanged="config_TextChanged" TextWrapping="NoWrap">
             </src:CueBannerTextBox>
             <src:CueBannerTextBox x:Name="Ec2Home"
                                   PromptText="Example: C:\ec2-api-tools-1.3-34128"
                                   LostFocus="textBox_LostFocus"
                                   GotFocus="textBox_GotFocus"
-                                  Grid.Row="4" Grid.Column="1" Margin="8,5,0,5"
+                                  Grid.Row="5" Grid.Column="1" Margin="8,5,0,5"
                                   TextChanged="config_TextChanged" TextWrapping="NoWrap">
             </src:CueBannerTextBox>
             <src:CueBannerTextBox x:Name="Ec2UserPrivateKey" 
                                   PromptText="Example: D:\ec2\pk-OWIW7KUyGO9UpTYSKUINJHBE4SOKG6RF.pem"
                                   LostFocus="textBox_LostFocus"
                                   GotFocus="textBox_GotFocus"
-                                  Grid.Row="5" Grid.Column="1" Margin="8,5,0,5" 
+                                  Grid.Row="6" Grid.Column="1" Margin="8,5,0,5" 
                                   TextChanged="config_TextChanged" TextWrapping="NoWrap">
             </src:CueBannerTextBox>
 
             <src:CueBannerTextBox x:Name="JavaHome"
                                   PromptText="Example: C:\Program Files\Java\jre6"
-                                  Grid.Row="6" Grid.Column="1" Margin="8,5,0,5"
+                                  Grid.Row="7" Grid.Column="1" Margin="8,5,0,5"
                                   LostFocus="textBox_LostFocus"
                                   GotFocus="textBox_GotFocus"
                                   TextChanged="config_TextChanged" TextWrapping="NoWrap">
@@ -82,7 +90,7 @@
             <Button Margin="0,8,0,5" Name="Ec2UserPrivKeyBt" Content="..." Grid.Column="2" Grid.Row="5" Click="ec2UserPrivKeyBt_Click"/>
             <Button Margin="0,8,0,5" Name="JavaHomeBt" Content="..." Grid.Column="2" Grid.Row="6" Click="javaHomeBt_Click"/>
 
-            <Button Name="SaveButton" Grid.Row="8" Grid.Column="1" Content="Save" Click="saveButton_Click" Margin="0,5,34,5" HorizontalAlignment="Right" Width="94" />
+            <Button Name="SaveButton" Grid.Row="9" Grid.Column="1" Content="Save" Click="saveButton_Click" Margin="0,5,34,5" HorizontalAlignment="Right" Width="94" />
         </Grid>
     </Border>
 </Window>

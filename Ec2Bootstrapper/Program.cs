@@ -17,7 +17,7 @@ namespace Ec2Bootstrapper
             {
                 if (args[0] == "-h" || args[0] == "/h")
                 {
-                    Console.WriteLine("This will launch an instance of ami-f458bf9d and prompt you to install a msi program on the created instance. You will be charged by Amazon on an hourly rate.");
+                    Console.WriteLine("This will launch an instance of ami-11af4978 and prompt you to install a msi program on the created instance. You will be charged by Amazon on an hourly rate.");
                     Console.WriteLine("Make sure these environent variables are set:");
                     Console.WriteLine("    AWS_ACCESS_KEY_ID");
                     Console.WriteLine("    AWS_SECRET_ACCESS_KEY");

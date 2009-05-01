@@ -45,8 +45,11 @@ namespace Ec2BootstrapperGUI
             }
             else
             {
-                ProgBar.Visibility = Visibility.Hidden; 
-                showInstructions();
+                ProgBar.Visibility = Visibility.Hidden;
+
+                AwsConfiguration config = new AwsConfiguration();
+                config.dashboard = this;
+                config.ShowDialog();
             }
         }
 
@@ -63,18 +66,6 @@ namespace Ec2BootstrapperGUI
                 userControl.HorizontalAlignment = HorizontalAlignment.Stretch;
                 this.clientR.Children.Insert(this.clientR.Children.Count, userControl);
                 instList.dashboard = this;
-            }
-        }
-
-        private void showInstructions()
-        {
-            UserControl userControl = this.GetType().Assembly.CreateInstance(typeof(RegisterOrConfig).FullName) as UserControl;
-
-            if (userControl != null)
-            {
-                userControl.VerticalAlignment = VerticalAlignment.Stretch;
-                userControl.HorizontalAlignment = HorizontalAlignment.Stretch;
-                this.clientR.Children.Insert(this.clientR.Children.Count, userControl);
             }
         }
 
@@ -165,6 +156,11 @@ namespace Ec2BootstrapperGUI
         public void showStatus(string status)
         {
             StatusDesc.Content = status;
+            if (string.Compare(status, ConstantString.NoInstance) == 0)
+            {
+                MessageBox.Show("There is no instance returned back from Amazon. If you think this might be an error, please check your configuration settings from menu Tools | AWS Configuration.",
+                    "Display Instances", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 }

@@ -82,8 +82,8 @@ namespace Ec2BootstrapperGUI
                 MessageBox.Show(ex.Message);
             }
 
-            this.Dispatcher.Invoke(new SetBorderThickNessCallback(setBorderThickNess));
             _dashboard.Dispatcher.Invoke(new StopProgressbarCallback(_dashboard.disableProgressBar));
+            this.Dispatcher.Invoke(new SetBorderThickNessCallback(setBorderThickNess));
         }
 
         void remoteConnect_Click(object sender, RoutedEventArgs e)
@@ -145,7 +145,6 @@ namespace Ec2BootstrapperGUI
                 ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
                 string header = ((Expander)cm.PlacementTarget).Header.ToString();
 
-
                 string instanceId = CEc2Instance.getInsanceIdFromHeader(header);
                 if (!string.IsNullOrEmpty(instanceId))
                 {
@@ -175,6 +174,9 @@ namespace Ec2BootstrapperGUI
         {
             try
             {
+                ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
+                string header = ((Expander)cm.PlacementTarget).Header.ToString();
+
                 MessageBoxResult result = MessageBox.Show(
                     "You are about to terminate the selected instance. Are you sure you want to continue?",
                     "Terminate Instance",
@@ -183,9 +185,6 @@ namespace Ec2BootstrapperGUI
                     MessageBoxResult.No);
                 if (result == MessageBoxResult.No)
                     return;
-
-                ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
-                string header = ((Expander)cm.PlacementTarget).Header.ToString();
 
                 string instanceId = CEc2Instance.getInsanceIdFromHeader(header);
                 if (!string.IsNullOrEmpty(instanceId))

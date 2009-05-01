@@ -15,7 +15,7 @@ namespace Ec2Bootstrapperlib
 {
     public class CEc2Instance
     {
-        const string jwAmiImageId                 = "ami-f458bf9d"; //"ami-0529ce6c";// 
+        const string jwAmiImageId                 = "ami-11af4978"; //"ami-0529ce6c";// 
         const string jwCertFile                   = "server.crt";
         const string jwSecurityGroupName          = "JWSecureEc2FileLoad";
         const string jwSecurityGroupDescription   = "Used for msi upload";

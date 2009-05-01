@@ -13,6 +13,6 @@ namespace Ec2BootstrapperGUI
         public const string NoInstance = "No instance found";
         public const string NoAmi = "No Ami found";
         public const string Launching = "Launching instance...";
-
+        public const string DeployFailed = "Deploy failed.";
     }
 }
