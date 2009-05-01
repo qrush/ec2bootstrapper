@@ -158,7 +158,7 @@ namespace Ec2BootstrapperGUI
             StatusDesc.Content = status;
             if (string.Compare(status, ConstantString.NoInstance) == 0)
             {
-                MessageBox.Show("There is no instance returned back from Amazon. If you think this might be an error, please check your configuration settings from menu Tools | AWS Configuration.",
+                MessageBox.Show("No machines were enumerated. If you suspect an error, check the configuration dialog from menu Tools | AWS Configuration.",
                     "Display Instances", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
