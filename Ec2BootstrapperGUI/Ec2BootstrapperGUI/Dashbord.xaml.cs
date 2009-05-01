@@ -117,8 +117,29 @@ namespace Ec2BootstrapperGUI
 
         private void remoteConnect_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.ProcessStartInfo procStartInfo =
-                 new System.Diagnostics.ProcessStartInfo("mstsc.exe ");
+            string argument = null;
+            InstanceList inslist = this.clientR.Children[0] as InstanceList;
+            if (inslist != null)
+            {
+                if (inslist.instancesLV.SelectedItem != null)
+                {
+                    CEc2Instance inst = inslist.instancesLV.SelectedItem as CEc2Instance;
+                    if (inst != null)
+                    {
+                        if (string.IsNullOrEmpty(inst.publicDns) == false)
+                        {
+                            argument = "/v:" + inst.publicDns;
+                        }
+                    }
+                }
+            }
+
+
+            System.Diagnostics.ProcessStartInfo procStartInfo;
+            if(string.IsNullOrEmpty(argument) == true)
+                 procStartInfo = new System.Diagnostics.ProcessStartInfo("mstsc.exe ");
+            else
+                procStartInfo = new System.Diagnostics.ProcessStartInfo("mstsc.exe ", argument);
 
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             process.StartInfo = procStartInfo;

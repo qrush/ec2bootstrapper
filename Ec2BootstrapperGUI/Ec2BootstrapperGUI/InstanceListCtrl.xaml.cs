@@ -91,8 +91,10 @@ namespace Ec2BootstrapperGUI
             ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
             string header = ((Expander)cm.PlacementTarget).Header.ToString();
 
+            string publicDns = CEc2Instance.getPublicDnsFromHeader(header);
+
             System.Diagnostics.ProcessStartInfo procStartInfo =
-                new System.Diagnostics.ProcessStartInfo("mstsc.exe ");
+                new System.Diagnostics.ProcessStartInfo("mstsc.exe ", "/v:" + publicDns);
 
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             process.StartInfo = procStartInfo;
