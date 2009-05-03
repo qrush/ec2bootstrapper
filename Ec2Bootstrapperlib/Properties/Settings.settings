@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Ec2Bootstrapperlib_Ec2FileUploadProxy_Ec2FileUpload" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">https://ec2-174-129-102-73.compute-1.amazonaws.com/ec2fileupload.asmx</Value>
+      <Value Profile="(Default)">https://ec2-75-101-187-170.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.asmx</Value>
     </Setting>
   </Settings>
 </SettingsFile>

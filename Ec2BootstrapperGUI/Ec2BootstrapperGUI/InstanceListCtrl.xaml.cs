@@ -127,7 +127,10 @@ namespace Ec2BootstrapperGUI
                 CEc2Instance ins = getInstance(CEc2Instance.getInsanceIdFromHeader(header));
                 if (ins != null)
                 {
-                    MessageBox.Show("Password is " + ins.getAdministratorPassord());
+                    string pw = ins.getAdministratorPassord();
+                    if (string.IsNullOrEmpty(pw) == true)
+                        pw = "not available.";
+                    MessageBox.Show("Password is " + pw);
                 }
                 else
                 {

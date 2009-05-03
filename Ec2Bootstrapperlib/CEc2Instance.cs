@@ -10,12 +10,13 @@ using System.Windows.Forms;
 using Amazon.EC2;
 using Amazon.EC2.Util;
 using Amazon.EC2.Model;
+using System.Threading;
 
 namespace Ec2Bootstrapperlib
 {
     public class CEc2Instance
     {
-        const string jwAmiImageId                 = "ami-11af4978"; //"ami-0529ce6c";// 
+        const string jwAmiImageId                 = "ami-96ad4bff"; //"ami-0529ce6c";// 
         const string jwCertFile                   = "server.crt";
         const string jwSecurityGroupName          = "JWSecureEc2FileLoad";
         const string jwSecurityGroupDescription   = "Used for msi upload";
@@ -302,12 +303,11 @@ namespace Ec2Bootstrapperlib
             }
         }
 
-        public void uploadAndInstallMsi(string adminPassword)
+        public void uploadAndInstallMsi(string adminPassword, string msiPath)
         {
+            Stream fileStream = null;
             try
             {
-                Stream fileStream = null;
-
                 //
                 // Get administrator's password
                 //
@@ -326,18 +326,26 @@ namespace Ec2Bootstrapperlib
 
                 downloadAndInstallCertificate();
 
-                //
-                // Get the MSI file
-                //
-
-                OpenFileDialog ofd = new OpenFileDialog();
-                ofd.Filter = "MSI files (*.msi)|*.msi";
-                if (DialogResult.OK != ofd.ShowDialog())
+                if (string.IsNullOrEmpty(msiPath) == true)
                 {
-                    throw new Exception("Error: open file dialog failed");
+                    //
+                    // Get the MSI file
+                    //
+
+                    OpenFileDialog ofd = new OpenFileDialog();
+                    ofd.Filter = "MSI files (*.msi)|*.msi";
+                    if (DialogResult.OK != ofd.ShowDialog())
+                    {
+                        throw new Exception("Error: open file dialog failed");
+                    }
+                    fileStream = ofd.OpenFile();
+                }
+                else
+                {
+                    fileStream = File.OpenRead(msiPath);
                 }
 
-                if (null == (fileStream = ofd.OpenFile()))
+                if (fileStream == null)
                 {
                     throw new Exception("Error: failed to open selected file");
                 }
@@ -352,7 +360,7 @@ namespace Ec2Bootstrapperlib
                 Ec2FileUploadProxy.Ec2FileUpload fileUpload =
                     new Ec2FileUploadProxy.Ec2FileUpload();
 
-                fileUpload.Url = "https://" + _publicDns + "/ec2fileupload.asmx";
+                fileUpload.Url = "https://" + _publicDns + "/ec2fileupload/ec2fileupload.asmx";
 
                 //
                 // Get client credentials
@@ -369,16 +377,45 @@ namespace Ec2Bootstrapperlib
                 // Call the web service
                 //
 
-                int error = fileUpload.UploadAndInstallMsiFile(
+                string identifier = fileUpload.UploadAndInstallMsiFile(
                     "Ec2Install.msi", Convert.ToBase64String(fileBytes));
-                if (error != 0)
+                if (string.IsNullOrEmpty(identifier) == true)
                 {
-                    throw new Exception("Error: UploadAndInstallMsiFile failed with error code " + error.ToString());
+                    throw new Exception("Error: UploadAndInstallMsiFile failed.");
+                }
+
+                //forever here?
+                while (true)
+                {
+                    try
+                    {
+                        int status = fileUpload.GetInstallationStatus(identifier);
+                        if (status == 0)
+                        {
+                            break;
+                        }
+                        if (status == -2)
+                        {
+                            continue;
+                        }
+
+                        throw new Exception("UploadAndInstallMsiFile failed." + status.ToString());
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                    Thread.Sleep(1000);
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception("UploadAndInstallMsi fails." + ex.Message);
+            }
+            finally
+            {
+                if (fileStream != null)
+                    fileStream.Close();
             }
         }
 

@@ -71,6 +71,5 @@ namespace Ec2Bootstrapperlib
         public CEc2Ami()
         {
         }
-
     }
 }

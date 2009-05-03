@@ -31,6 +31,8 @@ namespace Ec2Bootstrapperlib.Ec2FileUploadProxy {
         
         private System.Threading.SendOrPostCallback UploadAndInstallMsiFileOperationCompleted;
         
+        private System.Threading.SendOrPostCallback GetInstallationStatusOperationCompleted;
+        
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
@@ -73,12 +75,15 @@ namespace Ec2Bootstrapperlib.Ec2FileUploadProxy {
         public event UploadAndInstallMsiFileCompletedEventHandler UploadAndInstallMsiFileCompleted;
         
         /// <remarks/>
+        public event GetInstallationStatusCompletedEventHandler GetInstallationStatusCompleted;
+        
+        /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/UploadAndInstallMsiFile", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public int UploadAndInstallMsiFile(string fileName, string encodedFile) {
+        public string UploadAndInstallMsiFile(string fileName, string encodedFile) {
             object[] results = this.Invoke("UploadAndInstallMsiFile", new object[] {
                         fileName,
                         encodedFile});
-            return ((int)(results[0]));
+            return ((string)(results[0]));
         }
         
         /// <remarks/>
@@ -100,6 +105,35 @@ namespace Ec2Bootstrapperlib.Ec2FileUploadProxy {
             if ((this.UploadAndInstallMsiFileCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.UploadAndInstallMsiFileCompleted(this, new UploadAndInstallMsiFileCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetInstallationStatus", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public int GetInstallationStatus(string guid) {
+            object[] results = this.Invoke("GetInstallationStatus", new object[] {
+                        guid});
+            return ((int)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetInstallationStatusAsync(string guid) {
+            this.GetInstallationStatusAsync(guid, null);
+        }
+        
+        /// <remarks/>
+        public void GetInstallationStatusAsync(string guid, object userState) {
+            if ((this.GetInstallationStatusOperationCompleted == null)) {
+                this.GetInstallationStatusOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetInstallationStatusOperationCompleted);
+            }
+            this.InvokeAsync("GetInstallationStatus", new object[] {
+                        guid}, this.GetInstallationStatusOperationCompleted, userState);
+        }
+        
+        private void OnGetInstallationStatusOperationCompleted(object arg) {
+            if ((this.GetInstallationStatusCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetInstallationStatusCompleted(this, new GetInstallationStatusCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -135,6 +169,32 @@ namespace Ec2Bootstrapperlib.Ec2FileUploadProxy {
         private object[] results;
         
         internal UploadAndInstallMsiFileCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "2.0.50727.3053")]
+    public delegate void GetInstallationStatusCompletedEventHandler(object sender, GetInstallationStatusCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "2.0.50727.3053")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetInstallationStatusCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetInstallationStatusCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }

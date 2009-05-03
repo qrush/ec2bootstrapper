@@ -13,7 +13,21 @@
       <s:element name="UploadAndInstallMsiFileResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="UploadAndInstallMsiFileResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="UploadAndInstallMsiFileResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInstallationStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="guid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInstallationStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetInstallationStatusResult" type="s:int" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -25,16 +39,35 @@
   <wsdl:message name="UploadAndInstallMsiFileSoapOut">
     <wsdl:part name="parameters" element="tns:UploadAndInstallMsiFileResponse" />
   </wsdl:message>
+  <wsdl:message name="GetInstallationStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInstallationStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetInstallationStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInstallationStatusResponse" />
+  </wsdl:message>
   <wsdl:portType name="Ec2FileUploadSoap">
     <wsdl:operation name="UploadAndInstallMsiFile">
       <wsdl:input message="tns:UploadAndInstallMsiFileSoapIn" />
       <wsdl:output message="tns:UploadAndInstallMsiFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInstallationStatus">
+      <wsdl:input message="tns:GetInstallationStatusSoapIn" />
+      <wsdl:output message="tns:GetInstallationStatusSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="Ec2FileUploadSoap" type="tns:Ec2FileUploadSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="UploadAndInstallMsiFile">
       <soap:operation soapAction="http://tempuri.org/UploadAndInstallMsiFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInstallationStatus">
+      <soap:operation soapAction="http://tempuri.org/GetInstallationStatus" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -54,13 +87,22 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetInstallationStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetInstallationStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="Ec2FileUpload">
     <wsdl:port name="Ec2FileUploadSoap" binding="tns:Ec2FileUploadSoap">
-      <soap:address location="https://ec2-174-129-102-73.compute-1.amazonaws.com/ec2fileupload.asmx" />
+      <soap:address location="https://ec2-75-101-187-170.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.asmx" />
     </wsdl:port>
     <wsdl:port name="Ec2FileUploadSoap12" binding="tns:Ec2FileUploadSoap12">
-      <soap12:address location="https://ec2-174-129-102-73.compute-1.amazonaws.com/ec2fileupload.asmx" />
+      <soap12:address location="https://ec2-75-101-187-170.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -38,7 +38,7 @@ namespace Ec2Bootstrapper
             Ec2Bootstrapperlib.CEc2Instance instance = new Ec2Bootstrapperlib.CEc2Instance();
             instance.imageId = Ec2Bootstrapperlib.CEc2Instance.deployableAmiImageId;
             instance.launch();
-            instance.uploadAndInstallMsi(args[0]);
+            instance.uploadAndInstallMsi(args[0], null);
         }
 
         static bool checkEnvironmentVariable(string var)

@@ -5,6 +5,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 namespace Ec2FileUpload
 {
@@ -95,12 +96,12 @@ namespace Ec2FileUpload
             ref IntPtr DuplicateTokenHandle);
 
         [WebMethod]
-        public int UploadAndInstallMsiFile(
+        public string UploadAndInstallMsiFile(
             string fileName,
             string encodedFile)
         {
-            int error = -1;
             string tempFileName = string.Empty;
+            string guid = System.Guid.NewGuid().ToString();
 
             try
             {
@@ -109,7 +110,6 @@ namespace Ec2FileUpload
                 //
                 using (((WindowsIdentity)HttpContext.Current.User.Identity).Impersonate())
                 {
-
                     //
                     // Create a temporary file
                     //
@@ -149,13 +149,15 @@ namespace Ec2FileUpload
                         ref DupedToken);
 
                     if (ret == false)
-                        return Marshal.GetLastWin32Error();
+                    {
+                        throw new Exception("DuplicateTokenEx failed. error = " + Marshal.GetLastWin32Error());
+                    }
 
                     STARTUPINFO si = new STARTUPINFO();
                     si.cb = Marshal.SizeOf(si);
                     si.lpDesktop = "";
 
-                    string commandLine = @"msiexec.exe /qn /i " + tempFileName;
+                    string commandLine = @"C:\Scripts\Ec2AppInstaller.exe " + tempFileName + " " + guid;
 
                     PROCESS_INFORMATION pi = new PROCESS_INFORMATION();
                     ret = CreateProcessAsUser(DupedToken,
@@ -171,33 +173,61 @@ namespace Ec2FileUpload
                         out pi);
 
                     if (ret == false)
-                        return Marshal.GetLastWin32Error();
+                    {
+                        throw new Exception("CreateProcessAsUser failed. error = " + Marshal.GetLastWin32Error());
+                    }
 
-                    // Wait until child process exits.
-                    const int INFINITE = -1;
-                    WaitForSingleObject(pi.hProcess, INFINITE);
+                    RegistryKey key = Registry.LocalMachine;
+                    RegistryKey subkey = key.OpenSubKey(@"Software\JWSecure\Ec2Bootstrapper", true);
+                    //-2 still in the process of installation
+                    subkey.SetValue(guid, -2, RegistryValueKind.DWord);
 
                     CloseHandle(pi.hProcess);
                     CloseHandle(pi.hThread);
-                    ret = CloseHandle(DupedToken);
-                    if (ret == false)
-                        return Marshal.GetLastWin32Error();
-
-                    File.Delete(tempFileName);
-                    error = 0;
+                    CloseHandle(DupedToken);
                 }
             }
-            catch (IOException)
+            catch (Exception)
             {
-                error = -2;
+                //log error here for debug purpose
+                guid = "";
             }
             finally
             {
-                if(File.Exists(tempFileName) == true)
-                    File.Delete(tempFileName);
+                if (string.IsNullOrEmpty(guid))
+                {
+                    if (File.Exists(tempFileName) == true)
+                        File.Delete(tempFileName);
+                }
             }
 
-            return error;
+            return guid;
+        }
+
+        [WebMethod]
+        public int GetInstallationStatus(
+            string guid)
+        {
+            uint[] ret = new uint[2];
+
+            try
+            {
+                if (string.IsNullOrEmpty(guid))
+                {
+                    return -1;
+                }
+
+                RegistryKey key = Registry.LocalMachine;
+                RegistryKey subkey = key.OpenSubKey(@"Software\JWSecure\Ec2Bootstrapper");
+                if (subkey != null)
+                    return Convert.ToInt32(subkey.GetValue(guid));
+                else
+                    return -1 ;
+            }
+            catch (Exception)
+            {
+            }
+            return -1;
         }
     }
 }

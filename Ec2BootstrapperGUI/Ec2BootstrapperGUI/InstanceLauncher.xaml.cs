@@ -197,13 +197,5 @@ namespace Ec2BootstrapperGUI
             oThread.Start();
             enableProgressBar();
         }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            //if (_amipicker != null)
-            //{
-            //    _amipicker.Show();
-            //}
-        }
     }
 }

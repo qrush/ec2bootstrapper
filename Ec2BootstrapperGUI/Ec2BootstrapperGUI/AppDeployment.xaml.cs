@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Ec2Bootstrapperlib;
 using System.Windows.Media.Animation;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Ec2BootstrapperGUI
 {
@@ -22,7 +23,9 @@ namespace Ec2BootstrapperGUI
 	{
         CEc2Instance _instance;
         string _password;
+        string _msiPath;
         bool succeed = true;
+        Thread oThread = null;
 
 		public PasswordPrompt()
 		{
@@ -42,16 +45,17 @@ namespace Ec2BootstrapperGUI
         {
             try
             {
-                _instance.uploadAndInstallMsi(_password);
+                _instance.uploadAndInstallMsi(_password, _msiPath);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                System.Windows.MessageBox.Show(ex.Message);
                 succeed = false;
             }
 
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
             Dispatcher.Invoke(new SetStatusDone(setStatusDone));
+            oThread = null;
         }
 
         private void okButton_Click(object sender, RoutedEventArgs e)
@@ -60,6 +64,9 @@ namespace Ec2BootstrapperGUI
             {
                 OkButton.IsEnabled = false;
                 AdminPassword.IsEnabled = false;
+                msiPath.IsEnabled = false;
+                msiPathButton.IsEnabled = false;
+
                 if (_instance == null)
                 {
                     throw new Exception("no valid instance");
@@ -69,22 +76,28 @@ namespace Ec2BootstrapperGUI
 
                 //access from another thread
                 _password = AdminPassword.Password;
+                _msiPath = msiPath.Text;
                 enableProgressBar();
 
-                Thread oThread = new Thread(new ThreadStart(installRemotely));
+                oThread = new Thread(new ThreadStart(installRemotely));
                 oThread.SetApartmentState(ApartmentState.STA);
                 oThread.Start();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                System.Windows.MessageBox.Show(ex.Message);
                 OkButton.IsEnabled = true;
                 AdminPassword.IsEnabled = true;
+                msiPath.IsEnabled = true;
+                msiPathButton.IsEnabled = true;
             }
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
+            if (oThread != null)
+                oThread.Abort();
+
             this.Close();
         }
 
@@ -108,8 +121,16 @@ namespace Ec2BootstrapperGUI
         {
             if (succeed == true)
             {
-                MessageBox.Show("You have successfully deployed your program to your instance.", "Deploy Result", MessageBoxButton.OK, MessageBoxImage.Information);
-                StatusBk.Text = ConstantString.Done;
+                if (netInstall.IsChecked == true)
+                {
+                    System.Diagnostics.Process.Start("iexplore", "http://" + _instance.publicDns);
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("You have successfully deployed your program to your instance.", "Deploy Result", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //StatusBk.Text = ConstantString.Done;
+                    //launch ie: assume the site deployed to the default root virtual directory.
+                }
                 this.Close();
             }
             else
@@ -119,6 +140,40 @@ namespace Ec2BootstrapperGUI
 
             OkButton.IsEnabled = true;
             AdminPassword.IsEnabled = true;
+            msiPath.IsEnabled = true;
+            msiPathButton.IsEnabled = true;
+        }
+
+        private void msiPathButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "MSI files (*.msi)|*.msi";
+            if (System.Windows.Forms.DialogResult.OK != ofd.ShowDialog())
+            {
+                throw new Exception("Error: open file dialog failed");
+            }
+            msiPath.Focus();
+            msiPath.Text = ofd.FileName;
+        }
+
+        private void textBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            CueBannerTextBox tb = (CueBannerTextBox)sender;
+            if (tb.Text.Length == 0 || tb.Text == tb.PromptText)
+            {
+                tb.UsePrompt = true;
+                tb.Text = tb.PromptText;
+            }
+        }
+
+        private void textBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            CueBannerTextBox tb = (CueBannerTextBox)sender;
+            if (tb.UsePrompt)
+            {
+                tb.UsePrompt = false;
+                tb.Text = string.Empty;
+            }
         }
 	}
 }

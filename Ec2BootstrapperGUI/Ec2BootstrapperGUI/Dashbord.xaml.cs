@@ -26,7 +26,7 @@ namespace Ec2BootstrapperGUI
 
         public Dashboard()
         {
-            this.InitializeComponent();
+            this.InitializeComponent();            
             checkConfig();
         }
 

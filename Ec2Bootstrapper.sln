@@ -26,6 +26,8 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "setup", "setup\setup.wixpro
 		{BC74D0AD-82F2-4FEA-A6D9-BD4F923A7C03} = {BC74D0AD-82F2-4FEA-A6D9-BD4F923A7C03}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ec2AppInstaller", "Ec2AppInstaller\Ec2AppInstaller.csproj", "{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +108,16 @@ Global
 		{22E33E59-FBA6-4233-8509-3BAAE32929ED}.Release|Mixed Platforms.Build.0 = Release|x86
 		{22E33E59-FBA6-4233-8509-3BAAE32929ED}.Release|x86.ActiveCfg = Release|x86
 		{22E33E59-FBA6-4233-8509-3BAAE32929ED}.Release|x86.Build.0 = Release|x86
+		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

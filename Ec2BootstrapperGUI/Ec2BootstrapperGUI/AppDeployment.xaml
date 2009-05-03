@@ -1,0 +1,28 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="Ec2BootstrapperGUI.PasswordPrompt"
+	x:Name="Window"
+    xmlns:src="clr-namespace:Ec2BootstrapperGUI"
+	Title="Deploy Application"
+	Width="614" Height="319"
+    ResizeMode="NoResize">
+
+	<Grid x:Name="LayoutRoot">
+		<TextBlock Name="Instruction" Margin="59,25,60,0" VerticalAlignment="Top" Height="40" Text="If you have changed the EC2 instance administrator's password, please enter the changed password here and then enter the program you want to install on the instance." TextWrapping="Wrap"/>
+		<PasswordBox Name="AdminPassword" Margin="59,71,60,0" Height="27" VerticalAlignment="Top"/>
+        <src:CueBannerTextBox x:Name="msiPath" Margin="59,113,93,0" VerticalAlignment="Top" Height="27" LostFocus="textBox_LostFocus" GotFocus="textBox_GotFocus" PromptText="Enter the program that you want to install on EC2" TextWrapping="NoWrap"/>
+        <Button Name="msiPathButton" HorizontalAlignment="Right" Margin="0,113,60,0" VerticalAlignment="Top" Width="33" Height="27" Click="msiPathButton_Click" Content="..."/>
+        <CheckBox Name="netInstall" Margin="61,0,58,104" Content="Check this if the program to be installed is a .NET web site" Height="26" VerticalAlignment="Bottom"/>
+        <Button HorizontalAlignment="Left" Margin="106,0,0,57" VerticalAlignment="Bottom" Click="cancelButton_Click" Width="114" Height="28" Content="Cancel"/>
+        <Button Name="OkButton" Margin="0,0,104,57" Content="Ok" VerticalAlignment="Bottom" Height="28" Click="okButton_Click" HorizontalAlignment="Right" Width="110" />
+        <StatusBar HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <StatusBarItem>
+                <TextBlock Name="StatusBk" Width="110">Ready</TextBlock>
+            </StatusBarItem>
+            <StatusBarItem>
+                <ProgressBar Name="ProgBar" IsIndeterminate="False" Width="493" HorizontalAlignment="Right" Orientation="Horizontal" Height="20" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
