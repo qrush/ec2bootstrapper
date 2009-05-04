@@ -112,7 +112,7 @@ namespace Ec2BootstrapperGUI
             string header = ((Expander)cm.PlacementTarget).Header.ToString();
 
             CEc2Instance ins = getInstance(CEc2Instance.getInsanceIdFromHeader(header));
-            PasswordPrompt pw = new PasswordPrompt();
+            AppDeployment pw = new AppDeployment();
             pw.instance = ins;
             pw.Show();
         }

@@ -159,6 +159,11 @@ namespace Ec2FileUpload
 
                     string commandLine = @"C:\Scripts\Ec2AppInstaller.exe " + tempFileName + " " + guid;
 
+                    RegistryKey key = Registry.LocalMachine;
+                    RegistryKey subkey = key.OpenSubKey(@"Software\JWSecure\Ec2Bootstrapper", true);
+                    //-2 still in the process of installation
+                    subkey.SetValue(guid, -2, RegistryValueKind.DWord);
+
                     PROCESS_INFORMATION pi = new PROCESS_INFORMATION();
                     ret = CreateProcessAsUser(DupedToken,
                         null,
@@ -176,11 +181,6 @@ namespace Ec2FileUpload
                     {
                         throw new Exception("CreateProcessAsUser failed. error = " + Marshal.GetLastWin32Error());
                     }
-
-                    RegistryKey key = Registry.LocalMachine;
-                    RegistryKey subkey = key.OpenSubKey(@"Software\JWSecure\Ec2Bootstrapper", true);
-                    //-2 still in the process of installation
-                    subkey.SetValue(guid, -2, RegistryValueKind.DWord);
 
                     CloseHandle(pi.hProcess);
                     CloseHandle(pi.hThread);
@@ -208,8 +208,6 @@ namespace Ec2FileUpload
         public int GetInstallationStatus(
             string guid)
         {
-            uint[] ret = new uint[2];
-
             try
             {
                 if (string.IsNullOrEmpty(guid))
@@ -218,11 +216,14 @@ namespace Ec2FileUpload
                 }
 
                 RegistryKey key = Registry.LocalMachine;
-                RegistryKey subkey = key.OpenSubKey(@"Software\JWSecure\Ec2Bootstrapper");
-                if (subkey != null)
-                    return Convert.ToInt32(subkey.GetValue(guid));
-                else
-                    return -1 ;
+                if (key != null)
+                {
+                    RegistryKey subkey = key.OpenSubKey(@"Software\JWSecure\Ec2Bootstrapper");
+                    if (subkey != null)
+                        return Convert.ToInt32(subkey.GetValue(guid));
+                    else
+                        return -1;
+                }
             }
             catch (Exception)
             {

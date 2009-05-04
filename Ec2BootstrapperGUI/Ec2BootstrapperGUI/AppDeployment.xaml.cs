@@ -19,7 +19,7 @@ namespace Ec2BootstrapperGUI
 	/// <summary>
 	/// Interaction logic for PasswordPrompt.xaml
 	/// </summary>
-	public partial class PasswordPrompt : Window
+	public partial class AppDeployment : Window
 	{
         CEc2Instance _instance;
         string _password;
@@ -27,10 +27,10 @@ namespace Ec2BootstrapperGUI
         bool succeed = true;
         Thread oThread = null;
 
-		public PasswordPrompt()
+		public AppDeployment()
 		{
 			this.InitializeComponent();
-            ProgBar.Visibility = Visibility.Hidden; 
+            ProgBar.Visibility = Visibility.Hidden;
         }
 
         public CEc2Instance instance
@@ -39,13 +39,19 @@ namespace Ec2BootstrapperGUI
         }
 
         private delegate void StopProgressbarCallback();
-        private delegate void SetStatusDone();
+        private delegate void SetDeploymentStatus(string status);
+        private delegate void SetDeploymentDone();
 
         private void installRemotely()
         {
             try
             {
-                _instance.uploadAndInstallMsi(_password, _msiPath);
+                CEc2Instance.SDeployInfo deployInfo = _instance.uploadAndInstallMsi(_password, _msiPath);
+                if (string.IsNullOrEmpty(deployInfo.installId) == false)
+                {
+                    Dispatcher.Invoke(new SetDeploymentStatus(setDeploymentStatus), ConstantString.InstallProgress);
+                    _instance.checkDeploymentStatus(deployInfo);
+                }
             }
             catch (Exception ex)
             {
@@ -54,7 +60,7 @@ namespace Ec2BootstrapperGUI
             }
 
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
-            Dispatcher.Invoke(new SetStatusDone(setStatusDone));
+            Dispatcher.Invoke(new SetDeploymentDone(deploymentDone));
             oThread = null;
         }
 
@@ -95,8 +101,14 @@ namespace Ec2BootstrapperGUI
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            if (oThread != null)
-                oThread.Abort();
+            try
+            {
+                if (oThread != null)
+                    oThread.Abort();
+            }
+            catch (Exception)
+            {
+            }
 
             this.Close();
         }
@@ -117,7 +129,12 @@ namespace Ec2BootstrapperGUI
             ProgBar.Visibility = Visibility.Hidden;
         }
 
-        private void setStatusDone()
+        private void setDeploymentStatus(string status)
+        {
+            StatusBk.Text = status;
+        }
+
+        private void deploymentDone()
         {
             if (succeed == true)
             {
@@ -148,12 +165,11 @@ namespace Ec2BootstrapperGUI
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "MSI files (*.msi)|*.msi";
-            if (System.Windows.Forms.DialogResult.OK != ofd.ShowDialog())
+            if (System.Windows.Forms.DialogResult.OK == ofd.ShowDialog())
             {
-                throw new Exception("Error: open file dialog failed");
+                msiPath.Focus();
+                msiPath.Text = ofd.FileName;
             }
-            msiPath.Focus();
-            msiPath.Text = ofd.FileName;
         }
 
         private void textBox_LostFocus(object sender, RoutedEventArgs e)

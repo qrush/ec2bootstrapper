@@ -89,7 +89,7 @@ namespace Ec2BootstrapperGUI
                         CEc2Instance inst = inslist.instancesLV.SelectedItem as CEc2Instance;
                         if (inst != null)
                         {
-                            PasswordPrompt pw = new PasswordPrompt();
+                            AppDeployment pw = new AppDeployment();
                             pw.instance = inst;
                             pw.Show();
                         }

@@ -30,6 +30,7 @@ namespace Ec2BootstrapperGUI
         string _selectedSecurityGroups;
         string _selectedZone;
         Dashboard _dashboard;
+        Thread launchThread = null;
 
         public InstanceLauncher()
         {
@@ -121,6 +122,15 @@ namespace Ec2BootstrapperGUI
 
         private void backButton_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (launchThread != null)
+                    launchThread.Abort();
+            }
+            catch (Exception)
+            {
+            }
+
             this.Close();
         }
 
@@ -147,6 +157,7 @@ namespace Ec2BootstrapperGUI
 
         private void enableProgressBar()
         {
+            LaunchButton.IsEnabled = false;
             StatusDesc.Content = ConstantString.Launching;
             LaunchProgBar.Visibility = Visibility.Visible;
             LaunchProgBar.IsIndeterminate = true;
@@ -161,6 +172,7 @@ namespace Ec2BootstrapperGUI
             LaunchProgBar.BeginAnimation(System.Windows.Controls.ProgressBar.ValueProperty, null);
             LaunchProgBar.Visibility = Visibility.Hidden;
             StatusDesc.Content = ConstantString.Done;
+            LaunchButton.IsEnabled = true;
         }
 
         private void launch()
@@ -180,6 +192,7 @@ namespace Ec2BootstrapperGUI
             }
 
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
+            launchThread = null;
         }
 
         private void launchButton_Click(object sender, RoutedEventArgs e)
@@ -192,9 +205,9 @@ namespace Ec2BootstrapperGUI
                 _selectedSecurityGroups = SecurityGroupComb.SelectedValue.ToString();
             if(ZoneComb.SelectedValue != null)
                 _selectedZone = ZoneComb.SelectedValue.ToString(); ;
-          
-            Thread oThread = new Thread(new ThreadStart(launch));
-            oThread.Start();
+
+            launchThread = new Thread(new ThreadStart(launch));
+            launchThread.Start();
             enableProgressBar();
         }
     }

@@ -16,7 +16,7 @@ namespace Ec2Bootstrapperlib
 {
     public class CEc2Instance
     {
-        const string jwAmiImageId                 = "ami-96ad4bff"; //"ami-0529ce6c";// 
+        const string jwAmiImageId                 = "ami-60ab4d09"; //"ami-0529ce6c";// 
         const string jwCertFile                   = "server.crt";
         const string jwSecurityGroupName          = "JWSecureEc2FileLoad";
         const string jwSecurityGroupDescription   = "Used for msi upload";
@@ -37,6 +37,12 @@ namespace Ec2Bootstrapperlib
         string _launchTime;
         string _platform;
         string _keyPairName;
+
+        public struct SDeployInfo
+        {
+            public Ec2FileUploadProxy.Ec2FileUpload proxy;
+            public string installId;
+        };
 
         public string instanceId
         {
@@ -148,7 +154,6 @@ namespace Ec2Bootstrapperlib
                 return string.Compare(header.Substring(platformIndex), "windows", true) == 0;
             }
             return false;
-
         }
 
         static public string deployableAmiImageId
@@ -258,6 +263,8 @@ namespace Ec2Bootstrapperlib
         {
             try
             {
+                waitForPortReady();
+
                 // /c tells cmd that we want it to execute the command that follows, and then exit.
                 System.Diagnostics.ProcessStartInfo procStartInfo =
                     new System.Diagnostics.ProcessStartInfo(
@@ -299,15 +306,49 @@ namespace Ec2Bootstrapperlib
             }
             catch (Exception ex)
             {
-                throw new Exception("GetAdministratorPassord fails." + ex.Message);
+                throw new Exception("GetAdministratorPassord fails. " + ex.Message);
             }
         }
 
-        public void uploadAndInstallMsi(string adminPassword, string msiPath)
+        public void checkDeploymentStatus(SDeployInfo deployInfo)
+        {
+            //forever: user can cancel checking at any time
+            while (true)
+            {
+                int status = -2;
+                try
+                {
+                    status = deployInfo.proxy.GetInstallationStatus(deployInfo.installId);
+                }
+                catch (Exception)
+                {
+                }
+
+                if (status == 0)
+                {
+                    break;
+                }
+                if (status == -2)
+                {
+                    Thread.Sleep(1000);
+                    continue;
+                }
+
+                throw new Exception("UploadAndInstallMsiFile failed." + status.ToString());
+            }
+        }
+
+        public SDeployInfo uploadAndInstallMsi(string adminPassword, string msiPath)
         {
             Stream fileStream = null;
+            SDeployInfo deployInfo = new SDeployInfo();
             try
             {
+                if (string.IsNullOrEmpty(_publicDns) == true)
+                    getSiteUrl();
+
+                waitForPortReady();
+
                 //
                 // Get administrator's password
                 //
@@ -321,10 +362,20 @@ namespace Ec2Bootstrapperlib
                     }
                 }
 
-                if (string.IsNullOrEmpty(_publicDns) == true)
-                    getSiteUrl();
-
-                downloadAndInstallCertificate();
+                //user can cancel the thread if wanted.
+                while (true)
+                {
+                    try
+                    {
+                        downloadAndInstallCertificate();
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+                }
 
                 if (string.IsNullOrEmpty(msiPath) == true)
                 {
@@ -357,10 +408,8 @@ namespace Ec2Bootstrapperlib
                 // Create the web service proxy
                 //
 
-                Ec2FileUploadProxy.Ec2FileUpload fileUpload =
-                    new Ec2FileUploadProxy.Ec2FileUpload();
-
-                fileUpload.Url = "https://" + _publicDns + "/ec2fileupload/ec2fileupload.asmx";
+                deployInfo.proxy = new Ec2FileUploadProxy.Ec2FileUpload();
+                deployInfo.proxy.Url = "https://" + _publicDns + "/ec2fileupload/ec2fileupload.asmx";
 
                 //
                 // Get client credentials
@@ -368,44 +417,30 @@ namespace Ec2Bootstrapperlib
 
                 CredentialCache cache = new CredentialCache();
                 cache.Add(
-                    new Uri(fileUpload.Url),
+                    new Uri(deployInfo.proxy.Url),
                     "Basic",
                     new NetworkCredential("administrator", password));
-                fileUpload.Credentials = cache;
+                deployInfo.proxy.Credentials = cache;
 
                 //
                 // Call the web service
                 //
-
-                string identifier = fileUpload.UploadAndInstallMsiFile(
-                    "Ec2Install.msi", Convert.ToBase64String(fileBytes));
-                if (string.IsNullOrEmpty(identifier) == true)
-                {
-                    throw new Exception("Error: UploadAndInstallMsiFile failed.");
-                }
-
-                //forever here?
                 while (true)
                 {
                     try
                     {
-                        int status = fileUpload.GetInstallationStatus(identifier);
-                        if (status == 0)
-                        {
-                            break;
-                        }
-                        if (status == -2)
-                        {
-                            continue;
-                        }
-
-                        throw new Exception("UploadAndInstallMsiFile failed." + status.ToString());
+                        deployInfo.installId = deployInfo.proxy.UploadAndInstallMsiFile(
+                            "Ec2Install.msi", Convert.ToBase64String(fileBytes));
+                        break;
                     }
                     catch (Exception)
                     {
                     }
+                }
 
-                    Thread.Sleep(1000);
+                if (string.IsNullOrEmpty(deployInfo.installId) == true)
+                {
+                    throw new Exception("Error: UploadAndInstallMsiFile failed.");
                 }
             }
             catch (Exception ex)
@@ -416,6 +451,31 @@ namespace Ec2Bootstrapperlib
             {
                 if (fileStream != null)
                     fileStream.Close();
+            }
+            return deployInfo;
+        }
+
+        private void waitForPortReady()
+        {
+            while (true)
+            {
+                try
+                {
+                    System.Net.Sockets.TcpClient clnt = new System.Net.Sockets.TcpClient(_publicDns, 80);
+                    clnt.Close();
+
+                    clnt = new System.Net.Sockets.TcpClient(_publicDns, 443);
+                    clnt.Close();
+
+                    clnt = new System.Net.Sockets.TcpClient(_publicDns, 3389);
+                    clnt.Close();
+
+                    break;
+                }
+                catch (System.Exception)
+                {
+                }
+                Thread.Sleep(1000);
             }
         }
 
