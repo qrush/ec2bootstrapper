@@ -29,6 +29,36 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ec2AppInstaller", "Ec2AppInstaller\Ec2AppInstaller.csproj", "{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 9
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs10.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Ec2FileUpload\\Ec2FileUpload.csproj
+		SccProjectName1 = Ec2FileUpload
+		SccLocalPath1 = Ec2FileUpload
+		SccProjectUniqueName2 = MsiUploadTst\\MsiUploadTst.csproj
+		SccProjectName2 = MsiUploadTst
+		SccLocalPath2 = MsiUploadTst
+		SccProjectUniqueName3 = Ec2Bootstrapperlib\\Ec2Bootstrapperlib.csproj
+		SccProjectName3 = Ec2Bootstrapperlib
+		SccLocalPath3 = Ec2Bootstrapperlib
+		SccProjectUniqueName4 = Ec2Bootstrapper\\Ec2Bootstrapper.csproj
+		SccProjectName4 = Ec2Bootstrapper
+		SccLocalPath4 = Ec2Bootstrapper
+		SccProjectUniqueName5 = Ec2BootstrapperGUI\\Ec2BootstrapperGUI\\Ec2BootstrapperGUI.csproj
+		SccProjectName5 = Ec2BootstrapperGUI/Ec2BootstrapperGUI
+		SccLocalPath5 = Ec2BootstrapperGUI\\Ec2BootstrapperGUI
+		SccProjectUniqueName6 = Ec2CertGenerator\\Ec2CertGenerator.csproj
+		SccProjectName6 = Ec2CertGenerator
+		SccLocalPath6 = Ec2CertGenerator
+		SccProjectUniqueName7 = setup\\setup.wixproj
+		SccProjectName7 = setup
+		SccLocalPath7 = setup
+		SccProjectUniqueName8 = Ec2AppInstaller\\Ec2AppInstaller.csproj
+		SccProjectName8 = Ec2AppInstaller
+		SccLocalPath8 = Ec2AppInstaller
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms

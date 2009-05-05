@@ -37,7 +37,7 @@
             </TextBlock>
 
             <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="AWS Access Key"/>
-            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="AWS Secrete Key"/>
+            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="AWS Secret Key"/>
             <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 Certificate Path"/>
             <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 Home"/>
             <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 User Private Key"/>
@@ -48,7 +48,7 @@
                                   GotFocus="textBox_GotFocus"
                                   TextChanged="config_TextChanged" TextWrapping="NoWrap">
             </src:CueBannerTextBox>
-            <src:CueBannerTextBox x:Name="AwsSecreteKey"
+            <src:CueBannerTextBox x:Name="AwsSecretKey"
                                   PromptText="Example: mHJD98+LOIUnHGF78LKDhgsIHD897i+=OILDJKSDD"
                                   LostFocus="textBox_LostFocus"
                                   GotFocus="textBox_GotFocus"

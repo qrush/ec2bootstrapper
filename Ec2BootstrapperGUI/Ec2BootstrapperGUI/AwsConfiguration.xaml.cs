@@ -29,7 +29,7 @@ namespace Ec2BootstrapperGUI
             try
             {
                 AwsAccessKey.Text = _config.read("AwsAccessKey");
-                AwsSecreteKey.Text = _config.read("AwsSecreteKey");
+                AwsSecretKey.Text = _config.read("AwsSecretKey");
                 Ec2CertPath.Text = _config.read("Ec2CertPath");
                 Ec2Home.Text = _config.read("Ec2Home");
                 Ec2UserPrivateKey.Text = _config.read("Ec2UserPrivateKey");
@@ -54,7 +54,7 @@ namespace Ec2BootstrapperGUI
                 if (_config != null)
                 {
                     _config.write("AwsAccessKey", AwsAccessKey.Text);
-                    _config.write("AwsSecreteKey", AwsSecreteKey.Text);
+                    _config.write("AwsSecretKey", AwsSecretKey.Text);
                     _config.write("Ec2CertPath", Ec2CertPath.Text);
                     _config.write("Ec2Home", Ec2Home.Text);
                     _config.write("Ec2UserPrivateKey", Ec2UserPrivateKey.Text);

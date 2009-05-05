@@ -64,7 +64,7 @@ namespace Ec2AppInstaller
                 RegistryKey key = Registry.LocalMachine;
                 if (key != null)
                 {
-                    RegistryKey subkey = key.OpenSubKey(@"Software\JWSecure\Ec2Bootstrapper", true);
+                    RegistryKey subkey = key.OpenSubKey(@"Software\JW Secure\EC2 Bootstrapper", true);
                     if (subkey != null)
                     {
                         subkey.SetValue(guid, errorCode, RegistryValueKind.DWord);

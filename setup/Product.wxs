@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <?define ProductVersion="1.0.1.1" ?>
-    <?define RTMProductVersion="1.0.0.1" ?>
+    <?define ProductVersion="1.1.3.0" ?>
+    <?define RTMProductVersion="1.0.0.0" ?>
     <Product Id="*"
-          Name="Ec2Bootstrapper"
+          Name="EC2 Bootstrapper"
           Language="1033"
           Version="$(var.ProductVersion)"
           Manufacturer="JW Secure, Inc."
           UpgradeCode="210b91dc-33af-4033-9844-f00664bf6208">
             
 		<Package
-            Description ="Utility for managing smart card certificates"
+            Description ="Application for quickly deploying an ASP.NET website to EC2"
             InstallerVersion="300"
             Compressed="yes"
             InstallPrivileges="elevated"
@@ -32,48 +32,48 @@
                             Property="OLDERVERSIONBEINGUPGRADED"/>
         </Upgrade>
         
-        <Condition Message="Ec2Bootstrapper only runs on Windows XP or later">
+        <Condition Message="EC2 Bootstrapper only runs on Windows XP or later">
             VersionNT>=501
         </Condition>
         
-        <Condition Message="You need to be an administrator to install SmartUtil.">
+        <Condition Message="You need to be an administrator to install EC2 Bootstrapper.">
             Privileged
         </Condition>
 		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
 
 		<Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramMenuFolder" Name="ProgMenu">
-                <Directory Id="ShortcutFolder" Name="JWSecure"/>
+                <Directory Id="ShortcutFolder" Name="JW Secure"/>
             </Directory>
 			<Directory Id="ProgramFilesFolder">
-                <Directory Id="JWSecureProg" Name="JWSecure">
-                    <Directory Id="Ec2Bootstrapper" Name="Ec2Bootstrapper">
+                <Directory Id="JWSecureProg" Name="JW Secure">
+                    <Directory Id="Ec2Bootstrapper" Name="EC2 Bootstrapper">
 					     <Component Id="ProductComponent" Guid="A8437266-3FA8-409e-B602-DA3CD98C97D9">
                              <File Name ="Ec2BootstrapperGUI.exe" Id ="Ec2BootstrapperGUI.exe" Source ="$(var.root)\Ec2BootstrapperGUI\Ec2BootstrapperGUI\bin\$(var.config)\Ec2BootstrapperGUI.exe" Vital ="yes">
-                                 <Shortcut Id="myShortcut"  Directory="ShortcutFolder" Name="Ec2BootstrapperGUI"/>
+                                 <Shortcut Id="myShortcut"  Directory="ShortcutFolder" Name="EC2 Bootstrapper"/>
                              </File>
                              <RemoveFolder Id="CleanupShortcutFolder" On="uninstall"  Directory ="ShortcutFolder"/>
                              <File Name ="Ec2Bootstrapper.exe" Id ="Ec2Bootstrapper.exe" Source ="$(var.root)\Ec2Bootstrapper\bin\$(var.config)\Ec2Bootstrapper.exe" Vital ="yes"/>
                              <File Name ="Ec2Bootstrapperlib.dll" Id ="Ec2Bootstrapperlib.dll" Source ="$(var.root)\Ec2Bootstrapperlib\bin\$(var.config)\Ec2Bootstrapperlib.dll" Vital ="yes"/>
                              <File Name ="Amazon.EC2.dll" Id ="Amazon.EC2.dll" Source ="$(var.root)\Ec2Bootstrapperlib\bin\$(var.config)\Amazon.EC2.dll" Vital ="yes"/>
-                             <RegistryKey Root="HKCU" Key="Software\JWSecure\Ec2BootstrapperGUI" Action="createAndRemoveOnUninstall">
-                                 <RegistryValue Name="Installed" Value="[Ec2BootstrapperGUI]" Type="string" KeyPath="yes"/>
+                             <RegistryKey Root="HKCU" Key="Software\JW Secure\EC2 Bootstrapper" Action="createAndRemoveOnUninstall">
+                                 <RegistryValue Name="Installed" Value="[Ec2Bootstrapper]" Type="string" KeyPath="yes"/>
                              </RegistryKey>
 					     </Component> 
 				    </Directory>
                 </Directory>
             </Directory>
             <Directory Id="LocalAppDataFolder">
-                <Directory Id="JWSecure" Name ="JWSecure">
-                    <Directory Id ="Ec2BootstrapperId" Name ="Ec2Bootstrapper">
+                <Directory Id="JWSecure" Name ="JW Secure">
+                    <Directory Id ="Ec2BootstrapperId" Name ="EC2 Bootstrapper">
                         <Component Id ="ConfigFile" Guid="50AF4F1F-B77B-45f3-AD85-CC3DD5F10C26">
                             <CreateFolder/>
                             <RemoveFolder Id ="RemoveConfg" Directory ="Ec2BootstrapperId" On ="uninstall"/>
                             <RemoveFolder Id ="JWSecure" Directory ="JWSecure" On ="uninstall"/>
                             <File Id ="Ec2Bootstrapperlib.Dll.config" Name ="Ec2Bootstrapperlib.Dll.config" Source ="$(var.root)\Ec2Bootstrapperlib\Ec2Bootstrapperlib.Dll.config" Vital ="yes"/>
                             <File Id ="Ec2Bootstrapperlib.Dll.config.config" Name ="Ec2Bootstrapperlib.Dll.config.config" Source ="$(var.root)\Ec2Bootstrapperlib\Ec2Bootstrapperlib.Dll.config" Vital ="yes"/>
-                            <RegistryKey Root ="HKCU" Key ="Software\JWSecure\Ec2Bootstrapper" Action ="createAndRemoveOnUninstall">
-                                <RegistryValue Name ="Version" Value ="1.0.1.1" Type ="string" KeyPath ="yes"/>
+                            <RegistryKey Root ="HKCU" Key ="Software\JW Secure\EC2 Bootstrapper" Action ="createAndRemoveOnUninstall">
+                                <RegistryValue Name ="Version" Value ="$(var.ProductVersion)" Type ="string" KeyPath ="yes"/>
                             </RegistryKey>
                         </Component>
                     </Directory>

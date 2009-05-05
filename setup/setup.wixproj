@@ -5,9 +5,13 @@
     <ProductVersion>3.0</ProductVersion>
     <ProjectGuid>{22e33e59-fba6-4233-8509-3baae32929ed}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>setup</OutputName>
+    <OutputName>Ec2Bootstrapper</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets</WixTargetsPath>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>

@@ -38,7 +38,7 @@ namespace Ec2Bootstrapperlib
         static public string getEc2BootstrapperDirectory()
         {
             return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                         "\\JWSecure\\Ec2Bootstrapper";
+                         "\\JW Secure\\EC2 Bootstrapper";
         }
 
         public string awsAccessKey
@@ -74,7 +74,7 @@ namespace Ec2Bootstrapperlib
         void readAll()
         {
             _awsAccessKey = read("AwsAccessKey");
-            _awsSecretKey = read("AwsSecreteKey");
+            _awsSecretKey = read("AwsSecretKey");
             _ec2CertPath = read("Ec2CertPath");
             _ec2Home = read("Ec2Home");
             _ec2UserPrivateKeyFile = read("Ec2UserPrivateKey");

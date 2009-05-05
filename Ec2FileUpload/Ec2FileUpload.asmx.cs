@@ -160,7 +160,7 @@ namespace Ec2FileUpload
                     string commandLine = @"C:\Scripts\Ec2AppInstaller.exe " + tempFileName + " " + guid;
 
                     RegistryKey key = Registry.LocalMachine;
-                    RegistryKey subkey = key.OpenSubKey(@"Software\JWSecure\Ec2Bootstrapper", true);
+                    RegistryKey subkey = key.OpenSubKey(@"Software\JW Secure\EC2 Bootstrapper", true);
                     //-2 still in the process of installation
                     subkey.SetValue(guid, -2, RegistryValueKind.DWord);
 
@@ -218,7 +218,7 @@ namespace Ec2FileUpload
                 RegistryKey key = Registry.LocalMachine;
                 if (key != null)
                 {
-                    RegistryKey subkey = key.OpenSubKey(@"Software\JWSecure\Ec2Bootstrapper");
+                    RegistryKey subkey = key.OpenSubKey(@"Software\JW Secure\EC2 Bootstrapper");
                     if (subkey != null)
                         return Convert.ToInt32(subkey.GetValue(guid));
                     else
