@@ -117,6 +117,21 @@ namespace Ec2BootstrapperGUI
             pw.Show();
         }
 
+        //private void getPassword(object ins)
+        //{
+        //    try
+        //    {
+        //        string pw = ((CEc2Instance)ins).getAdministratorPassord();
+        //        if (string.IsNullOrEmpty(pw) == true)
+        //            pw = "not available.";
+        //        MessageBox.Show("Password is " + pw);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //}
+
         void password_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -127,10 +142,10 @@ namespace Ec2BootstrapperGUI
                 CEc2Instance ins = getInstance(CEc2Instance.getInsanceIdFromHeader(header));
                 if (ins != null)
                 {
-                    string pw = ins.getAdministratorPassord();
-                    if (string.IsNullOrEmpty(pw) == true)
-                        pw = "not available.";
-                    MessageBox.Show("Password is " + pw);
+                    //Thread oThread = new Thread(getPassword);
+                    //oThread.Start(ins);
+                    FetchPassword pw = new FetchPassword(ins);
+                    pw.ShowDialog();
                 }
                 else
                 {

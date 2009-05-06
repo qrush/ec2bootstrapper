@@ -46,6 +46,13 @@ namespace Ec2BootstrapperGUI
         {
             try
             {
+                if (_instance.isPortReady() == false)
+                {
+                    Dispatcher.Invoke(new SetDeploymentStatus(setDeploymentStatus), ConstantString.InstanceReady);
+                    _instance.waitForPortReady();
+                }
+
+                Dispatcher.Invoke(new SetDeploymentStatus(setDeploymentStatus), ConstantString.UploadMsi);
                 CEc2Instance.SDeployInfo deployInfo = _instance.uploadAndInstallMsi(_password, _msiPath);
                 if (string.IsNullOrEmpty(deployInfo.installId) == false)
                 {
@@ -145,8 +152,6 @@ namespace Ec2BootstrapperGUI
                 else
                 {
                     System.Windows.MessageBox.Show("You have successfully deployed your program to your instance.", "Deploy Result", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //StatusBk.Text = ConstantString.Done;
-                    //launch ie: assume the site deployed to the default root virtual directory.
                 }
                 this.Close();
             }

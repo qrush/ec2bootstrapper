@@ -16,7 +16,7 @@ namespace Ec2Bootstrapperlib
 {
     public class CEc2Instance
     {
-        const string jwAmiImageId                 = "ami-60ab4d09"; //"ami-0529ce6c";// 
+        const string jwAmiImageId = "ami-0eb25467"; //"ami-0529ce6c";// 
         const string jwCertFile                   = "server.crt";
         const string jwSecurityGroupName          = "JWSecureEc2FileLoad";
         const string jwSecurityGroupDescription   = "Used for msi upload";
@@ -270,7 +270,7 @@ namespace Ec2Bootstrapperlib
                     new System.Diagnostics.ProcessStartInfo(
                         "cmd", @"/c ec2-get-password.cmd " +
                         _instanceId +
-                        " -k " + CAwsConfig.getEc2BootstrapperDirectory() + "\\" + jwKeyPairFileName);
+                        " -k \"" + CAwsConfig.getEc2BootstrapperDirectory() + "\\" + jwKeyPairFileName + "\"");
 
                 procStartInfo.WorkingDirectory = _awsConfig.ec2Home + @"\bin";
 
@@ -347,8 +347,6 @@ namespace Ec2Bootstrapperlib
                 if (string.IsNullOrEmpty(_publicDns) == true)
                     getSiteUrl();
 
-                waitForPortReady();
-
                 //
                 // Get administrator's password
                 //
@@ -377,6 +375,7 @@ namespace Ec2Bootstrapperlib
                     }
                 }
 
+                string fileName;
                 if (string.IsNullOrEmpty(msiPath) == true)
                 {
                     //
@@ -389,11 +388,13 @@ namespace Ec2Bootstrapperlib
                     {
                         throw new Exception("Error: open file dialog failed");
                     }
+                    fileName = Path.GetFileName(ofd.FileName);
                     fileStream = ofd.OpenFile();
                 }
                 else
                 {
                     fileStream = File.OpenRead(msiPath);
+                    fileName = Path.GetFileName(msiPath);
                 }
 
                 if (fileStream == null)
@@ -430,7 +431,7 @@ namespace Ec2Bootstrapperlib
                     try
                     {
                         deployInfo.installId = deployInfo.proxy.UploadAndInstallMsiFile(
-                            "Ec2Install.msi", Convert.ToBase64String(fileBytes));
+                            fileName, Convert.ToBase64String(fileBytes));
                         break;
                     }
                     catch (Exception)
@@ -455,7 +456,7 @@ namespace Ec2Bootstrapperlib
             return deployInfo;
         }
 
-        private void waitForPortReady()
+        public void waitForPortReady()
         {
             while (true)
             {
@@ -477,6 +478,27 @@ namespace Ec2Bootstrapperlib
                 }
                 Thread.Sleep(1000);
             }
+        }
+
+        public bool isPortReady()
+        {
+            try
+            {
+                System.Net.Sockets.TcpClient clnt = new System.Net.Sockets.TcpClient(_publicDns, 80);
+                clnt.Close();
+
+                clnt = new System.Net.Sockets.TcpClient(_publicDns, 443);
+                clnt.Close();
+
+                clnt = new System.Net.Sockets.TcpClient(_publicDns, 3389);
+                clnt.Close();
+
+                return true;
+            }
+            catch (System.Exception)
+            {
+            }
+            return false;
         }
 
         private void downloadAndInstallCertificate()

@@ -41,6 +41,12 @@ namespace Ec2Bootstrapper
                 Ec2Bootstrapperlib.CEc2Instance instance = new Ec2Bootstrapperlib.CEc2Instance();
                 instance.imageId = Ec2Bootstrapperlib.CEc2Instance.deployableAmiImageId;
                 instance.launch();
+                if (instance.isPortReady() == false)
+                {
+                    Console.WriteLine("Waiting for the instance reachable. This might take upto 5 minutes...");
+                    instance.waitForPortReady();
+                }
+
                 CEc2Instance.SDeployInfo deployInfo = instance.uploadAndInstallMsi(args[0], null);
                 if (string.IsNullOrEmpty(deployInfo.installId) == true)
                 {

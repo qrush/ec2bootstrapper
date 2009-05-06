@@ -37,14 +37,15 @@ namespace Ec2AppInstaller
 
                 System.Diagnostics.ProcessStartInfo procStartInfo =
                     new System.Diagnostics.ProcessStartInfo(
-                        "msiexec.exe", @"/qn /i " + msiFile);
+                        "msiexec.exe", @"/qn /i " + msiFile + " /l* c:\\setupLog.txt");
 
-                ////redirected to the Process.StandardOutput StreamReader.
-                //procStartInfo.RedirectStandardOutput = true;
-                //procStartInfo.UseShellExecute = false;
+                //redirected to the Process.StandardOutput StreamReader.
+                procStartInfo.RedirectStandardOutput = true;
+                procStartInfo.UseShellExecute = false;
+                procStartInfo.LoadUserProfile = true;
 
-                //// Do not create a console window.
-                //procStartInfo.CreateNoWindow = true;
+                // Do not create a console window.
+                procStartInfo.CreateNoWindow = true;
 
                 // Now we create a process, assign its ProcessStartInfo and start it
                 System.Diagnostics.Process msiExec = new System.Diagnostics.Process();
@@ -67,7 +68,14 @@ namespace Ec2AppInstaller
                     RegistryKey subkey = key.OpenSubKey(@"Software\JW Secure\EC2 Bootstrapper", true);
                     if (subkey != null)
                     {
-                        subkey.SetValue(guid, errorCode, RegistryValueKind.DWord);
+                        if (subkey.GetValue(guid) == null)
+                        {
+                            subkey.SetValue("GuidNotExist", guid, RegistryValueKind.String);
+                        }
+                        else
+                        {
+                            subkey.SetValue(guid, errorCode, RegistryValueKind.DWord);
+                        }
                     }
                 }
             }

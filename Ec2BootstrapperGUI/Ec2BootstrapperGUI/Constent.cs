@@ -14,6 +14,8 @@ namespace Ec2BootstrapperGUI
         public const string NoAmi = "No Ami found";
         public const string Launching = "Launching instance...";
         public const string DeployFailed = "Deploy failed.";
-        public const string InstallProgress = "Checking installation progress...";
+        public const string InstallProgress = "Installation is in progress...";
+        public const string InstanceReady = "Wait for instance ready(~5 minutes)";
+        public const string UploadMsi = "Uploading your msi file...";
     }
 }

@@ -99,10 +99,10 @@
   </wsdl:binding>
   <wsdl:service name="Ec2FileUpload">
     <wsdl:port name="Ec2FileUploadSoap" binding="tns:Ec2FileUploadSoap">
-      <soap:address location="https://ec2-75-101-187-170.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.asmx" />
+      <soap:address location="https://ec2-174-129-86-112.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.asmx" />
     </wsdl:port>
     <wsdl:port name="Ec2FileUploadSoap12" binding="tns:Ec2FileUploadSoap12">
-      <soap12:address location="https://ec2-75-101-187-170.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.asmx" />
+      <soap12:address location="https://ec2-174-129-86-112.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

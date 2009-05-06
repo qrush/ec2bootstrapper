@@ -98,10 +98,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="https://ec2-75-101-187-170.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.asmx">
+    <WebReferenceUrl Include="https://ec2-174-129-86-112.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\Ec2FileUploadProxy\</RelPath>
-      <UpdateFromURL>https://ec2-75-101-187-170.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.asmx</UpdateFromURL>
+      <UpdateFromURL>https://ec2-174-129-86-112.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

@@ -70,6 +70,9 @@
     <Compile Include="CBeginInvokeOC.cs" />
     <Compile Include="Constent.cs" />
     <Compile Include="CueBannerTextBox.cs" />
+    <Compile Include="FetchPassword.xaml.cs">
+      <DependentUpon>FetchPassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InstanceLauncher.xaml.cs">
       <DependentUpon>InstanceLauncher.xaml</DependentUpon>
     </Compile>
@@ -97,6 +100,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dashbord.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FetchPassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -18,12 +18,13 @@
         <Button Name="OkButton" Margin="0,0,104,57" Content="Ok" VerticalAlignment="Bottom" Height="28" Click="okButton_Click" HorizontalAlignment="Right" Width="110" />
         <StatusBar HorizontalAlignment="Left" VerticalAlignment="Bottom">
             <StatusBarItem>
-                <TextBlock Name="StatusBk" Width="180">Ready</TextBlock>
+                <TextBlock Name="StatusBk" Width="200">Ready</TextBlock>
             </StatusBarItem>
             <Separator/>
             <StatusBarItem>
                 <ProgressBar Name="ProgBar" IsIndeterminate="False" Width="493" HorizontalAlignment="Right" Orientation="Horizontal" Height="20" />
             </StatusBarItem>
+            <Separator/>
         </StatusBar>
     </Grid>
 </Window>

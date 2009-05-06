@@ -26,7 +26,7 @@ namespace Ec2Bootstrapperlib.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://ec2-75-101-187-170.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.as" +
+        [global::System.Configuration.DefaultSettingValueAttribute("https://ec2-174-129-86-112.compute-1.amazonaws.com/ec2fileupload/ec2fileupload.as" +
             "mx")]
         public string Ec2Bootstrapperlib_Ec2FileUploadProxy_Ec2FileUpload {
             get {
