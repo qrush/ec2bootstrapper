@@ -1,0 +1,22 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="Ec2BootstrapperGUI.KeyFileInputDlg"
+	x:Name="Window"
+	Title="Key File Path"
+	Width="500" Height="200">
+
+	<Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+		<TextBlock Name="keyPathInstruction" Grid.Row="0" Margin="20,0,20,8" Height="25" Text="Please enter the key path for key " TextWrapping="NoWrap"/>
+		<TextBox Name="keyPath" Grid.Row="1" Margin="20,0,20,8" Height="25" Width="405" HorizontalAlignment="Left" TextWrapping="NoWrap"/>
+		<Button Name="keyPathButton" Grid.Row="1" HorizontalAlignment="Right" Margin="20,0,20,8" Width="54" Height="25" Click="keyPathButton_Click" Content="..."/>
+		<Button Name="cancelButton" Grid.Row="2" HorizontalAlignment="Left" Margin="40,0,8,0" Width="120" Height="25" Click="cancelButton_Click" Content="Cancel"/>
+		<Button Name="okButton" Grid.Row="2" HorizontalAlignment="Right" Margin="8,0,40,0" Width="120" Height="25" Click="okButton_Click" Content="Ok"/>
+	</Grid>
+</Window>
