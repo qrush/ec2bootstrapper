@@ -35,6 +35,12 @@ namespace Ec2BootstrapperGUI
 
         private delegate void SetPassword(string pw);
         private delegate void StopProgressbarCallback();
+        private delegate void SetStatus(string status);
+
+        private void setStatus(string status)
+        {
+            StatusBk.Text = status;
+        }
 
         private void getPassword(object ins)
         {
@@ -44,6 +50,10 @@ namespace Ec2BootstrapperGUI
                 pw = ((CEc2Instance)ins).getAdministratorPassord();
                 if (string.IsNullOrEmpty(pw) == true)
                     pw = "(not available)";
+            }
+            catch (ThreadAbortException)
+            {
+                Dispatcher.Invoke(new SetPassword(setStatus), ConstantString.ThreadAborted);
             }
             catch (Exception ex)
             {
@@ -65,7 +75,10 @@ namespace Ec2BootstrapperGUI
             try
             {
                 if (oThread != null)
+                {
                     oThread.Abort();
+                    oThread.Join();
+                }
             }
             catch (Exception)
             {

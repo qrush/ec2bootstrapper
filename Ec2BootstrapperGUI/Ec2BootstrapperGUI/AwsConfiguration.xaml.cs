@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Ec2Bootstrapperlib;
 using System.Windows.Forms;
-
+using System.IO;
 namespace Ec2BootstrapperGUI
 {
     /// <summary>
@@ -75,48 +75,54 @@ namespace Ec2BootstrapperGUI
 
         private void certPathBt_Click(object sender, RoutedEventArgs e)
         {
-            Ec2CertPath.Text = getFilePath();
+            string path = getFilePath("Please select your EC2 certificate file");
+            if(string.IsNullOrEmpty(path) == false)
+                Ec2CertPath.Text = path;
         }
 
         private void ec2HomeBt_Click(object sender, RoutedEventArgs e)
         {
-            Ec2Home.Text = getDirectoryPath();
+            string dir = getDirectoryPath("Please select the directory where EC2 was installed");
+            if (string.IsNullOrEmpty(dir) == false)
+                Ec2Home.Text = dir;
         }
 
         private void ec2UserPrivKeyBt_Click(object sender, RoutedEventArgs e)
         {
-            Ec2UserPrivateKey.Text = getFilePath();
+            string path = getFilePath("Please select your EC2 perivate key file");
+            if (string.IsNullOrEmpty(path) == false)
+                Ec2UserPrivateKey.Text = path;
         }
 
         private void javaHomeBt_Click(object sender, RoutedEventArgs e)
         {
-            JavaHome.Text = getDirectoryPath();
+            string dir = getDirectoryPath("Please select the directory where Java was installed.");
+            if (string.IsNullOrEmpty(dir) == false)
+                JavaHome.Text = dir;
         }
 
-        string getFilePath()
+        string getFilePath(string title)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Key files (*.pem)|*.pem";
-            if (System.Windows.Forms.DialogResult.OK != ofd.ShowDialog())
+            ofd.Title = title;
+            if (System.Windows.Forms.DialogResult.OK == ofd.ShowDialog())
             {
-                System.Windows.MessageBox.Show("Error: open file dialog failed");
-                return "";
+                return ofd.FileName;
             }
-            return ofd.FileName;
+            return "";
         }
 
-        string getDirectoryPath()
+        string getDirectoryPath(string description)
         {
             FolderBrowserDialog folder = new FolderBrowserDialog();
+            folder.Description = description;
+            folder.ShowNewFolderButton = false;
             if (folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 return folder.SelectedPath;
             }
-            else
-            {
-                System.Windows.MessageBox.Show("Error: FolderBrowserDialog failed");
-                return "";
-            }
+            return "";
         }
 
         private void config_TextChanged(object sender, TextChangedEventArgs e)

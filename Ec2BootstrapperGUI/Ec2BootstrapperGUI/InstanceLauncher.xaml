@@ -69,6 +69,7 @@
                               Grid.Column="1" Margin="8,5,0,5" 
                               Grid.ColumnSpan="2" 
                               Style="{StaticResource comboBoxStyle}" 
+                              SelectionChanged="KeyPairComb_SelectionChanged"
                               TabIndex="3"/>
                     <ComboBox Name="SecurityGroupComb" Grid.Row="5" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2"
                               ItemsSource="{Binding Path=securityGroups, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"

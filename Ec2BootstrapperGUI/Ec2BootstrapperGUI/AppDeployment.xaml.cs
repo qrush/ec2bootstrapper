@@ -60,6 +60,10 @@ namespace Ec2BootstrapperGUI
                     _instance.checkDeploymentStatus(deployInfo);
                 }
             }
+            catch (ThreadAbortException)
+            {
+                succeed = false;
+            }
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show(ex.Message);
@@ -111,7 +115,10 @@ namespace Ec2BootstrapperGUI
             try
             {
                 if (oThread != null)
+                {
                     oThread.Abort();
+                    oThread.Join();
+                }
             }
             catch (Exception)
             {

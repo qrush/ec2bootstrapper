@@ -79,6 +79,9 @@
     <Compile Include="InstanceListCtrl.xaml.cs">
       <DependentUpon>InstanceListCtrl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="KeyFileInputDlg.xaml.cs">
+      <DependentUpon>KeyFileInputDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dashbord.xaml.cs">
       <DependentUpon>Dashbord.xaml</DependentUpon>
@@ -112,6 +115,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="InstanceListCtrl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="KeyFileInputDlg.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

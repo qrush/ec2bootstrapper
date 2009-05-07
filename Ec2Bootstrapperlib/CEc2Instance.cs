@@ -21,7 +21,6 @@ namespace Ec2Bootstrapperlib
         const string jwSecurityGroupName          = "JWSecureEc2FileLoad";
         const string jwSecurityGroupDescription   = "Used for msi upload";
         const string jwKeyPairName                = "JWSecureFileUploadKey";
-        const string jwKeyPairFileName            = "JWSecureFileUploadKey.pem";
         const string publicDnsTitle               = " Public DNS:";
         const string platformTitle                = " Platform:";
 
@@ -37,6 +36,7 @@ namespace Ec2Bootstrapperlib
         string _launchTime;
         string _platform;
         string _keyPairName;
+        bool _defaultSecurityGroup;
 
         public struct SDeployInfo
         {
@@ -59,7 +59,7 @@ namespace Ec2Bootstrapperlib
         public string securityGroups
         {
             get { return _securityGroups; }
-            set {_securityGroups = value; }
+            set { _securityGroups = value; _defaultSecurityGroup = false; }
         }
         public string type
         {
@@ -98,14 +98,27 @@ namespace Ec2Bootstrapperlib
             set {_keyPairName = value; }
         }
 
+        private void setDefaults()
+        {
+            if (string.IsNullOrEmpty(_keyPairName) == true)
+                _keyPairName = jwKeyPairName;
+            if (string.IsNullOrEmpty(_securityGroups) == true)
+            {
+                _securityGroups = jwSecurityGroupName;
+                _defaultSecurityGroup = true;
+            }
+        }
+
         public CEc2Instance(CAwsConfig amsConfig)
         {
+            setDefaults();
             _awsConfig = amsConfig;
             _service = new AmazonEC2Client(_awsConfig.awsAccessKey, _awsConfig.awsSecretKey);
         }
 
         public CEc2Instance()
         {
+            setDefaults();
         }
 
         public string header
@@ -177,25 +190,39 @@ namespace Ec2Bootstrapperlib
                 request.MinCount = 1;
                 request.MaxCount = 1;
 
-                if (string.IsNullOrEmpty(_securityGroups) == true)
-                {
-                    createSecurityGroup();
-                    request.SecurityGroup.Add(jwSecurityGroupName);
-                }
-                else
+                if (_defaultSecurityGroup == false)
                 {
                     request.SecurityGroup.Add(_securityGroups);
                 }
-
-                if (string.IsNullOrEmpty(_keyPairName) == true)
-                {
-                    createKayPair();
-                    request.KeyName = jwKeyPairName;
-                }
                 else
                 {
-                    request.KeyName = _keyPairName;
+                    bool newSecurityGroup = true;
+                    //have a chance that this security group is not created yet.
+                    CEc2Service serv = new CEc2Service(_awsConfig);
+                    List<string> sgs = serv.descrbibeSecurityGroups();
+                    foreach (string sg in sgs)
+                    {
+                        if (string.Compare(sg, _securityGroups) == 0)
+                        {
+                            request.SecurityGroup.Add(_securityGroups);
+                            newSecurityGroup = false;
+                            break;
+                        }
+                    }
+                    if (newSecurityGroup == true)
+                    {
+                        createSecurityGroup();
+                        request.SecurityGroup.Add(_securityGroups);
+                    }
                 }
+
+                string keyPath = _awsConfig.getKeyFilePath(keyPairName);
+                if (string.IsNullOrEmpty(keyPath) == true ||
+                    File.Exists(keyPath) == false)
+                {
+                    createKayPair();
+                }
+                request.KeyName = keyPairName;
 
                 RunInstancesResponse response = _service.RunInstances(request);
 
@@ -265,16 +292,22 @@ namespace Ec2Bootstrapperlib
             {
                 waitForPortReady();
 
+                string keyPath = _awsConfig.getKeyFilePath(keyPairName);
+                if (string.IsNullOrEmpty(keyPath) == true ||
+                    File.Exists(keyPath) == false)
+                {
+                    throw new Exception("Cannot find key file.");
+                }
+
                 // /c tells cmd that we want it to execute the command that follows, and then exit.
                 System.Diagnostics.ProcessStartInfo procStartInfo =
                     new System.Diagnostics.ProcessStartInfo(
                         "cmd", @"/c ec2-get-password.cmd " +
-                        _instanceId +
-                        " -k \"" + CAwsConfig.getEc2BootstrapperDirectory() + "\\" + jwKeyPairFileName + "\"");
+                        _instanceId + " -k \"" + keyPath + "\"");
 
                 procStartInfo.WorkingDirectory = _awsConfig.ec2Home + @"\bin";
 
-                if(!procStartInfo.EnvironmentVariables.ContainsKey("EC2_HOME"))
+                if (!procStartInfo.EnvironmentVariables.ContainsKey("EC2_HOME"))
                     procStartInfo.EnvironmentVariables.Add("EC2_HOME", _awsConfig.ec2Home);
                 if (!procStartInfo.EnvironmentVariables.ContainsKey("EC2_CERT"))
                     procStartInfo.EnvironmentVariables.Add("EC2_CERT", _awsConfig.ec2CertPath);
@@ -303,6 +336,10 @@ namespace Ec2Bootstrapperlib
                 }
 
                 return pw;
+            }
+            catch (ThreadAbortException ex)
+            {
+                throw ex;
             }
             catch (Exception ex)
             {
@@ -593,12 +630,12 @@ namespace Ec2Bootstrapperlib
             try
             {
                 CreateSecurityGroupRequest requestSecurirtyGroup = new CreateSecurityGroupRequest();
-                requestSecurirtyGroup.GroupName = jwSecurityGroupName;
+                requestSecurirtyGroup.GroupName = _securityGroups;
                 requestSecurirtyGroup.GroupDescription = jwSecurityGroupDescription;
                 CreateSecurityGroupResponse responseSecurityGroup = _service.CreateSecurityGroup(requestSecurirtyGroup);
 
                 AuthorizeSecurityGroupIngressRequest requestAuthz = new AuthorizeSecurityGroupIngressRequest();
-                requestAuthz.GroupName = jwSecurityGroupName;
+                requestAuthz.GroupName = _securityGroups;
                 requestAuthz.IpProtocol = "tcp";
                 requestAuthz.CidrIp = "0.0.0.0/0";
 
@@ -616,6 +653,7 @@ namespace Ec2Bootstrapperlib
             }
         }
 
+        //once we get here we know the key file doesn't exist
         private void createKayPair()
         {
             try
@@ -627,9 +665,28 @@ namespace Ec2Bootstrapperlib
                     Directory.CreateDirectory(keyFileDir);
                 }
 
-                string keyFilePath = keyFileDir + "\\" + jwKeyPairFileName;
-                if (File.Exists(keyFilePath))
-                    return;
+                string keyFilePath = null;
+
+                FolderBrowserDialog folder = new FolderBrowserDialog();
+                folder.ShowNewFolderButton = true;
+                folder.SelectedPath = keyFileDir;
+                folder.Description = "Please select directory where you want to save key file";
+                DialogResult result = DialogResult.No;
+                while (result == DialogResult.No)
+                {
+                    if (folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        keyFilePath = folder.SelectedPath + "\\" + keyPairName + ".pem";
+                        if (File.Exists(keyFilePath))
+                        {
+                            result = MessageBox.Show(null, "Key file " + keyFilePath + " exists. Do you want to overwrite it?", "Key File", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
 
                 CreateKeyPairRequest request = new CreateKeyPairRequest();
                 request.KeyName = jwKeyPairName;
@@ -648,6 +705,7 @@ namespace Ec2Bootstrapperlib
                                 byte[] fileData = new UTF8Encoding(true).GetBytes(keyPair.KeyMaterial);
 
                                 stream.Write(fileData, 0, fileData.Length);
+                                _awsConfig.setKeyFilePath(keyPairName, keyFilePath);
                             }
                         }
                     }

@@ -125,7 +125,10 @@ namespace Ec2BootstrapperGUI
             try
             {
                 if (launchThread != null)
+                {
                     launchThread.Abort();
+                    launchThread.Join();
+                }
             }
             catch (Exception)
             {
@@ -181,10 +184,16 @@ namespace Ec2BootstrapperGUI
             {
                 CEc2Instance inst = new CEc2Instance(_dashboard.awsConfig);
                 inst.imageId = _amiId;
-                inst.keyPairName = _selectedKeyPair;
-                inst.securityGroups = _selectedSecurityGroups;
+                if(string.IsNullOrEmpty(_selectedKeyPair) == false)
+                    inst.keyPairName = _selectedKeyPair;
+                if(string.IsNullOrEmpty(_selectedSecurityGroups) == false)
+                    inst.securityGroups = _selectedSecurityGroups;
 
                 inst.launch();
+            }
+            catch (ThreadAbortException)
+            {
+                //don't do anything 
             }
             catch (Exception ex)
             {
@@ -199,16 +208,51 @@ namespace Ec2BootstrapperGUI
         {
             //other thread will access these
             _amiId = AmiIdLb.Content.ToString();
-            if(KeyPairComb.SelectedValue != null)
+            if (KeyPairComb.SelectedValue != null)
+            {
                 _selectedKeyPair = KeyPairComb.SelectedValue.ToString();
+                if (string.IsNullOrEmpty(_selectedKeyPair) == false)
+                {
+                    string keyFile = _dashboard.awsConfig.getKeyFilePath(_selectedKeyPair);
+                    if (string.IsNullOrEmpty(keyFile) == true)
+                    {
+                        KeyFileInputDlg kfInput = new KeyFileInputDlg(_selectedKeyPair, _dashboard);
+                        kfInput.ShowDialog();
+                    }
+                    keyFile = _dashboard.awsConfig.getKeyFilePath(_selectedKeyPair);
+                    if (string.IsNullOrEmpty(keyFile) == true)
+                    {
+                        //cannot continue. we need the key path
+                        return;
+                    }
+                }
+            }
             if(SecurityGroupComb.SelectedValue != null)
                 _selectedSecurityGroups = SecurityGroupComb.SelectedValue.ToString();
             if(ZoneComb.SelectedValue != null)
                 _selectedZone = ZoneComb.SelectedValue.ToString(); ;
 
             launchThread = new Thread(new ThreadStart(launch));
+            launchThread.SetApartmentState(ApartmentState.STA);
             launchThread.Start();
             enableProgressBar();
+        }
+
+        private void KeyPairComb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+            if (cb != null)
+            {
+                if (cb.SelectedItem != null)
+                {
+                    string keyFile = _dashboard.awsConfig.getKeyFilePath(cb.SelectedItem.ToString());
+                    if (string.IsNullOrEmpty(keyFile) == true)
+                    {
+                        KeyFileInputDlg kfInput = new KeyFileInputDlg(cb.SelectedItem.ToString(), _dashboard);
+                        kfInput.ShowDialog();
+                    }
+                }
+            }
         }
     }
 }

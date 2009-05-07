@@ -111,9 +111,15 @@ namespace Ec2Bootstrapperlib
             if (_config == null)
                 throw new Exception("Not installed properly");
             KeyValueConfigurationElement keyElem = _config.AppSettings.Settings[key];
-            if(keyElem == null)
-                throw new Exception("Not installed properly");
-            keyElem.Value = value;
+            if (keyElem == null)
+            {
+                _config.AppSettings.Settings.Add(key, value);
+                //throw new Exception("Not installed properly");
+            }
+            else
+            {
+                keyElem.Value = value;
+            }
         }
 
         public void commit()
@@ -121,6 +127,23 @@ namespace Ec2Bootstrapperlib
             if (_config == null)
                 throw new Exception("Not installed properly");
             _config.Save(ConfigurationSaveMode.Modified);
+        }
+
+        public string getKeyFilePath(string keyName)
+        {
+            try
+            {
+                return read(keyName);
+            }
+            catch (Exception)
+            {
+            }
+            return "";
+        }
+
+        public void setKeyFilePath(string keyName, string keyFilePath)
+        {
+            write(keyName, keyFilePath);
         }
     }
 }
