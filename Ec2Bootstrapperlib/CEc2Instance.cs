@@ -16,7 +16,7 @@ namespace Ec2Bootstrapperlib
 {
     public class CEc2Instance
     {
-        const string jwAmiImageId = "ami-0eb25467"; //"ami-0529ce6c";// 
+        const string jwAmiImageId = "ami-6dbd5b04"; //"ami-0529ce6c";// 
         const string jwCertFile                   = "server.crt";
         const string jwSecurityGroupName          = "JWSecureEc2FileLoad";
         const string jwSecurityGroupDescription   = "Used for msi upload";
@@ -135,7 +135,7 @@ namespace Ec2Bootstrapperlib
                     "      Security Groups: " + securityGroups + Environment.NewLine +
                     "      Type: " + type + Environment.NewLine +
                     "      Status: " + status + Environment.NewLine +
-                    "      Key Pair Name: " + keyPairName;
+                    "      Key Pair Name: " + _keyPairName;
             }
         }
 
@@ -174,6 +174,55 @@ namespace Ec2Bootstrapperlib
             get { return jwAmiImageId; }
         }
 
+        private bool securitryGroupExistOnServer()
+        {
+            bool exist = false;
+            CEc2Service serv = new CEc2Service(_awsConfig);
+            List<string> sgs = serv.descrbibeSecurityGroups();
+            foreach (string sg in sgs)
+            {
+                if (string.Compare(sg, _securityGroups) == 0)
+                {
+                    exist = true;
+                    break;
+                }
+            }
+            return exist;
+        }
+
+        private bool keyExistOnServer()
+        {
+            bool exist = false;
+            CEc2Service serv = new CEc2Service(_awsConfig);
+            List<string> kps = serv.descrbibeKeyPairs();
+            foreach (string kp in kps)
+            {
+                if (string.Compare(kp, _keyPairName) == 0)
+                {
+                    exist = true;
+                    break;
+                }
+            }
+
+            if (exist == true)
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Filter = "PEM files (*.pem)|*.pem";
+                ofd.InitialDirectory = CAwsConfig.getEc2BootstrapperDirectory();
+                ofd.Title = "Select private key file for " + _keyPairName;
+                if (System.Windows.Forms.DialogResult.OK == ofd.ShowDialog())
+                {
+                    _awsConfig.setKeyFilePath(_keyPairName, ofd.FileName);
+                    _awsConfig.commit();
+                }
+                else
+                {
+                    throw new Exception("key " + _keyPairName + " is not associated its key file.");
+                }
+            }
+            return exist;
+        }
+
         public void launch()
         {
             //instance started.
@@ -196,36 +245,25 @@ namespace Ec2Bootstrapperlib
                 }
                 else
                 {
-                    bool newSecurityGroup = true;
-                    //have a chance that this security group is not created yet.
-                    CEc2Service serv = new CEc2Service(_awsConfig);
-                    List<string> sgs = serv.descrbibeSecurityGroups();
-                    foreach (string sg in sgs)
-                    {
-                        if (string.Compare(sg, _securityGroups) == 0)
-                        {
-                            request.SecurityGroup.Add(_securityGroups);
-                            newSecurityGroup = false;
-                            break;
-                        }
-                    }
-                    if (newSecurityGroup == true)
+                    if(securitryGroupExistOnServer() == false)
                     {
                         createSecurityGroup();
-                        request.SecurityGroup.Add(_securityGroups);
                     }
+                    request.SecurityGroup.Add(_securityGroups);
                 }
 
-                string keyPath = _awsConfig.getKeyFilePath(keyPairName);
+                string keyPath = _awsConfig.getKeyFilePath(_keyPairName);
                 if (string.IsNullOrEmpty(keyPath) == true ||
                     File.Exists(keyPath) == false)
                 {
-                    createKayPair();
+                    if (keyExistOnServer() == false)
+                    {
+                        createKayPair();
+                    }
                 }
-                request.KeyName = keyPairName;
+                request.KeyName = _keyPairName;
 
                 RunInstancesResponse response = _service.RunInstances(request);
-
                 if (response.IsSetRunInstancesResult())
                 {
                     RunInstancesResult runInstancesResult = response.RunInstancesResult;
@@ -292,7 +330,16 @@ namespace Ec2Bootstrapperlib
             {
                 waitForPortReady();
 
-                string keyPath = _awsConfig.getKeyFilePath(keyPairName);
+                string keyPath = _awsConfig.getKeyFilePath(_keyPairName);
+                if (string.IsNullOrEmpty(keyPath) == true ||
+                    File.Exists(keyPath) == false)
+                {
+                    if (keyExistOnServer() == true)
+                    {
+                        keyPath = _awsConfig.getKeyFilePath(_keyPairName);
+                    }
+                }
+
                 if (string.IsNullOrEmpty(keyPath) == true ||
                     File.Exists(keyPath) == false)
                 {
@@ -659,7 +706,6 @@ namespace Ec2Bootstrapperlib
         {
             try
             {
-                //check if key pair exists; 
                 string keyFileDir = CAwsConfig.getEc2BootstrapperDirectory();
                 if(Directory.Exists(keyFileDir) == false)
                 {
@@ -677,7 +723,7 @@ namespace Ec2Bootstrapperlib
                 {
                     if (folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        keyFilePath = folder.SelectedPath + "\\" + keyPairName + ".pem";
+                        keyFilePath = folder.SelectedPath + "\\" + _keyPairName + ".pem";
                         if (File.Exists(keyFilePath))
                         {
                             result = MessageBox.Show(null, "Key file " + keyFilePath + " exists. Do you want to overwrite it?", "Key File", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -690,7 +736,7 @@ namespace Ec2Bootstrapperlib
                 }
 
                 CreateKeyPairRequest request = new CreateKeyPairRequest();
-                request.KeyName = jwKeyPairName;
+                request.KeyName = _keyPairName;
                 CreateKeyPairResponse response = _service.CreateKeyPair(request);
                 if (response.IsSetCreateKeyPairResult())
                 {
@@ -706,7 +752,7 @@ namespace Ec2Bootstrapperlib
                                 byte[] fileData = new UTF8Encoding(true).GetBytes(keyPair.KeyMaterial);
 
                                 stream.Write(fileData, 0, fileData.Length);
-                                _awsConfig.setKeyFilePath(keyPairName, keyFilePath);
+                                _awsConfig.setKeyFilePath(_keyPairName, keyFilePath);
                                 _awsConfig.commit();
                             }
                         }

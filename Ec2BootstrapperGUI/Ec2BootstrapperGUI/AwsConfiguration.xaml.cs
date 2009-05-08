@@ -84,7 +84,17 @@ namespace Ec2BootstrapperGUI
         {
             string dir = getDirectoryPath("Please select the directory where EC2 was installed");
             if (string.IsNullOrEmpty(dir) == false)
-                Ec2Home.Text = dir;
+            {
+                if (File.Exists(dir + @"\bin\ec2-get-password.cmd") == false)
+                {
+                    dir = getDirectoryPath("Invalid EC2 Home folder. Please select the directory where EC2 was installed.");
+                }
+
+                if (File.Exists(dir + @"\bin\ec2-get-password.cmd") == true)
+                {
+                    Ec2Home.Text = dir;
+                }
+            }
         }
 
         private void ec2UserPrivKeyBt_Click(object sender, RoutedEventArgs e)
@@ -98,7 +108,17 @@ namespace Ec2BootstrapperGUI
         {
             string dir = getDirectoryPath("Please select the directory where Java was installed.");
             if (string.IsNullOrEmpty(dir) == false)
-                JavaHome.Text = dir;
+            {
+                if (File.Exists(dir + @"\bin\java.exe") == false)
+                {
+                    dir = getDirectoryPath("Invalid Java Home folder. Please select the directory where Java was installed.");
+                }
+
+                if (File.Exists(dir + @"\bin\java.exe") == true)
+                {
+                    JavaHome.Text = dir;
+                }
+            }
         }
 
         string getFilePath(string title)

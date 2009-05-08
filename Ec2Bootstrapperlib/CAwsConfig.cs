@@ -9,13 +9,6 @@ namespace Ec2Bootstrapperlib
 {
     public class CAwsConfig
     {
-        string _awsAccessKey;
-        string _awsSecretKey;
-        string _ec2CertPath;
-        string _ec2Home;
-        string _ec2UserPrivateKeyFile;
-        string _javaHome;
-
         Configuration _config;
 
         public CAwsConfig()
@@ -27,8 +20,6 @@ namespace Ec2Bootstrapperlib
 
                 configFile += "\\" + thisExe + ".config";
                 _config = ConfigurationManager.OpenExeConfiguration(configFile);
-
-                readAll();
             }
             catch (Exception)
             {
@@ -43,53 +34,54 @@ namespace Ec2Bootstrapperlib
 
         public string awsAccessKey
         {
-            get { return _awsAccessKey; }
+            get { return read("AwsAccessKey"); }
         }
 
         public string awsSecretKey
         {
-            get { return _awsSecretKey; }
+            get { return read("AwsSecretKey"); }
         }
 
         public string ec2CertPath
         {
-            get { return _ec2CertPath; }
+            get { return read("Ec2CertPath"); }
         }
 
         public string ec2Home
         {
-            get { return _ec2Home; }
+            get { return read("Ec2Home"); }
         }
 
         public string ec2UserPrivateKeyFile
         {
-            get { return _ec2UserPrivateKeyFile; }
+            get { return read("Ec2UserPrivateKey"); }
         }
 
         public string javaHome
         {
-            get { return _javaHome; }
-        }
-
-        void readAll()
-        {
-            _awsAccessKey = read("AwsAccessKey");
-            _awsSecretKey = read("AwsSecretKey");
-            _ec2CertPath = read("Ec2CertPath");
-            _ec2Home = read("Ec2Home");
-            _ec2UserPrivateKeyFile = read("Ec2UserPrivateKey");
-            _javaHome = read("JavaHome");
+            get { return read("JavaHome"); }
         }
 
         public bool isConfigured()
         {
             try
             {
-                return !(string.IsNullOrEmpty(_ec2Home) ||
-                   string.IsNullOrEmpty(_awsSecretKey)  ||
-                   string.IsNullOrEmpty(_awsAccessKey)  ||
-                   string.IsNullOrEmpty(_ec2CertPath)   ||
-                   string.IsNullOrEmpty(_javaHome));
+                bool configured = !(string.IsNullOrEmpty(ec2Home) ||
+                   string.IsNullOrEmpty(awsSecretKey) ||
+                   string.IsNullOrEmpty(awsAccessKey) ||
+                   string.IsNullOrEmpty(ec2CertPath) ||
+                   string.IsNullOrEmpty(javaHome));
+                if(configured == false)
+                    return false;
+                
+                //check by picking an script file
+                if(File.Exists(ec2Home + @"\bin\ec2-get-password.cmd") == false)
+                    return false;
+
+                if (File.Exists(javaHome + @"\bin\java.exe") == false)
+                    return false;
+
+                return true;
             }
             catch (Exception)
             {
@@ -102,7 +94,7 @@ namespace Ec2Bootstrapperlib
             if (_config == null)
                 throw new Exception("Not installed properly");
             if (_config.AppSettings.Settings[key] == null)
-                throw new Exception("Not installed properly");
+                return null;
             return _config.AppSettings.Settings[key].Value;
         }
 
@@ -114,7 +106,6 @@ namespace Ec2Bootstrapperlib
             if (keyElem == null)
             {
                 _config.AppSettings.Settings.Add(key, value);
-                //throw new Exception("Not installed properly");
             }
             else
             {
