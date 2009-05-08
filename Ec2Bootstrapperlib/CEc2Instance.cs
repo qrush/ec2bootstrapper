@@ -421,6 +421,7 @@ namespace Ec2Bootstrapperlib
 
                     OpenFileDialog ofd = new OpenFileDialog();
                     ofd.Filter = "MSI files (*.msi)|*.msi";
+                    ofd.Title = "Select your setup program to install on EC2 instance:"; 
                     if (DialogResult.OK != ofd.ShowDialog())
                     {
                         throw new Exception("Error: open file dialog failed");
@@ -706,6 +707,7 @@ namespace Ec2Bootstrapperlib
 
                                 stream.Write(fileData, 0, fileData.Length);
                                 _awsConfig.setKeyFilePath(keyPairName, keyFilePath);
+                                _awsConfig.commit();
                             }
                         }
                     }

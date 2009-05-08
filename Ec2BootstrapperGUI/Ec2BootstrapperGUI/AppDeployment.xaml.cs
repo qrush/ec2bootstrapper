@@ -177,6 +177,7 @@ namespace Ec2BootstrapperGUI
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "MSI files (*.msi)|*.msi";
+            ofd.Title = "Select your setup program to install on EC2 instance:"; 
             if (System.Windows.Forms.DialogResult.OK == ofd.ShowDialog())
             {
                 msiPath.Focus();
