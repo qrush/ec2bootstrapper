@@ -329,12 +329,13 @@ namespace Ec2BootstrapperGUI
             {
                 if (string.Compare(inst.imageId, CEc2Instance.deployableAmiImageId, true) == 0)
                 {
-                    _dashboard.DeployMenu.IsEnabled = true;
+                    if (string.Compare(inst.status, "running") == 0)
+                    {
+                        _dashboard.DeployMenu.IsEnabled = true;
+                        return;
+                    }
                 }
-                else
-                {
-                    _dashboard.DeployMenu.IsEnabled = false;
-                }
+                _dashboard.DeployMenu.IsEnabled = false;
             }
         }
     }
