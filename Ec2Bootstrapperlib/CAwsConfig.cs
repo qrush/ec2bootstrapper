@@ -70,7 +70,8 @@ namespace Ec2Bootstrapperlib
                    string.IsNullOrEmpty(awsSecretKey) ||
                    string.IsNullOrEmpty(awsAccessKey) ||
                    string.IsNullOrEmpty(ec2CertPath) ||
-                   string.IsNullOrEmpty(javaHome));
+                   string.IsNullOrEmpty(javaHome) ||
+                   string.IsNullOrEmpty(ec2UserPrivateKeyFile));
                 if(configured == false)
                     return false;
                 
@@ -79,6 +80,12 @@ namespace Ec2Bootstrapperlib
                     return false;
 
                 if (File.Exists(javaHome + @"\bin\java.exe") == false)
+                    return false;
+
+                if (File.Exists(ec2UserPrivateKeyFile) == false)
+                    return false;
+
+                if (File.Exists(ec2CertPath) == false)
                     return false;
 
                 return true;

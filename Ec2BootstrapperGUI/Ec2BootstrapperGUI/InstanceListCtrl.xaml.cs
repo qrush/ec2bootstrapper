@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using Ec2Bootstrapperlib;
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.IO;
 
 namespace Ec2BootstrapperGUI
 {
@@ -128,11 +129,15 @@ namespace Ec2BootstrapperGUI
                 if (ins != null)
                 {
                     //check key file 
-                    if (string.IsNullOrEmpty(_dashboard.awsConfig.getKeyFilePath(ins.keyPairName)) == true)
+                    string keyFile = _dashboard.awsConfig.getKeyFilePath(ins.keyPairName);
+                    if (string.IsNullOrEmpty(keyFile) == true ||
+                        File.Exists(keyFile) == false)
                     {
                         KeyFileInputDlg kfInput = new KeyFileInputDlg(ins.keyPairName, _dashboard);
                         kfInput.ShowDialog();
-                        if (string.IsNullOrEmpty(_dashboard.awsConfig.getKeyFilePath(ins.keyPairName)) == true)
+                        keyFile = _dashboard.awsConfig.getKeyFilePath(ins.keyPairName);
+                        if (string.IsNullOrEmpty(keyFile) == true ||
+                            File.Exists(keyFile) == false)
                         {
                             MessageBox.Show("Cannot find the key file.", "Get Password", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;

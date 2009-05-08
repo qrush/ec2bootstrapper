@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using System.Threading;
 using Ec2Bootstrapperlib;
 using System.Windows.Media.Animation;
+using System.IO;
 
 namespace Ec2BootstrapperGUI
 {
@@ -39,6 +40,9 @@ namespace Ec2BootstrapperGUI
             _securityGroups = new List<string>();
             _zones = new List<string>();
             LaunchProgBar.Visibility = Visibility.Hidden;
+            KeyPairComb.IsEnabled = false;
+            SecurityGroupComb.IsEnabled = false;
+            ZoneComb.IsEnabled = false;
         }
 
         public List<string> keyPairs
@@ -176,6 +180,9 @@ namespace Ec2BootstrapperGUI
             LaunchProgBar.Visibility = Visibility.Hidden;
             StatusDesc.Content = ConstantString.Done;
             LaunchButton.IsEnabled = true;
+            KeyPairComb.IsEnabled = true;
+            SecurityGroupComb.IsEnabled = true;
+            ZoneComb.IsEnabled = true;
         }
 
         private void launch()
@@ -214,13 +221,15 @@ namespace Ec2BootstrapperGUI
                 if (string.IsNullOrEmpty(_selectedKeyPair) == false)
                 {
                     string keyFile = _dashboard.awsConfig.getKeyFilePath(_selectedKeyPair);
-                    if (string.IsNullOrEmpty(keyFile) == true)
+                    if (string.IsNullOrEmpty(keyFile) == true ||
+                        File.Exists(keyFile) == false)
                     {
                         KeyFileInputDlg kfInput = new KeyFileInputDlg(_selectedKeyPair, _dashboard);
                         kfInput.ShowDialog();
                     }
                     keyFile = _dashboard.awsConfig.getKeyFilePath(_selectedKeyPair);
-                    if (string.IsNullOrEmpty(keyFile) == true)
+                    if (string.IsNullOrEmpty(keyFile) == true ||
+                        File.Exists(keyFile) == false)
                     {
                         //cannot continue. we need the key path
                         return;
@@ -246,7 +255,8 @@ namespace Ec2BootstrapperGUI
                 if (cb.SelectedItem != null)
                 {
                     string keyFile = _dashboard.awsConfig.getKeyFilePath(cb.SelectedItem.ToString());
-                    if (string.IsNullOrEmpty(keyFile) == true)
+                    if (string.IsNullOrEmpty(keyFile) == true ||
+                        File.Exists(keyFile) == false)
                     {
                         KeyFileInputDlg kfInput = new KeyFileInputDlg(cb.SelectedItem.ToString(), _dashboard);
                         kfInput.ShowDialog();
