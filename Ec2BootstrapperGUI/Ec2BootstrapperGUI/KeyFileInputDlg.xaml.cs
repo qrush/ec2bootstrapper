@@ -19,13 +19,11 @@ namespace Ec2BootstrapperGUI
 	/// </summary>
 	public partial class KeyFileInputDlg : Window
 	{
-        Dashboard _dashboard;
         string _keyName;
-        public KeyFileInputDlg(string keyName, Dashboard db)
+        public KeyFileInputDlg(string keyName)
 		{
 			this.InitializeComponent();
 
-            _dashboard = db;
             _keyName = keyName;
             keyPathInstruction.Text = keyPathInstruction.Text + keyName + ":";
 		}
@@ -48,12 +46,11 @@ namespace Ec2BootstrapperGUI
 
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_dashboard != null &&
-                string.IsNullOrEmpty(_keyName) == false &&
+            if (string.IsNullOrEmpty(_keyName) == false &&
                 string.IsNullOrEmpty(keyPath.Text) == false)
             {
-                _dashboard.awsConfig.setKeyFilePath(_keyName, keyPath.Text);
-                _dashboard.awsConfig.commit();
+                CAwsConfig.Instance.setKeyFilePath(_keyName, keyPath.Text);
+                CAwsConfig.Instance.commit();
             }
             this.Close();
         }

@@ -21,25 +21,15 @@ namespace Ec2BootstrapperGUI
     /// </summary>
     public partial class Dashboard : Window
     {
-        //this is the only instance of config being used.
-        CAwsConfig _awsConfig;
-
         public Dashboard()
         {
             this.InitializeComponent();            
             checkConfig();
         }
 
-        public CAwsConfig awsConfig
-        {
-            get { return _awsConfig; }
-        }
-
         public void checkConfig()
         {
-            _awsConfig = new CAwsConfig();
-
-            if (_awsConfig.isConfigured())
+            if (CAwsConfig.Instance.isConfigured())
             {
                 showInstances();
             }
@@ -73,7 +63,6 @@ namespace Ec2BootstrapperGUI
         private void launchInstance_Click(object sender, RoutedEventArgs e)
         {
             AmiPicker newInstance = new AmiPicker();
-            newInstance.dashboard = this;
             newInstance.Show();
         }
 

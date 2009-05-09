@@ -30,7 +30,6 @@ namespace Ec2BootstrapperGUI
         string _selectedKeyPair;
         string _selectedSecurityGroups;
         string _selectedZone;
-        Dashboard _dashboard;
         Thread launchThread = null;
 
         public InstanceLauncher()
@@ -43,6 +42,7 @@ namespace Ec2BootstrapperGUI
             KeyPairComb.IsEnabled = false;
             SecurityGroupComb.IsEnabled = false;
             ZoneComb.IsEnabled = false;
+            fetchInformationFromAms();
         }
 
         public List<string> keyPairs
@@ -74,7 +74,7 @@ namespace Ec2BootstrapperGUI
         {
             try
             {
-                CEc2Service serv = new CEc2Service(_dashboard.awsConfig);
+                CEc2Service serv = new CEc2Service();
                 if (_securityGroups.Count == 0)
                 {
                     List<string> sgs = serv.descrbibeSecurityGroups();
@@ -151,17 +151,6 @@ namespace Ec2BootstrapperGUI
             Small.IsChecked = !Medium.IsChecked;
         }
 
-        public Dashboard dashboard
-        {
-            set
-            {
-                _dashboard = value;
-                //once dashboard set, we have access to config info
-                //hence we can fetch information from ams
-                fetchInformationFromAms();
-            }
-        }
-
         private void enableProgressBar()
         {
             LaunchButton.IsEnabled = false;
@@ -189,7 +178,7 @@ namespace Ec2BootstrapperGUI
         {
             try
             {
-                CEc2Instance inst = new CEc2Instance(_dashboard.awsConfig);
+                CEc2Instance inst = new CEc2Instance();
                 inst.imageId = _amiId;
                 if(string.IsNullOrEmpty(_selectedKeyPair) == false)
                     inst.keyPairName = _selectedKeyPair;
@@ -220,14 +209,14 @@ namespace Ec2BootstrapperGUI
                 _selectedKeyPair = KeyPairComb.SelectedValue.ToString();
                 if (string.IsNullOrEmpty(_selectedKeyPair) == false)
                 {
-                    string keyFile = _dashboard.awsConfig.getKeyFilePath(_selectedKeyPair);
+                    string keyFile = CAwsConfig.Instance.getKeyFilePath(_selectedKeyPair);
                     if (string.IsNullOrEmpty(keyFile) == true ||
                         File.Exists(keyFile) == false)
                     {
-                        KeyFileInputDlg kfInput = new KeyFileInputDlg(_selectedKeyPair, _dashboard);
+                        KeyFileInputDlg kfInput = new KeyFileInputDlg(_selectedKeyPair);
                         kfInput.ShowDialog();
                     }
-                    keyFile = _dashboard.awsConfig.getKeyFilePath(_selectedKeyPair);
+                    keyFile = CAwsConfig.Instance.getKeyFilePath(_selectedKeyPair);
                     if (string.IsNullOrEmpty(keyFile) == true ||
                         File.Exists(keyFile) == false)
                     {
@@ -254,11 +243,11 @@ namespace Ec2BootstrapperGUI
             {
                 if (cb.SelectedItem != null)
                 {
-                    string keyFile = _dashboard.awsConfig.getKeyFilePath(cb.SelectedItem.ToString());
+                    string keyFile = CAwsConfig.Instance.getKeyFilePath(cb.SelectedItem.ToString());
                     if (string.IsNullOrEmpty(keyFile) == true ||
                         File.Exists(keyFile) == false)
                     {
-                        KeyFileInputDlg kfInput = new KeyFileInputDlg(cb.SelectedItem.ToString(), _dashboard);
+                        KeyFileInputDlg kfInput = new KeyFileInputDlg(cb.SelectedItem.ToString());
                         kfInput.ShowDialog();
                     }
                 }

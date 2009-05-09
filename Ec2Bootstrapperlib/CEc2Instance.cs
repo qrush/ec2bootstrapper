@@ -177,7 +177,7 @@ namespace Ec2Bootstrapperlib
         private bool securitryGroupExistOnServer()
         {
             bool exist = false;
-            CEc2Service serv = new CEc2Service(_awsConfig);
+            CEc2Service serv = new CEc2Service();
             List<string> sgs = serv.descrbibeSecurityGroups();
             foreach (string sg in sgs)
             {
@@ -193,7 +193,7 @@ namespace Ec2Bootstrapperlib
         private bool keyExistOnServer()
         {
             bool exist = false;
-            CEc2Service serv = new CEc2Service(_awsConfig);
+            CEc2Service serv = new CEc2Service();
             List<string> kps = serv.descrbibeKeyPairs();
             foreach (string kp in kps)
             {

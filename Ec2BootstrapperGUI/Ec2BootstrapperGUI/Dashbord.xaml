@@ -30,6 +30,8 @@
 				<MenuItem Header="AWS Configuration..." Click="configureMenu_Click"/>
                 <Separator/>
                 <MenuItem Header="Remote Desktop Connection" Click="remoteConnect_Click"/>
+                <Separator/>
+                <MenuItem Header="Enable Debug Log"   />
 			</MenuItem>
 			<MenuItem Header="Help">
 				<MenuItem Name="About" Header="About EC2 Bootstrapper" Click="aboutMenu_Click"/>

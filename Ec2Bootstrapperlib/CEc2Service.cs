@@ -12,12 +12,10 @@ namespace Ec2Bootstrapperlib
     public class CEc2Service
     {
         AmazonEC2 _service;
-        CAwsConfig _awsConfig;
 
-        public CEc2Service(CAwsConfig amsConfig)
+        public CEc2Service()
         {
-            _awsConfig = amsConfig;
-            _service = new AmazonEC2Client(_awsConfig.awsAccessKey, _awsConfig.awsSecretKey);
+            _service = new AmazonEC2Client(CAwsConfig.Instance.awsAccessKey, CAwsConfig.Instance.awsSecretKey);
         }
 
         public void terminate(string instanceId)
@@ -194,7 +192,7 @@ namespace Ec2Bootstrapperlib
                         List<RunningInstance> runningInstanceList = reservation.RunningInstance;
                         foreach (RunningInstance runningInstance in runningInstanceList) 
                         {
-                            CEc2Instance inst = new CEc2Instance(_awsConfig);
+                            CEc2Instance inst = new CEc2Instance();
 
                             if (runningInstance.IsSetInstanceId()) 
                                 inst.instanceId = runningInstance.InstanceId;

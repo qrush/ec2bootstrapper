@@ -27,8 +27,6 @@ namespace Ec2BootstrapperGUI
         List<CEc2Ami> _myAmis;
         CBeginInvokeOC<CEc2Ami> _amis;
 
-        Dashboard _dashboard;
-
         public AmiPicker()
         {
             this.InitializeComponent();
@@ -37,11 +35,6 @@ namespace Ec2BootstrapperGUI
 
             NextButton.IsEnabled = false;
             AmiProgBar.Visibility = Visibility.Hidden;
-        }
-
-        public Dashboard dashboard
-        {
-            set { _dashboard = value; }
         }
 
         public CBeginInvokeOC<CEc2Ami> amis
@@ -56,7 +49,7 @@ namespace Ec2BootstrapperGUI
         {
             if (_commAmis == null || _commAmis.Count == 0)
             {
-                CEc2Service serv = new CEc2Service(_dashboard.awsConfig);
+                CEc2Service serv = new CEc2Service();
                 _commAmis = serv.describeImages(null);
             }
         }
@@ -79,7 +72,7 @@ namespace Ec2BootstrapperGUI
         {
             if (_myAmis == null || _myAmis.Count == 0)
             {
-                CEc2Service serv = new CEc2Service(_dashboard.awsConfig);
+                CEc2Service serv = new CEc2Service();
                 _myAmis = serv.describeImages("self");
             }
         }
@@ -105,7 +98,6 @@ namespace Ec2BootstrapperGUI
             {
                 InstanceLauncher launcher = new InstanceLauncher();
                 launcher.amiPicker = this;
-                launcher.dashboard = _dashboard;
                 launcher.amiId = ((CEc2Ami)Amis.SelectedItem).imageId;
 
                 launcher.ShowDialog();

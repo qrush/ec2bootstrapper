@@ -72,7 +72,7 @@ namespace Ec2BootstrapperGUI
             {
                 if (_instances.Count == 0)
                 {
-                    CEc2Service serv = new CEc2Service(_dashboard.awsConfig);
+                    CEc2Service serv = new CEc2Service();
                     List<CEc2Instance> list = serv.describeInstances();
                     foreach (CEc2Instance inst in list)
                         _instances.Add(inst);
@@ -129,13 +129,13 @@ namespace Ec2BootstrapperGUI
                 if (ins != null)
                 {
                     //check key file 
-                    string keyFile = _dashboard.awsConfig.getKeyFilePath(ins.keyPairName);
+                    string keyFile = CAwsConfig.Instance.getKeyFilePath(ins.keyPairName);
                     if (string.IsNullOrEmpty(keyFile) == true ||
                         File.Exists(keyFile) == false)
                     {
-                        KeyFileInputDlg kfInput = new KeyFileInputDlg(ins.keyPairName, _dashboard);
+                        KeyFileInputDlg kfInput = new KeyFileInputDlg(ins.keyPairName);
                         kfInput.ShowDialog();
-                        keyFile = _dashboard.awsConfig.getKeyFilePath(ins.keyPairName);
+                        keyFile = CAwsConfig.Instance.getKeyFilePath(ins.keyPairName);
                         if (string.IsNullOrEmpty(keyFile) == true ||
                             File.Exists(keyFile) == false)
                         {
@@ -209,7 +209,7 @@ namespace Ec2BootstrapperGUI
                 string instanceId = CEc2Instance.getInsanceIdFromHeader(header);
                 if (!string.IsNullOrEmpty(instanceId))
                 {
-                    CEc2Service serv = new CEc2Service(_dashboard.awsConfig);
+                    CEc2Service serv = new CEc2Service();
                     serv.terminate(instanceId);
                 }
                 else

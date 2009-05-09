@@ -19,21 +19,19 @@ namespace Ec2BootstrapperGUI
     /// </summary>
     public partial class AwsConfiguration : Window
     {
-        CAwsConfig _config;
         Dashboard _dashboard;
 
         public AwsConfiguration()
         {
             this.InitializeComponent();
-            _config = new CAwsConfig();
             try
             {
-                AwsAccessKey.Text = _config.read("AwsAccessKey");
-                AwsSecretKey.Text = _config.read("AwsSecretKey");
-                Ec2CertPath.Text = _config.read("Ec2CertPath");
-                Ec2Home.Text = _config.read("Ec2Home");
-                Ec2UserPrivateKey.Text = _config.read("Ec2UserPrivateKey");
-                JavaHome.Text = _config.read("JavaHome");
+                AwsAccessKey.Text = CAwsConfig.Instance.read("AwsAccessKey");
+                AwsSecretKey.Text = CAwsConfig.Instance.read("AwsSecretKey");
+                Ec2CertPath.Text = CAwsConfig.Instance.read("Ec2CertPath");
+                Ec2Home.Text = CAwsConfig.Instance.read("Ec2Home");
+                Ec2UserPrivateKey.Text = CAwsConfig.Instance.read("Ec2UserPrivateKey");
+                JavaHome.Text = CAwsConfig.Instance.read("JavaHome");
             }
             catch (Exception ex)
             {
@@ -47,30 +45,65 @@ namespace Ec2BootstrapperGUI
             set { _dashboard = value; }
         }
 
-        private void saveButton_Click(object sender, RoutedEventArgs e)
-        {            
+        private void saveModificationAndClose()
+        {
             try
             {
-                if (_config != null)
-                {
-                    _config.write("AwsAccessKey", AwsAccessKey.Text);
-                    _config.write("AwsSecretKey", AwsSecretKey.Text);
-                    _config.write("Ec2CertPath", Ec2CertPath.Text);
-                    _config.write("Ec2Home", Ec2Home.Text);
-                    _config.write("Ec2UserPrivateKey", Ec2UserPrivateKey.Text);
-                    _config.write("JavaHome", JavaHome.Text);
-                    _config.commit();
+                CAwsConfig.Instance.write("AwsAccessKey", AwsAccessKey.Text);
+                CAwsConfig.Instance.write("AwsSecretKey", AwsSecretKey.Text);
+                CAwsConfig.Instance.write("Ec2CertPath", Ec2CertPath.Text);
+                CAwsConfig.Instance.write("Ec2Home", Ec2Home.Text);
+                CAwsConfig.Instance.write("Ec2UserPrivateKey", Ec2UserPrivateKey.Text);
+                CAwsConfig.Instance.write("JavaHome", JavaHome.Text);
+                CAwsConfig.Instance.commit();
 
-                    if (_dashboard != null)
-                        _dashboard.checkConfig();
-
-                    this.Close();
-                }
+                if (_dashboard != null)
+                    _dashboard.checkConfig();
+                this.Close();
             }
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show(ex.Message);
             }
+        }
+
+        private bool verifyConfiguration()
+        {
+            //check by picking an script file
+            if (File.Exists(Ec2Home.Text + @"\bin\ec2-get-password.cmd") == false)
+            {
+                System.Windows.MessageBox.Show("Cannot find " + Ec2Home.Text + @"\bin\ec2-get-password.cmd. Please correct EC2 Home path.",
+                    "Incorrect Ec2Home", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (File.Exists(JavaHome.Text + @"\bin\java.exe") == false)
+            {
+                System.Windows.MessageBox.Show("Cannot find " + JavaHome.Text + @"\bin\java.exe. Please correct Java Home path.",
+                    "Incorrect JavaHome", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (File.Exists(Ec2UserPrivateKey.Text) == false)
+            {
+                System.Windows.MessageBox.Show("Cannot find " + Ec2UserPrivateKey.Text + ". Please correct EC2 User Private Key field.",
+                     "Incorrect Ec2 User Private Key File", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (File.Exists(Ec2CertPath.Text) == false)
+            {
+                System.Windows.MessageBox.Show("Cannot find " + Ec2CertPath.Text + ". Please correct EC2 Certificate field.",
+                     "Incorrect Ec2 User Certificate File", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
+        }
+
+        private void saveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(verifyConfiguration() == true)
+                saveModificationAndClose();
         }
 
         private void certPathBt_Click(object sender, RoutedEventArgs e)
@@ -179,6 +212,28 @@ namespace Ec2BootstrapperGUI
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SaveButton.IsEnabled == true)
+            {
+                System.Windows.MessageBoxResult result = System.Windows.MessageBox.Show("You have made changes to the configurations. Do you want to save your changes?",
+                    "Configuration", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (verifyConfiguration() == true)
+                        saveModificationAndClose();
+                }
+                else
+                {
+                    this.Close();
+                }
+            }
+            else
+            {
+                this.Close();
             }
         }
     }

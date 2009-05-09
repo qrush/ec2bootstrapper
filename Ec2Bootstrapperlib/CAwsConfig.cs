@@ -11,7 +11,7 @@ namespace Ec2Bootstrapperlib
     {
         Configuration _config;
 
-        public CAwsConfig()
+        private CAwsConfig()
         {
             try
             {
@@ -24,6 +24,11 @@ namespace Ec2Bootstrapperlib
             catch (Exception)
             {
             }
+        }
+
+        public static CAwsConfig Instance
+        {
+            get { return Nested.instance; }
         }
 
         static public string getEc2BootstrapperDirectory()
@@ -100,23 +105,31 @@ namespace Ec2Bootstrapperlib
         {
             if (_config == null)
                 throw new Exception("Not installed properly");
-            if (_config.AppSettings.Settings[key] == null)
-                return null;
-            return _config.AppSettings.Settings[key].Value;
+
+            lock (_config)
+            {
+                if (_config.AppSettings.Settings[key] == null)
+                    return null;
+                return _config.AppSettings.Settings[key].Value;
+            }
         }
 
         public void write(string key, string value)
         {
             if (_config == null)
                 throw new Exception("Not installed properly");
-            KeyValueConfigurationElement keyElem = _config.AppSettings.Settings[key];
-            if (keyElem == null)
+
+            lock (_config)
             {
-                _config.AppSettings.Settings.Add(key, value);
-            }
-            else
-            {
-                keyElem.Value = value;
+                KeyValueConfigurationElement keyElem = _config.AppSettings.Settings[key];
+                if (keyElem == null)
+                {
+                    _config.AppSettings.Settings.Add(key, value);
+                }
+                else
+                {
+                    keyElem.Value = value;
+                }
             }
         }
 
@@ -124,7 +137,11 @@ namespace Ec2Bootstrapperlib
         {
             if (_config == null)
                 throw new Exception("Not installed properly");
-            _config.Save(ConfigurationSaveMode.Modified);
+
+            lock (_config)
+            {
+                _config.Save(ConfigurationSaveMode.Modified);
+            }
         }
 
         public string getKeyFilePath(string keyName)
@@ -142,6 +159,15 @@ namespace Ec2Bootstrapperlib
         public void setKeyFilePath(string keyName, string keyFilePath)
         {
             write(keyName, keyFilePath);
+        }
+
+
+        class Nested
+        {
+            static Nested()
+            {
+            }
+            internal static readonly CAwsConfig instance = new CAwsConfig();
         }
     }
 }

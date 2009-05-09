@@ -70,13 +70,13 @@
                               Grid.ColumnSpan="2" 
                               Style="{StaticResource comboBoxStyle}" 
                               SelectionChanged="KeyPairComb_SelectionChanged"
-                              TabIndex="3"/>
+                              TabIndex="0"/>
                     <ComboBox Name="SecurityGroupComb" Grid.Row="5" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2"
                               ItemsSource="{Binding Path=securityGroups, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"
-                              Style="{StaticResource comboBoxStyle}" TabIndex="4"/>
+                              Style="{StaticResource comboBoxStyle}" TabIndex="1"/>
                     <ComboBox Name="ZoneComb" Grid.Row="6" Grid.Column="1" Margin="8,5,0,5" Grid.ColumnSpan="2" 
                               ItemsSource="{Binding Path=zones, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceLauncher}}, Mode=OneWay}"
-                              Style="{StaticResource comboBoxStyle}" TabIndex="5"/>
+                              Style="{StaticResource comboBoxStyle}" TabIndex="2"/>
                 </Grid>
             </Border>
             <Border Padding="5" Grid.Row="1">
@@ -91,8 +91,8 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Name="BackButton" Grid.Column="0" Content="Back"  Click="backButton_Click" Margin="88,0,82,0" />
-                    <Button Name="LaunchButton" Grid.Column="1" Content="Launch" Margin="88,0,82,0" Click="launchButton_Click" />
+                    <Button Name="BackButton" Grid.Column="0" TabIndex="4" Content="Back"  Click="backButton_Click" Margin="88,0,82,0" />
+                    <Button Name="LaunchButton" Grid.Column="1" TabIndex="3" Content="Launch" Margin="88,0,82,0" Click="launchButton_Click" />
                 </Grid>
             </Border>
         </Grid>
