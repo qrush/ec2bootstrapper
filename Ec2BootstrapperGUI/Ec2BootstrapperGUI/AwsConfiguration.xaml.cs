@@ -70,32 +70,54 @@ namespace Ec2BootstrapperGUI
 
         private bool verifyConfiguration()
         {
+            if (string.IsNullOrEmpty(AwsAccessKey.ActucalText) == true)
+            {
+                System.Windows.MessageBox.Show("AWS Access Key field cannot be empty. Please enter your access key.",
+                    "Incorrect Access Key", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(AwsSecretKey.ActucalText) == true)
+            {
+                System.Windows.MessageBox.Show("AWS Secret Key field cannot be empty. Please enter your secret key.",
+                    "Incorrect Secret", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
             //check by picking an script file
             if (File.Exists(Ec2Home.ActucalText + @"\bin\ec2-get-password.cmd") == false)
             {
-                System.Windows.MessageBox.Show("Cannot find " + Ec2Home.Text + @"\bin\ec2-get-password.cmd. Please correct EC2 Home path.",
+                System.Windows.MessageBox.Show("Cannot find " + Ec2Home.ActucalText + @"\bin\ec2-get-password.cmd. Please correct EC2 Home path.",
                     "Incorrect Ec2Home", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if(Ec2Home.UsePrompt == false)
+                    Ec2Home.Foreground = Brushes.Red;
                 return false;
             }
 
             if (File.Exists(JavaHome.ActucalText + @"\bin\java.exe") == false)
             {
-                System.Windows.MessageBox.Show("Cannot find " + JavaHome.Text + @"\bin\java.exe. Please correct Java Home path.",
+                System.Windows.MessageBox.Show("Cannot find " + JavaHome.ActucalText + @"\bin\java.exe. Please correct Java Home path.",
                     "Incorrect JavaHome", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (JavaHome.UsePrompt == false)
+                    JavaHome.Foreground = Brushes.Red;
                 return false;
             }
 
             if (File.Exists(Ec2UserPrivateKey.ActucalText) == false)
             {
-                System.Windows.MessageBox.Show("Cannot find " + Ec2UserPrivateKey.Text + ". Please correct EC2 User Private Key field.",
+                System.Windows.MessageBox.Show("Cannot find " + Ec2UserPrivateKey.ActucalText + ". Please correct EC2 User Private Key field.",
                      "Incorrect Ec2 User Private Key File", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (Ec2UserPrivateKey.UsePrompt == false)
+                    Ec2UserPrivateKey.Foreground = Brushes.Red;
                 return false;
             }
 
             if (File.Exists(Ec2CertPath.ActucalText) == false)
             {
-                System.Windows.MessageBox.Show("Cannot find " + Ec2CertPath.Text + ". Please correct EC2 Certificate field.",
+                System.Windows.MessageBox.Show("Cannot find " + Ec2CertPath.ActucalText + ". Please correct EC2 Certificate field.",
                      "Incorrect Ec2 User Certificate File", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (Ec2CertPath.UsePrompt == false)
+                    Ec2CertPath.Foreground = Brushes.Red;
                 return false;
             }
             return true;
@@ -112,8 +134,11 @@ namespace Ec2BootstrapperGUI
             string path = getFilePath("Please select your EC2 certificate file");
             if (string.IsNullOrEmpty(path) == false)
             {
-                Ec2CertPath.Text = path;
                 Ec2CertPath.Focus();
+                Ec2CertPath.Text = path;
+                //move the cursor to the end
+                Ec2CertPath.SelectionStart = Ec2CertPath.Text.Length;
+                Ec2CertPath.SelectionLength = 0;
             }
         }
 
@@ -131,6 +156,9 @@ namespace Ec2BootstrapperGUI
                 {
                     Ec2Home.Focus();
                     Ec2Home.Text = dir;
+                    //move the cursor to the end
+                    Ec2Home.SelectionStart = Ec2Home.Text.Length;
+                    Ec2Home.SelectionLength = 0;
                 }
             }
         }
@@ -142,6 +170,9 @@ namespace Ec2BootstrapperGUI
             {
                 Ec2UserPrivateKey.Focus();
                 Ec2UserPrivateKey.Text = path;
+                //move the cursor to the end
+                Ec2UserPrivateKey.SelectionStart = Ec2UserPrivateKey.Text.Length;
+                Ec2UserPrivateKey.SelectionLength = 0;
             }
         }
 
@@ -159,6 +190,9 @@ namespace Ec2BootstrapperGUI
                 {
                     JavaHome.Focus();
                     JavaHome.Text = dir;
+                    //move the cursor to the end
+                    JavaHome.SelectionStart = JavaHome.Text.Length;
+                    JavaHome.SelectionLength = 0;
                 }
             }
         }
@@ -196,6 +230,12 @@ namespace Ec2BootstrapperGUI
                 string.Compare(CAwsConfig.Instance.read("Ec2Home"), Ec2Home.ActucalText) != 0 ||
                 string.Compare(CAwsConfig.Instance.read("Ec2UserPrivateKey"), Ec2UserPrivateKey.ActucalText) != 0 ||
                 string.Compare(CAwsConfig.Instance.read("JavaHome"), JavaHome.ActucalText) != 0;
+
+            CueBannerTextBox tb = (CueBannerTextBox)sender;
+            if (tb.UsePrompt)
+                tb.Foreground = Brushes.Gray;
+            else
+                tb.Foreground = Brushes.Black;
         }
 
         private void textBox_LostFocus(object sender, RoutedEventArgs e)
