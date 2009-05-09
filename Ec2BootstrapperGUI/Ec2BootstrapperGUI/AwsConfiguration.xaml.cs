@@ -70,56 +70,111 @@ namespace Ec2BootstrapperGUI
 
         private bool verifyConfiguration()
         {
+            //access key
             if (string.IsNullOrEmpty(AwsAccessKey.ActucalText) == true)
             {
-                System.Windows.MessageBox.Show("AWS Access Key field cannot be empty. Please enter your access key.",
-                    "Incorrect Access Key", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Windows.MessageBox.Show(
+                    "AWS Access Key field cannot be empty. Please enter your access key.",
+                    "Incorrect Access Key", 
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
+            //secret key
             if (string.IsNullOrEmpty(AwsSecretKey.ActucalText) == true)
             {
-                System.Windows.MessageBox.Show("AWS Secret Key field cannot be empty. Please enter your secret key.",
-                    "Incorrect Secret", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Windows.MessageBox.Show(
+                    "AWS Secret Key field cannot be empty. Please enter your secret key.",
+                    "Incorrect Secret Key", 
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
-            //check by picking an script file
-            if (File.Exists(Ec2Home.ActucalText + @"\bin\ec2-get-password.cmd") == false)
+            //certificate path
+            if (string.IsNullOrEmpty(Ec2CertPath.ActucalText) == true)
             {
-                System.Windows.MessageBox.Show("Cannot find " + Ec2Home.ActucalText + @"\bin\ec2-get-password.cmd. Please correct EC2 Home path.",
-                    "Incorrect Ec2Home", MessageBoxButton.OK, MessageBoxImage.Warning);
-                if(Ec2Home.UsePrompt == false)
-                    Ec2Home.Foreground = Brushes.Red;
-                return false;
-            }
-
-            if (File.Exists(JavaHome.ActucalText + @"\bin\java.exe") == false)
-            {
-                System.Windows.MessageBox.Show("Cannot find " + JavaHome.ActucalText + @"\bin\java.exe. Please correct Java Home path.",
-                    "Incorrect JavaHome", MessageBoxButton.OK, MessageBoxImage.Warning);
-                if (JavaHome.UsePrompt == false)
-                    JavaHome.Foreground = Brushes.Red;
-                return false;
-            }
-
-            if (File.Exists(Ec2UserPrivateKey.ActucalText) == false)
-            {
-                System.Windows.MessageBox.Show("Cannot find " + Ec2UserPrivateKey.ActucalText + ". Please correct EC2 User Private Key field.",
-                     "Incorrect Ec2 User Private Key File", MessageBoxButton.OK, MessageBoxImage.Warning);
-                if (Ec2UserPrivateKey.UsePrompt == false)
-                    Ec2UserPrivateKey.Foreground = Brushes.Red;
+                System.Windows.MessageBox.Show(
+                    "Ec2 User Certificate field cannot be empty. Please enter the correct value.",
+                    "Incorrect EC2 User Certificate File",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
             if (File.Exists(Ec2CertPath.ActucalText) == false)
             {
-                System.Windows.MessageBox.Show("Cannot find " + Ec2CertPath.ActucalText + ". Please correct EC2 Certificate field.",
-                     "Incorrect Ec2 User Certificate File", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Windows.MessageBox.Show(
+                    "Cannot find " + Ec2CertPath.ActucalText + ". Please correct EC2 Certificate field.",
+                    "Incorrect EC2 User Certificate File",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
                 if (Ec2CertPath.UsePrompt == false)
                     Ec2CertPath.Foreground = Brushes.Red;
                 return false;
             }
+
+            //ec2 home
+            if (string.IsNullOrEmpty(Ec2Home.ActucalText) == true)
+            {
+                System.Windows.MessageBox.Show(
+                    "EC2 Home field cannot be empty. Please enter EC2 Home path.",
+                    "Incorrect EC2Home", 
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (File.Exists(Ec2Home.ActucalText + @"\bin\ec2-get-password.cmd") == false)
+            {
+                System.Windows.MessageBox.Show(
+                    "Cannot find " + Ec2Home.ActucalText + @"\bin\ec2-get-password.cmd. Please correct EC2 Home path.",
+                    "Incorrect EC2Home", 
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                if(Ec2Home.UsePrompt == false)
+                    Ec2Home.Foreground = Brushes.Red;
+                return false;
+            }
+
+            //user private key
+            if (string.IsNullOrEmpty(Ec2UserPrivateKey.ActucalText) == true)
+            {
+                System.Windows.MessageBox.Show(
+                    "EC2 User Private Key field cannot be empty. Please enter the correct value.",
+                    "Incorrect EC2 User Private Key File",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (File.Exists(Ec2UserPrivateKey.ActucalText) == false)
+            {
+                System.Windows.MessageBox.Show(
+                    "Cannot find " + Ec2UserPrivateKey.ActucalText + ". Please correct EC2 User Private Key field.",
+                    "Incorrect EC2 User Private Key File", 
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (Ec2UserPrivateKey.UsePrompt == false)
+                    Ec2UserPrivateKey.Foreground = Brushes.Red;
+                return false;
+            }
+
+            //java home
+            if (string.IsNullOrEmpty(JavaHome.ActucalText) == true)
+            {
+                System.Windows.MessageBox.Show(
+                    "Java Home field cannot be empty. Please enter Java Home path.",
+                    "Incorrect JavaHome",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (File.Exists(JavaHome.ActucalText + @"\bin\java.exe") == false)
+            {
+                System.Windows.MessageBox.Show(
+                    "Cannot find " + JavaHome.ActucalText + @"\bin\java.exe. Please correct Java Home path.",
+                    "Incorrect JavaHome",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                if (JavaHome.UsePrompt == false)
+                    JavaHome.Foreground = Brushes.Red;
+                return false;
+            }
+
             return true;
         }
 
