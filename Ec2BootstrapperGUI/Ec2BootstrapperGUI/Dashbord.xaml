@@ -18,20 +18,18 @@
         </Grid.RowDefinitions>
 		<Menu Grid.Row="0" VerticalAlignment="Top" >
 			<MenuItem Header="File">
-                <MenuItem Header="Launch Instance..." Click="launchInstance_Click"/>
+                <MenuItem Name="launchMenu" Header="Launch Instance..." Click="launchInstance_Click"/>
 				<MenuItem Name="DeployMenu" Header="Deploy..." Click="deploy_Click" IsEnabled="False"/>
                 <Separator/>
                 <MenuItem Header="Exit" Click="exit_Click"/>
 			</MenuItem>
 			<MenuItem Header="View">
-				<MenuItem Header="Refresh" Click="refreshMenu_Click"/>
+				<MenuItem Name="refreshMenu" Header="Refresh" Click="refreshMenu_Click"/>
 			</MenuItem>
 			<MenuItem Header="Tools">
-				<MenuItem Header="AWS Configuration..." Click="configureMenu_Click"/>
+				<MenuItem Name="configMenu" Header="AWS Configuration..." Click="configureMenu_Click"/>
                 <Separator/>
                 <MenuItem Header="Remote Desktop Connection" Click="remoteConnect_Click"/>
-                <Separator/>
-                <MenuItem Header="Enable Debug Log"   />
 			</MenuItem>
 			<MenuItem Header="Help">
 				<MenuItem Name="About" Header="About EC2 Bootstrapper" Click="aboutMenu_Click"/>

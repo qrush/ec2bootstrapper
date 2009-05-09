@@ -29,11 +29,28 @@ namespace Ec2BootstrapperGUI
 
         public void checkConfig()
         {
-            if (CAwsConfig.Instance.isConfigured())
+            bool bconfigured = false;
+            bool bconfigCrashed = false;
+
+            try
+            {
+                bconfigured = CAwsConfig.Instance.isConfigured();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "EC2 Bootstrapper", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                configMenu.IsEnabled = false;
+                launchMenu.IsEnabled = false;
+                refreshMenu.IsEnabled = false;
+                bconfigCrashed = true;
+            }
+
+            if(bconfigured == true)
             {
                 showInstances();
             }
-            else
+            else if(bconfigCrashed == false)
             {
                 ProgBar.Visibility = Visibility.Hidden;
 

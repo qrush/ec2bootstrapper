@@ -69,42 +69,35 @@ namespace Ec2Bootstrapperlib
 
         public bool isConfigured()
         {
-            try
-            {
-                bool configured = !(string.IsNullOrEmpty(ec2Home) ||
-                   string.IsNullOrEmpty(awsSecretKey) ||
-                   string.IsNullOrEmpty(awsAccessKey) ||
-                   string.IsNullOrEmpty(ec2CertPath) ||
-                   string.IsNullOrEmpty(javaHome) ||
-                   string.IsNullOrEmpty(ec2UserPrivateKeyFile));
-                if(configured == false)
-                    return false;
-                
-                //check by picking an script file
-                if(File.Exists(ec2Home + @"\bin\ec2-get-password.cmd") == false)
-                    return false;
+            bool configured = !(string.IsNullOrEmpty(ec2Home) ||
+               string.IsNullOrEmpty(awsSecretKey) ||
+               string.IsNullOrEmpty(awsAccessKey) ||
+               string.IsNullOrEmpty(ec2CertPath) ||
+               string.IsNullOrEmpty(javaHome) ||
+               string.IsNullOrEmpty(ec2UserPrivateKeyFile));
+            if(configured == false)
+                return false;
+            
+            //check by picking an script file
+            if(File.Exists(ec2Home + @"\bin\ec2-get-password.cmd") == false)
+                return false;
 
-                if (File.Exists(javaHome + @"\bin\java.exe") == false)
-                    return false;
+            if (File.Exists(javaHome + @"\bin\java.exe") == false)
+                return false;
 
-                if (File.Exists(ec2UserPrivateKeyFile) == false)
-                    return false;
+            if (File.Exists(ec2UserPrivateKeyFile) == false)
+                return false;
 
-                if (File.Exists(ec2CertPath) == false)
-                    return false;
+            if (File.Exists(ec2CertPath) == false)
+                return false;
 
-                return true;
-            }
-            catch (Exception)
-            {
-            }
-            return false;
+            return true;
         }
 
         public string read(string key)
         {
             if (_config == null)
-                throw new Exception("Not installed properly");
+                throw new Exception("EC2 Bootstrapper is not installed properly. Please re-install EC2 Bootstrapper.");
 
             lock (_config)
             {
@@ -117,7 +110,7 @@ namespace Ec2Bootstrapperlib
         public void write(string key, string value)
         {
             if (_config == null)
-                throw new Exception("Not installed properly");
+                throw new Exception("EC2 Bootstrapper is not installed properly. Please re-install EC2 Bootstrapper.");
 
             lock (_config)
             {
@@ -136,7 +129,7 @@ namespace Ec2Bootstrapperlib
         public void commit()
         {
             if (_config == null)
-                throw new Exception("Not installed properly");
+                throw new Exception("EC2 Bootstrapper is not installed properly. Please re-install EC2 Bootstrapper.");
 
             lock (_config)
             {
@@ -160,7 +153,6 @@ namespace Ec2Bootstrapperlib
         {
             write(keyName, keyFilePath);
         }
-
 
         class Nested
         {
