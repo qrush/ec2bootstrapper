@@ -49,16 +49,17 @@ namespace Ec2BootstrapperGUI
         {
             try
             {
-                CAwsConfig.Instance.write("AwsAccessKey", AwsAccessKey.Text);
-                CAwsConfig.Instance.write("AwsSecretKey", AwsSecretKey.Text);
-                CAwsConfig.Instance.write("Ec2CertPath", Ec2CertPath.Text);
-                CAwsConfig.Instance.write("Ec2Home", Ec2Home.Text);
-                CAwsConfig.Instance.write("Ec2UserPrivateKey", Ec2UserPrivateKey.Text);
-                CAwsConfig.Instance.write("JavaHome", JavaHome.Text);
+                CAwsConfig.Instance.write("AwsAccessKey", AwsAccessKey.ActucalText);
+                CAwsConfig.Instance.write("AwsSecretKey", AwsSecretKey.ActucalText);
+                CAwsConfig.Instance.write("Ec2CertPath", Ec2CertPath.ActucalText);
+                CAwsConfig.Instance.write("Ec2Home", Ec2Home.ActucalText);
+                CAwsConfig.Instance.write("Ec2UserPrivateKey", Ec2UserPrivateKey.ActucalText);
+                CAwsConfig.Instance.write("JavaHome", JavaHome.ActucalText);
                 CAwsConfig.Instance.commit();
 
                 if (_dashboard != null)
-                    _dashboard.checkConfig();
+                    _dashboard.configurationReady();
+
                 this.Close();
             }
             catch (Exception ex)
@@ -70,28 +71,28 @@ namespace Ec2BootstrapperGUI
         private bool verifyConfiguration()
         {
             //check by picking an script file
-            if (File.Exists(Ec2Home.Text + @"\bin\ec2-get-password.cmd") == false)
+            if (File.Exists(Ec2Home.ActucalText + @"\bin\ec2-get-password.cmd") == false)
             {
                 System.Windows.MessageBox.Show("Cannot find " + Ec2Home.Text + @"\bin\ec2-get-password.cmd. Please correct EC2 Home path.",
                     "Incorrect Ec2Home", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
-            if (File.Exists(JavaHome.Text + @"\bin\java.exe") == false)
+            if (File.Exists(JavaHome.ActucalText + @"\bin\java.exe") == false)
             {
                 System.Windows.MessageBox.Show("Cannot find " + JavaHome.Text + @"\bin\java.exe. Please correct Java Home path.",
                     "Incorrect JavaHome", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
-            if (File.Exists(Ec2UserPrivateKey.Text) == false)
+            if (File.Exists(Ec2UserPrivateKey.ActucalText) == false)
             {
                 System.Windows.MessageBox.Show("Cannot find " + Ec2UserPrivateKey.Text + ". Please correct EC2 User Private Key field.",
                      "Incorrect Ec2 User Private Key File", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
-            if (File.Exists(Ec2CertPath.Text) == false)
+            if (File.Exists(Ec2CertPath.ActucalText) == false)
             {
                 System.Windows.MessageBox.Show("Cannot find " + Ec2CertPath.Text + ". Please correct EC2 Certificate field.",
                      "Incorrect Ec2 User Certificate File", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -109,12 +110,15 @@ namespace Ec2BootstrapperGUI
         private void certPathBt_Click(object sender, RoutedEventArgs e)
         {
             string path = getFilePath("Please select your EC2 certificate file");
-            if(string.IsNullOrEmpty(path) == false)
+            if (string.IsNullOrEmpty(path) == false)
+            {
                 Ec2CertPath.Text = path;
+                Ec2CertPath.Focus();
+            }
         }
 
         private void ec2HomeBt_Click(object sender, RoutedEventArgs e)
-        {
+        {            
             string dir = getDirectoryPath("Please select the directory where EC2 was installed");
             if (string.IsNullOrEmpty(dir) == false)
             {
@@ -125,6 +129,7 @@ namespace Ec2BootstrapperGUI
 
                 if (File.Exists(dir + @"\bin\ec2-get-password.cmd") == true)
                 {
+                    Ec2Home.Focus();
                     Ec2Home.Text = dir;
                 }
             }
@@ -134,7 +139,10 @@ namespace Ec2BootstrapperGUI
         {
             string path = getFilePath("Please select your EC2 perivate key file");
             if (string.IsNullOrEmpty(path) == false)
+            {
+                Ec2UserPrivateKey.Focus();
                 Ec2UserPrivateKey.Text = path;
+            }
         }
 
         private void javaHomeBt_Click(object sender, RoutedEventArgs e)
@@ -149,6 +157,7 @@ namespace Ec2BootstrapperGUI
 
                 if (File.Exists(dir + @"\bin\java.exe") == true)
                 {
+                    JavaHome.Focus();
                     JavaHome.Text = dir;
                 }
             }
@@ -180,7 +189,13 @@ namespace Ec2BootstrapperGUI
 
         private void config_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SaveButton.IsEnabled = true;
+            SaveButton.IsEnabled =
+                string.Compare(CAwsConfig.Instance.read("AwsAccessKey"), AwsAccessKey.ActucalText) != 0 ||
+                string.Compare(CAwsConfig.Instance.read("AwsSecretKey"), AwsSecretKey.ActucalText) != 0 ||
+                string.Compare(CAwsConfig.Instance.read("Ec2CertPath"), Ec2CertPath.ActucalText) != 0 ||
+                string.Compare(CAwsConfig.Instance.read("Ec2Home"), Ec2Home.ActucalText) != 0 ||
+                string.Compare(CAwsConfig.Instance.read("Ec2UserPrivateKey"), Ec2UserPrivateKey.ActucalText) != 0 ||
+                string.Compare(CAwsConfig.Instance.read("JavaHome"), JavaHome.ActucalText) != 0;
         }
 
         private void textBox_LostFocus(object sender, RoutedEventArgs e)

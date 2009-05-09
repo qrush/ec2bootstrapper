@@ -102,7 +102,7 @@ namespace Ec2Bootstrapperlib
             lock (_config)
             {
                 if (_config.AppSettings.Settings[key] == null)
-                    return null;
+                    return "";
                 return _config.AppSettings.Settings[key].Value;
             }
         }

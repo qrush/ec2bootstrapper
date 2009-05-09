@@ -72,7 +72,7 @@ namespace Ec2BootstrapperGUI
             }
         }
 
-        private string ActucalText
+        public string ActucalText
         {
             get
             {

@@ -23,34 +23,36 @@ namespace Ec2BootstrapperGUI
     {
         public Dashboard()
         {
-            this.InitializeComponent();            
+            this.InitializeComponent();
+            configurationNotReady();
             checkConfig();
         }
 
         public void checkConfig()
         {
-            bool bconfigured = false;
-            bool bconfigCrashed = false;
+            bool configured = false;
+            bool configCrashed = false;
 
             try
             {
-                bconfigured = CAwsConfig.Instance.isConfigured();
+                configured = CAwsConfig.Instance.isConfigured();
             }
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show(ex.Message, "EC2 Bootstrapper", MessageBoxButton.OK,
                     MessageBoxImage.Error);
-                configMenu.IsEnabled = false;
-                launchMenu.IsEnabled = false;
-                refreshMenu.IsEnabled = false;
-                bconfigCrashed = true;
+                configCrashed = true;
             }
 
-            if(bconfigured == true)
+            if(configured == true)
             {
-                showInstances();
+                configurationReady();
             }
-            else if(bconfigCrashed == false)
+            else if (configCrashed == true)
+            {
+                configMenu.IsEnabled = false;
+            }
+            else
             {
                 ProgBar.Visibility = Visibility.Hidden;
 
@@ -58,6 +60,19 @@ namespace Ec2BootstrapperGUI
                 config.dashboard = this;
                 config.ShowDialog();
             }
+        }
+
+        public void configurationNotReady()
+        {
+            launchMenu.IsEnabled = false;
+            refreshMenu.IsEnabled = false;
+        }
+
+        public void configurationReady()
+        {
+            launchMenu.IsEnabled = true;
+            refreshMenu.IsEnabled = true;
+            showInstances();
         }
 
         private void showInstances()
