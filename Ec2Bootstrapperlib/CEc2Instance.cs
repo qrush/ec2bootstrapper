@@ -24,7 +24,6 @@ namespace Ec2Bootstrapperlib
         const string publicDnsTitle               = " Public DNS:";
         const string platformTitle                = " Platform:";
 
-        CAwsConfig _awsConfig;
         AmazonEC2 _service;
         string _instanceId;
         string _amiId;
@@ -109,16 +108,10 @@ namespace Ec2Bootstrapperlib
             }
         }
 
-        public CEc2Instance(CAwsConfig amsConfig)
-        {
-            setDefaults();
-            _awsConfig = amsConfig;
-            _service = new AmazonEC2Client(_awsConfig.awsAccessKey, _awsConfig.awsSecretKey);
-        }
-
         public CEc2Instance()
         {
             setDefaults();
+            _service = new AmazonEC2Client(CAwsConfig.Instance.awsAccessKey, CAwsConfig.Instance.awsSecretKey);
         }
 
         public string header
@@ -212,8 +205,8 @@ namespace Ec2Bootstrapperlib
                 ofd.Title = "Select private key file for " + _keyPairName;
                 if (System.Windows.Forms.DialogResult.OK == ofd.ShowDialog())
                 {
-                    _awsConfig.setKeyFilePath(_keyPairName, ofd.FileName);
-                    _awsConfig.commit();
+                    CAwsConfig.Instance.setKeyFilePath(_keyPairName, ofd.FileName);
+                    CAwsConfig.Instance.commit();
                 }
                 else
                 {
@@ -252,7 +245,7 @@ namespace Ec2Bootstrapperlib
                     request.SecurityGroup.Add(_securityGroups);
                 }
 
-                string keyPath = _awsConfig.getKeyFilePath(_keyPairName);
+                string keyPath = CAwsConfig.Instance.getKeyFilePath(_keyPairName);
                 if (string.IsNullOrEmpty(keyPath) == true ||
                     File.Exists(keyPath) == false)
                 {
@@ -330,13 +323,13 @@ namespace Ec2Bootstrapperlib
             {
                 waitForPortReady();
 
-                string keyPath = _awsConfig.getKeyFilePath(_keyPairName);
+                string keyPath = CAwsConfig.Instance.getKeyFilePath(_keyPairName);
                 if (string.IsNullOrEmpty(keyPath) == true ||
                     File.Exists(keyPath) == false)
                 {
                     if (keyExistOnServer() == true)
                     {
-                        keyPath = _awsConfig.getKeyFilePath(_keyPairName);
+                        keyPath = CAwsConfig.Instance.getKeyFilePath(_keyPairName);
                     }
                 }
 
@@ -352,16 +345,16 @@ namespace Ec2Bootstrapperlib
                         "cmd", @"/c ec2-get-password.cmd " +
                         _instanceId + " -k \"" + keyPath + "\"");
 
-                procStartInfo.WorkingDirectory = _awsConfig.ec2Home + @"\bin";
+                procStartInfo.WorkingDirectory = CAwsConfig.Instance.ec2Home + @"\bin";
 
                 if (!procStartInfo.EnvironmentVariables.ContainsKey("EC2_HOME"))
-                    procStartInfo.EnvironmentVariables.Add("EC2_HOME", _awsConfig.ec2Home);
+                    procStartInfo.EnvironmentVariables.Add("EC2_HOME", CAwsConfig.Instance.ec2Home);
                 if (!procStartInfo.EnvironmentVariables.ContainsKey("EC2_CERT"))
-                    procStartInfo.EnvironmentVariables.Add("EC2_CERT", _awsConfig.ec2CertPath);
+                    procStartInfo.EnvironmentVariables.Add("EC2_CERT", CAwsConfig.Instance.ec2CertPath);
                 if (!procStartInfo.EnvironmentVariables.ContainsKey("JAVA_HOME"))
-                    procStartInfo.EnvironmentVariables.Add("JAVA_HOME", _awsConfig.javaHome);
+                    procStartInfo.EnvironmentVariables.Add("JAVA_HOME", CAwsConfig.Instance.javaHome);
                 if (!procStartInfo.EnvironmentVariables.ContainsKey("EC2_PRIVATE_KEY"))
-                    procStartInfo.EnvironmentVariables.Add("EC2_PRIVATE_KEY", _awsConfig.ec2UserPrivateKeyFile);
+                    procStartInfo.EnvironmentVariables.Add("EC2_PRIVATE_KEY", CAwsConfig.Instance.ec2UserPrivateKeyFile);
 
                 //redirected to the Process.StandardOutput StreamReader.
                 procStartInfo.RedirectStandardOutput = true;
@@ -752,8 +745,8 @@ namespace Ec2Bootstrapperlib
                                 byte[] fileData = new UTF8Encoding(true).GetBytes(keyPair.KeyMaterial);
 
                                 stream.Write(fileData, 0, fileData.Length);
-                                _awsConfig.setKeyFilePath(_keyPairName, keyFilePath);
-                                _awsConfig.commit();
+                                CAwsConfig.Instance.setKeyFilePath(_keyPairName, keyFilePath);
+                                CAwsConfig.Instance.commit();
                             }
                         }
                     }
