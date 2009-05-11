@@ -26,13 +26,13 @@ namespace Ec2BootstrapperGUI
         string _msiPath;
         bool succeed = true;
         Thread oThread = null;
-        Dashboard _dashbord;
+        Dashboard _dashboard;
 
 		public AppDeployment(Dashboard db)
 		{
 			this.InitializeComponent();
             ProgBar.Visibility = Visibility.Hidden;
-            _dashbord = db;
+            _dashboard = db;
         }
 
         public CEc2Instance instance
@@ -114,18 +114,6 @@ namespace Ec2BootstrapperGUI
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (oThread != null)
-                {
-                    oThread.Abort();
-                    oThread.Join();
-                }
-            }
-            catch (Exception)
-            {
-            }
-
             this.Close();
         }
 
@@ -136,7 +124,7 @@ namespace Ec2BootstrapperGUI
             Duration duration = new Duration(TimeSpan.FromSeconds(10));
             DoubleAnimation doubleanimation = new DoubleAnimation(200.0, duration);
             ProgBar.BeginAnimation(System.Windows.Controls.ProgressBar.ValueProperty, doubleanimation);
-            _dashbord.stopStatusUpdate();
+            _dashboard.stopStatusUpdate();
         }
 
         private void disableProgressBar()
@@ -205,6 +193,26 @@ namespace Ec2BootstrapperGUI
             {
                 tb.UsePrompt = false;
                 tb.Text = string.Empty;
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                if (oThread != null)
+                {
+                    oThread.Abort();
+                    oThread.Join();
+                }
+                else
+                {
+                    //start status checking
+                    _dashboard.startStatusUpdate();
+                }
+            }
+            catch (Exception)
+            {
             }
         }
 	}

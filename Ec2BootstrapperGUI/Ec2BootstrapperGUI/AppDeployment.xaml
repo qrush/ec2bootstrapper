@@ -6,7 +6,8 @@
     xmlns:src="clr-namespace:Ec2BootstrapperGUI"
 	Title="Deploy Application"
 	Width="614" Height="319"
-    ResizeMode="NoResize">
+    ResizeMode="NoResize"
+    Closing="Window_Closing">
 
 	<Grid x:Name="LayoutRoot">
 		<TextBlock Name="Instruction" Margin="59,25,60,0" VerticalAlignment="Top" Height="40" Text="If you have changed the EC2 instance administrator's password, please enter the changed password here and then enter the program you want to install on the instance." TextWrapping="Wrap"/>
