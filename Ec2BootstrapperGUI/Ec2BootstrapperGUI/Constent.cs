@@ -18,5 +18,7 @@ namespace Ec2BootstrapperGUI
         public const string InstanceReady = "Wait for instance ready(~5 minutes)";
         public const string UploadMsi = "Uploading your msi file...";
         public const string ThreadAborted = "Thread aborted";
+        public const string LaunchFailed = "Launch failed";
+        public const string WaitingForExit = "Waiting for exit...";
     }
 }

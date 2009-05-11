@@ -77,7 +77,7 @@ namespace Ec2BootstrapperGUI
                 if (oThread != null)
                 {
                     oThread.Abort();
-                    oThread.Join();
+                    //oThread.Join();
                 }
             }
             catch (Exception)

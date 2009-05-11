@@ -11,6 +11,7 @@ using Amazon.EC2;
 using Amazon.EC2.Util;
 using Amazon.EC2.Model;
 using System.Threading;
+using System.Windows.Media;
 
 namespace Ec2Bootstrapperlib
 {
@@ -36,6 +37,7 @@ namespace Ec2Bootstrapperlib
         string _platform;
         string _keyPairName;
         bool _defaultSecurityGroup;
+        Brush _statusColor = Brushes.Yellow;
 
         public struct SDeployInfo
         {
@@ -97,6 +99,19 @@ namespace Ec2Bootstrapperlib
             set {_keyPairName = value; }
         }
 
+        public Brush statuscolor
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_publicDns) == true)
+                {
+                    _statusColor = Brushes.Red;
+                }
+                return _statusColor;
+            }
+            set { _statusColor = value; }
+        }
+
         private void setDefaults()
         {
             if (string.IsNullOrEmpty(_keyPairName) == true)
@@ -105,6 +120,39 @@ namespace Ec2Bootstrapperlib
             {
                 _securityGroups = jwSecurityGroupName;
                 _defaultSecurityGroup = true;
+            }
+        }
+
+        public bool updateWebStatus()
+        {
+            Brush currentCol;
+            try
+            {
+                if (string.IsNullOrEmpty(_publicDns) == false)
+                {
+                    System.Net.Sockets.TcpClient clnt = new System.Net.Sockets.TcpClient(_publicDns, 80);
+                    clnt.Close();
+
+                    currentCol = Brushes.Green;
+                }
+                else
+                {
+                    currentCol = Brushes.Red;
+                }
+            }
+            catch (System.Exception)
+            {
+                currentCol = Brushes.Red;
+            }
+
+            if (statuscolor == currentCol)
+            {
+                return false;
+            }
+            else
+            {
+                statuscolor = currentCol;
+                return true;
             }
         }
 

@@ -26,8 +26,9 @@ namespace Ec2BootstrapperGUI
         List<CEc2Ami> _quickAmis;
         List<CEc2Ami> _myAmis;
         CBeginInvokeOC<CEc2Ami> _amis;
+        Dashboard _dashboard;
 
-        public AmiPicker()
+        public AmiPicker(Dashboard db)
         {
             this.InitializeComponent();
             _amis = new CBeginInvokeOC<CEc2Ami>(this.Dispatcher);
@@ -35,6 +36,7 @@ namespace Ec2BootstrapperGUI
 
             NextButton.IsEnabled = false;
             AmiProgBar.Visibility = Visibility.Hidden;
+            _dashboard = db;
         }
 
         public CBeginInvokeOC<CEc2Ami> amis
@@ -96,7 +98,7 @@ namespace Ec2BootstrapperGUI
         {
             if (Amis.SelectedItem != null)
             {
-                InstanceLauncher launcher = new InstanceLauncher();
+                InstanceLauncher launcher = new InstanceLauncher(_dashboard);
                 launcher.amiPicker = this;
                 launcher.amiId = ((CEc2Ami)Amis.SelectedItem).imageId;
 

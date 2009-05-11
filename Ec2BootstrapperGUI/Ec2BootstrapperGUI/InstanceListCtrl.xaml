@@ -20,13 +20,17 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Expander Margin="0,0,8,0"
+                    <src:Circle Grid.Column="0" Width="20" Height="20" 
+                                FillIn="{Binding Path=statuscolor}"
+                                x:Name="instanceWebStatus"/>
+                    <Expander Grid.Column="1" Margin="0,0,8,0"
                               Header="{Binding Path=header}"
                               Content="{Binding Path=content}"
-                               Name="imageIdCol">
+                              Name="instanceItem">
                         <Expander.ContextMenu>
                             <ContextMenu Opened="contextMenu_Opened">
                                 <MenuItem Header="Get Administrator's Password" Click="password_Click"/>
@@ -55,7 +59,9 @@
         <StackPanel Grid.Row="1">
             <ListView Name="instancesLV" Margin="8,8,8,0" 
                     IsSynchronizedWithCurrentItem="True"
-                    ItemsSource="{Binding Path=instances, RelativeSource={RelativeSource AncestorType={x:Type src:InstanceList}}, Mode=OneWay}"
+                    ItemsSource="{Binding Path=instances, 
+                        RelativeSource={RelativeSource AncestorType={x:Type src:InstanceList}},
+                        Mode=OneWay}"
                     SizeChanged="instancesLV_SizeChanged"
                     SelectionChanged="instancesLV_SelectionChanged"/>
         </StackPanel>

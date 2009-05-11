@@ -26,11 +26,13 @@ namespace Ec2BootstrapperGUI
         string _msiPath;
         bool succeed = true;
         Thread oThread = null;
+        Dashboard _dashbord;
 
-		public AppDeployment()
+		public AppDeployment(Dashboard db)
 		{
 			this.InitializeComponent();
             ProgBar.Visibility = Visibility.Hidden;
+            _dashbord = db;
         }
 
         public CEc2Instance instance
@@ -134,6 +136,7 @@ namespace Ec2BootstrapperGUI
             Duration duration = new Duration(TimeSpan.FromSeconds(10));
             DoubleAnimation doubleanimation = new DoubleAnimation(200.0, duration);
             ProgBar.BeginAnimation(System.Windows.Controls.ProgressBar.ValueProperty, doubleanimation);
+            _dashbord.stopStatusUpdate();
         }
 
         private void disableProgressBar()

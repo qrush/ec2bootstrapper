@@ -8,7 +8,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:Ec2BootstrapperGUI="clr-namespace:Ec2BootstrapperGUI">
+    xmlns:Ec2BootstrapperGUI="clr-namespace:Ec2BootstrapperGUI"
+    Closing="Window_Closing">
 
 	<Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>

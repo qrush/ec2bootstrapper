@@ -68,6 +68,9 @@
       <DependentUpon>AmiPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="CBeginInvokeOC.cs" />
+    <Compile Include="Circle.xaml.cs">
+      <DependentUpon>Circle.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Constent.cs" />
     <Compile Include="CueBannerTextBox.cs" />
     <Compile Include="FetchPassword.xaml.cs">
@@ -99,6 +102,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="AmiPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Circle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

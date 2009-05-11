@@ -25,6 +25,7 @@ namespace Ec2BootstrapperGUI
         private List<Border> lstBorders = new List<Border>();
         Dashboard _dashboard;
         CBeginInvokeOC<CEc2Instance> _instances;
+        bool fectchingInstance = false;
 
         public InstanceList()
         {
@@ -36,15 +37,22 @@ namespace Ec2BootstrapperGUI
         {
             get
             {
-                if (_instances.Count == 0)
+                lock (_instances)
                 {
-                    _dashboard.showStatus(ConstantString.ContactAmazon);
-                    Thread oThread = new Thread(new ThreadStart(getInstances));
-                    instancesLV.BorderThickness = new Thickness(0);
-                    oThread.Start();
-                    _dashboard.enableProgressBar();
-                }
+                    if (fectchingInstance == false)
+                    {
+                        fectchingInstance = true;
 
+                        if (_instances.Count == 0)
+                        {
+                            _dashboard.showStatus(ConstantString.ContactAmazon);
+                            Thread oThread = new Thread(new ThreadStart(getInstances));
+                            instancesLV.BorderThickness = new Thickness(0);
+                            oThread.Start();
+                            _dashboard.enableProgressBar();
+                        }
+                    }
+                }
                 return _instances;
             }
         }
@@ -75,7 +83,9 @@ namespace Ec2BootstrapperGUI
                     CEc2Service serv = new CEc2Service();
                     List<CEc2Instance> list = serv.describeInstances();
                     foreach (CEc2Instance inst in list)
+                    {
                         _instances.Add(inst);
+                    }
                 }
             }
             catch (Exception ex)
@@ -85,6 +95,7 @@ namespace Ec2BootstrapperGUI
 
             _dashboard.Dispatcher.Invoke(new StopProgressbarCallback(_dashboard.disableProgressBar));
             this.Dispatcher.Invoke(new SetBorderThickNessCallback(setBorderThickNess));
+            fectchingInstance = false;
         }
 
         void remoteConnect_Click(object sender, RoutedEventArgs e)
@@ -113,7 +124,7 @@ namespace Ec2BootstrapperGUI
             string header = ((Expander)cm.PlacementTarget).Header.ToString();
 
             CEc2Instance ins = getInstance(CEc2Instance.getInsanceIdFromHeader(header));
-            AppDeployment pw = new AppDeployment();
+            AppDeployment pw = new AppDeployment(_dashboard);
             pw.instance = ins;
             pw.Show();
         }

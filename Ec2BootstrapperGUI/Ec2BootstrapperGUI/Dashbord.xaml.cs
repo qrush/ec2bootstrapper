@@ -13,6 +13,8 @@ using System.Windows.Shapes;
 using System.Configuration;
 using Ec2Bootstrapperlib;
 using System.Windows.Media.Animation;
+using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace Ec2BootstrapperGUI
 {
@@ -21,11 +23,51 @@ namespace Ec2BootstrapperGUI
     /// </summary>
     public partial class Dashboard : Window
     {
+        Thread _monitor = null;
         public Dashboard()
         {
             this.InitializeComponent();
             configurationNotReady();
             checkConfig();
+        }
+
+        ObservableCollection<CEc2Instance> instances = null;
+
+        private delegate void InstanceMonitor();
+
+        void instanceMonitor()
+        {
+            try
+            {
+                do
+                {
+                    if (instances == null)
+                        return;
+
+                    //every half minutes
+                    for (int index = 0; index < instances.Count; ++index)
+                    {
+                        CEc2Instance item = instances[index];
+                        if (item != null)
+                        {
+                            if (item.updateWebStatus() == true)
+                            {
+                                instances.RemoveAt(index);
+                                instances.Insert(index, item);
+                            }
+                        }
+                    }
+                    Thread.Sleep(30 * 1000);
+                } while (true);
+            }
+            catch (ThreadAbortException)
+            {
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Monitor thread caught exception: " + ex.Message);
+            }
+            _monitor = null;
         }
 
         public void checkConfig()
@@ -77,6 +119,8 @@ namespace Ec2BootstrapperGUI
 
         private void showInstances()
         {
+            stopStatusUpdate();
+
             this.clientR.Children.Clear();
 
             InstanceList instList = new InstanceList();
@@ -86,16 +130,43 @@ namespace Ec2BootstrapperGUI
             {
                 userControl.VerticalAlignment = VerticalAlignment.Stretch;
                 userControl.HorizontalAlignment = HorizontalAlignment.Stretch;
-                this.clientR.Children.Insert(this.clientR.Children.Count, userControl);
                 instList.dashboard = this;
+                this.clientR.Children.Insert(this.clientR.Children.Count, userControl);
             }
         }
 
         //file menu
         private void launchInstance_Click(object sender, RoutedEventArgs e)
         {
-            AmiPicker newInstance = new AmiPicker();
+            AmiPicker newInstance = new AmiPicker(this);
             newInstance.Show();
+        }
+
+        public void stopStatusUpdate()
+        {
+            if (_monitor != null)
+            {
+                _monitor.Abort();
+                _monitor.Join();
+                _monitor = null;
+            }
+        }
+
+        public void startStatusUpdate()
+        {
+            if (_monitor == null)
+            {
+                InstanceList ins = this.clientR.Children[0] as InstanceList;
+                if (ins != null)
+                {
+                    instances = ins.instances;
+                    if (instances != null)
+                    {
+                        _monitor = new Thread(instanceMonitor);
+                        _monitor.Start();
+                    }
+                }
+            }
         }
 
         private void deploy_Click(object sender, RoutedEventArgs e)
@@ -110,7 +181,7 @@ namespace Ec2BootstrapperGUI
                         CEc2Instance inst = inslist.instancesLV.SelectedItem as CEc2Instance;
                         if (inst != null)
                         {
-                            AppDeployment pw = new AppDeployment();
+                            AppDeployment pw = new AppDeployment(this);
                             pw.instance = inst;
                             pw.Show();
                         }
@@ -125,6 +196,7 @@ namespace Ec2BootstrapperGUI
 
         private void exit_Click(object sender, RoutedEventArgs e)
         {
+            StatusDesc.Content = ConstantString.WaitingForExit;
             this.Close();
         }
 
@@ -154,7 +226,6 @@ namespace Ec2BootstrapperGUI
                     }
                 }
             }
-
 
             System.Diagnostics.ProcessStartInfo procStartInfo;
             if(string.IsNullOrEmpty(argument) == true)
@@ -192,7 +263,9 @@ namespace Ec2BootstrapperGUI
         {
             ProgBar.IsIndeterminate = false;
             ProgBar.BeginAnimation(System.Windows.Controls.ProgressBar.ValueProperty, null);
-            ProgBar.Visibility = Visibility.Hidden; 
+            ProgBar.Visibility = Visibility.Hidden;
+
+            startStatusUpdate();
         }
 
         public void showStatus(string status)
@@ -202,6 +275,15 @@ namespace Ec2BootstrapperGUI
             {
                 MessageBox.Show("No machines were enumerated. If you suspect an error, check the configuration dialog from menu Tools | AWS Configuration.",
                     "Display Instances", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (_monitor != null)
+            {
+                _monitor.Abort();
+                _monitor.Join();
             }
         }
     }

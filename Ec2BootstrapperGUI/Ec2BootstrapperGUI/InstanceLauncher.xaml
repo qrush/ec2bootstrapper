@@ -9,7 +9,8 @@
     xmlns:src="clr-namespace:Ec2BootstrapperGUI"
     Title="Launch Instance Step 2"
     ResizeMode="NoResize"
-	d:DesignWidth="640" d:DesignHeight="480" Height="480" Width="640">
+	d:DesignWidth="640" d:DesignHeight="480" Height="480" Width="640"
+    Closing="Window_Closing">
     
     <Grid Name="LauncherLayout">
         <Grid.RowDefinitions>
@@ -52,8 +53,8 @@
                     
                     <Label Grid.Row="3" Grid.Column="0"  HorizontalAlignment="Right"     
                        Style="{StaticResource smallTitleStyle}" Margin="5">Instance Type:</Label>
-                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="8,5,0,5" Name="Small" Content="small (m1.small)" IsChecked="True" Click="small_Click"/>
-                    <CheckBox Grid.Row="3" Grid.Column="2" Margin="8,5,0,5" Name="Medium" Content="High-CPU Medium (c1.medium)" Click="medium_Click" />
+                    <CheckBox Grid.Row="3" Grid.Column="1" Margin="8,5,0,5" Name="smallInst" Content="small (m1.small)" IsChecked="True" Click="small_Click"/>
+                    <CheckBox Grid.Row="3" Grid.Column="2" Margin="8,5,0,5" Name="mediumInst" Content="High-CPU Medium (c1.medium)" Click="medium_Click" />
 
                     <Label Grid.Row="4" Grid.Column="0"  
                        Style="{StaticResource smallTitleStyle}" HorizontalAlignment="Right"     

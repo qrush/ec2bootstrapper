@@ -30,9 +30,11 @@ namespace Ec2BootstrapperGUI
         string _selectedKeyPair;
         string _selectedSecurityGroups;
         string _selectedZone;
-        Thread launchThread = null;
+        Thread _launchThread = null;
+        bool _launchSucceed = true;
+        Dashboard _dashboard;
 
-        public InstanceLauncher()
+        public InstanceLauncher(Dashboard db)
         {
             this.InitializeComponent();
             _keyPairs = new List<string>();
@@ -42,6 +44,7 @@ namespace Ec2BootstrapperGUI
             KeyPairComb.IsEnabled = false;
             SecurityGroupComb.IsEnabled = false;
             ZoneComb.IsEnabled = false;
+            _dashboard = db;
             fetchInformationFromAms();
         }
 
@@ -72,6 +75,7 @@ namespace Ec2BootstrapperGUI
 
         private void fetchInforThread()
         {
+            bool exception = false;
             try
             {
                 CEc2Service serv = new CEc2Service();
@@ -98,10 +102,13 @@ namespace Ec2BootstrapperGUI
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                Dispatcher.Invoke(new DisableLaunchButton(disableLaunchButton));
+                exception = true;
             }
 
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
+
+            if(exception == true)
+                Dispatcher.Invoke(new DisableLaunchButton(disableLaunchButton));
         }
 
         public List<string> securityGroups
@@ -126,40 +133,35 @@ namespace Ec2BootstrapperGUI
 
         private void backButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (launchThread != null)
-                {
-                    launchThread.Abort();
-                    launchThread.Join();
-                }
-            }
-            catch (Exception)
-            {
-            }
-
             this.Close();
         }
 
         private void small_Click(object sender, RoutedEventArgs e)
         {
-            Medium.IsChecked = !Small.IsChecked;
+            mediumInst.IsChecked = !smallInst.IsChecked;
         }
 
         private void medium_Click(object sender, RoutedEventArgs e)
         {
-            Small.IsChecked = !Medium.IsChecked;
+            smallInst.IsChecked = !mediumInst.IsChecked;
         }
 
         private void enableProgressBar()
         {
             LaunchButton.IsEnabled = false;
+            KeyPairComb.IsEnabled = false;
+            SecurityGroupComb.IsEnabled = false;
+            ZoneComb.IsEnabled = false;
+            mediumInst.IsEnabled = false;
+            smallInst.IsEnabled = false;
+
             StatusDesc.Content = ConstantString.Launching;
             LaunchProgBar.Visibility = Visibility.Visible;
             LaunchProgBar.IsIndeterminate = true;
             Duration duration = new Duration(TimeSpan.FromSeconds(10));
             DoubleAnimation doubleanimation = new DoubleAnimation(200.0, duration);
             LaunchProgBar.BeginAnimation(System.Windows.Controls.ProgressBar.ValueProperty, doubleanimation);
+            _dashboard.stopStatusUpdate();
         }
 
         private void disableProgressBar()
@@ -167,11 +169,18 @@ namespace Ec2BootstrapperGUI
             LaunchProgBar.IsIndeterminate = false;
             LaunchProgBar.BeginAnimation(System.Windows.Controls.ProgressBar.ValueProperty, null);
             LaunchProgBar.Visibility = Visibility.Hidden;
-            StatusDesc.Content = ConstantString.Done;
+
+            if(_launchSucceed)
+                StatusDesc.Content = ConstantString.Done;
+            else
+                StatusDesc.Content = ConstantString.LaunchFailed;
+
             LaunchButton.IsEnabled = true;
             KeyPairComb.IsEnabled = true;
             SecurityGroupComb.IsEnabled = true;
             ZoneComb.IsEnabled = true;
+            mediumInst.IsEnabled = true;
+            smallInst.IsEnabled = true;
         }
 
         private void launch()
@@ -186,18 +195,21 @@ namespace Ec2BootstrapperGUI
                     inst.securityGroups = _selectedSecurityGroups;
 
                 inst.launch();
+                _launchSucceed = true;
             }
             catch (ThreadAbortException)
             {
+                _launchSucceed = false;
                 //don't do anything 
             }
             catch (Exception ex)
             {
+                _launchSucceed = false;
                 MessageBox.Show(ex.Message);
             }
 
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
-            launchThread = null;
+            _launchThread = null;
         }
 
         private void launchButton_Click(object sender, RoutedEventArgs e)
@@ -230,10 +242,11 @@ namespace Ec2BootstrapperGUI
             if(ZoneComb.SelectedValue != null)
                 _selectedZone = ZoneComb.SelectedValue.ToString(); ;
 
-            launchThread = new Thread(new ThreadStart(launch));
-            launchThread.SetApartmentState(ApartmentState.STA);
-            launchThread.Start();
             enableProgressBar();
+
+            _launchThread = new Thread(new ThreadStart(launch));
+            _launchThread.SetApartmentState(ApartmentState.STA);
+            _launchThread.Start();
         }
 
         private void KeyPairComb_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -251,6 +264,26 @@ namespace Ec2BootstrapperGUI
                         kfInput.ShowDialog();
                     }
                 }
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                if (_launchThread != null)
+                {
+                    _launchThread.Abort();
+                    _launchThread.Join();
+                }
+                else
+                {
+                    //start status checking
+                    _dashboard.startStatusUpdate();
+                }
+            }
+            catch (Exception)
+            {
             }
         }
     }
