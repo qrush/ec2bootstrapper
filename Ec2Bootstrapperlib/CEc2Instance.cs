@@ -640,37 +640,39 @@ namespace Ec2Bootstrapperlib
                     Directory.CreateDirectory(instanceDir);                
 
                 string certFilePath = instanceDir + "\\" + jwCertFile;
-                if (File.Exists(certFilePath))
+                if (File.Exists(certFilePath) == false)
                 {
-                    return;
-                }
-                
-                string req = "http://" + _publicDns + "/" + jwCertFile;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(req);
-                request.Method = "GET";
-                request.ContentType = "text/xml";
+                    string req = "http://" + _publicDns + "/" + jwCertFile;
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(req);
+                    request.Method = "GET";
+                    request.ContentType = "text/xml";
 
-                // Get the response.
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    // Get the stream containing content returned by the server.
-                    using (Stream dataStream = response.GetResponseStream())
+                    // Get the response.
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                     {
-                        // Open the stream using a StreamReader for easy access.
-                        using (StreamReader reader = new StreamReader(dataStream))
+                        // Get the stream containing content returned by the server.
+                        using (Stream dataStream = response.GetResponseStream())
                         {
-                            // Read the content, which is the public key of the server
-                            string responseFromServer = reader.ReadToEnd();
+                            // Open the stream using a StreamReader for easy access.
+                            using (StreamReader reader = new StreamReader(dataStream))
+                            {
+                                // Read the content, which is the public key of the server
+                                string responseFromServer = reader.ReadToEnd();
 
-                            TextWriter tw = new StreamWriter(certFilePath);
-                            tw.Write(responseFromServer);
-                            tw.Close();
-
-                            //install certificate
-                            installCertificate(certFilePath);
+                                TextWriter tw = new StreamWriter(certFilePath);
+                                tw.Write(responseFromServer);
+                                tw.Close();
+                            }
                         }
                     }
                 }
+
+                if (File.Exists(certFilePath) == true)
+                {
+                    //install certificate
+                    installCertificate(certFilePath);
+                }
+
             }
             catch (Exception ex)
             {
@@ -685,7 +687,21 @@ namespace Ec2Bootstrapperlib
                 var serviceRuntimeUserCertificateStore = new X509Store(StoreName.Root);
                 serviceRuntimeUserCertificateStore.Open(OpenFlags.ReadWrite);
                 X509Certificate2 cert = new X509Certificate2(file);
-                serviceRuntimeUserCertificateStore.Add(cert);
+                
+                bool certInstalled = false;
+                foreach (X509Certificate2 tc in serviceRuntimeUserCertificateStore.Certificates)
+                {
+                    if (string.Compare(tc.Thumbprint, cert.Thumbprint) == 0)
+                    {
+                        certInstalled = true;
+                        break;
+                    }
+                }
+                if (certInstalled == false)
+                {
+                    serviceRuntimeUserCertificateStore.Add(cert);
+                }
+                
                 serviceRuntimeUserCertificateStore.Close();
             }
             catch (Exception ex)

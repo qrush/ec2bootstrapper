@@ -28,6 +28,10 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "setup", "setup\setup.wixpro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ec2AppInstaller", "Ec2AppInstaller\Ec2AppInstaller.csproj", "{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Ec2SampleWebSiteSetup", "Ec2SampleWebSiteSetup\Ec2SampleWebSiteSetup.vdproj", "{C4B6F412-DF49-4298-B26B-C218FFFDE3FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ec2SampleWebSite", "Ec2SampleWebSite\Ec2SampleWebSite.csproj", "{617A9E45-EDDA-4487-AF9F-FA78A6DB7EC3}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 9
@@ -148,6 +152,22 @@ Global
 		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AE72F647-DE6E-461F-8A1F-4F15F6F8957E}.Release|x86.ActiveCfg = Release|Any CPU
+		{C4B6F412-DF49-4298-B26B-C218FFFDE3FF}.Debug|Any CPU.ActiveCfg = Debug
+		{C4B6F412-DF49-4298-B26B-C218FFFDE3FF}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{C4B6F412-DF49-4298-B26B-C218FFFDE3FF}.Debug|x86.ActiveCfg = Debug
+		{C4B6F412-DF49-4298-B26B-C218FFFDE3FF}.Release|Any CPU.ActiveCfg = Release
+		{C4B6F412-DF49-4298-B26B-C218FFFDE3FF}.Release|Mixed Platforms.ActiveCfg = Release
+		{C4B6F412-DF49-4298-B26B-C218FFFDE3FF}.Release|x86.ActiveCfg = Release
+		{617A9E45-EDDA-4487-AF9F-FA78A6DB7EC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{617A9E45-EDDA-4487-AF9F-FA78A6DB7EC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{617A9E45-EDDA-4487-AF9F-FA78A6DB7EC3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{617A9E45-EDDA-4487-AF9F-FA78A6DB7EC3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{617A9E45-EDDA-4487-AF9F-FA78A6DB7EC3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{617A9E45-EDDA-4487-AF9F-FA78A6DB7EC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{617A9E45-EDDA-4487-AF9F-FA78A6DB7EC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{617A9E45-EDDA-4487-AF9F-FA78A6DB7EC3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{617A9E45-EDDA-4487-AF9F-FA78A6DB7EC3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{617A9E45-EDDA-4487-AF9F-FA78A6DB7EC3}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
