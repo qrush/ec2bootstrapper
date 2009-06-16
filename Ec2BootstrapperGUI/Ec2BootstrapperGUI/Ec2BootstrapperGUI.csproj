@@ -71,7 +71,7 @@
       <DependentUpon>AmiPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="CBeginInvokeOC.cs" />
-    <Compile Include="Constent.cs" />
+    <Compile Include="Constant.cs" />
     <Compile Include="CueBannerTextBox.cs" />
     <Compile Include="FetchPassword.xaml.cs">
       <DependentUpon>FetchPassword.xaml</DependentUpon>

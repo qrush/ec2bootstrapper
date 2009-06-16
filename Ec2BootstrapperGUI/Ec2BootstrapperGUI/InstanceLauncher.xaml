@@ -34,9 +34,9 @@
             <!-- START DIALOGBOX CONTENT PANEL -->
             <DockPanel HorizontalAlignment="Stretch" Margin="24,36,24,24" x:Name="Launchi_Instance_Step2" VerticalAlignment="Stretch" Width="560" Height="Auto" Background="{x:Null}">
 
-                <TextBlock Text="Finish this form and then click the launch button." TextWrapping="Wrap" Width="Auto" Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,16"/>
+                <TextBlock Text="Finish this form and then click the Launch button." TextWrapping="Wrap" Width="Auto" Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,16"/>
 
-                <GroupBox Margin="0,0,0,24" BorderBrush="{x:Null}" BorderThickness="1,1,1,1" Padding="8,8,8,8" DockPanel.Dock="Top" Header="Note" Style="{DynamicResource GroupBoxStyle}" Content="You don't have to choose anything if you don't know how." Background="#33565656" />
+                <GroupBox Margin="0,0,0,24" BorderBrush="{x:Null}" BorderThickness="1,1,1,1" Padding="8,8,8,8" DockPanel.Dock="Top" Header="Note" Style="{DynamicResource GroupBoxStyle}" Content="Leave these fields unchanged if you're unsure." Background="#33565656" />
                 <Grid VerticalAlignment="Top" Width="450" Height="Auto" DockPanel.Dock="Top">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.2*"/>
@@ -84,7 +84,7 @@
                 </Grid>
 
                 <GroupBox Margin="0,24,0,16" BorderBrush="{x:Null}" BorderThickness="1,1,1,1" Padding="8,8,8,8" DockPanel.Dock="Top" Header="Note" Style="{DynamicResource GroupBoxStyle}" Background="#33565656">
-                    <TextBlock TextWrapping="Wrap">You will be charged the hourly rate for any instances you launch until you successfully shut them down. Once it's started launching you can close this dialog box and check the status on the main page.</TextBlock>
+                    <TextBlock TextWrapping="Wrap">You will be charged the hourly rate for any instances you launch until you shut them down. After you click Launch, close this dialog box and check the status on the main page.</TextBlock>
                 </GroupBox>
 
                 <StackPanel Orientation="Horizontal" Height="30" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="0,0,0,0">

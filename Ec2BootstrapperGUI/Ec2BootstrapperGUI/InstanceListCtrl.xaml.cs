@@ -211,7 +211,7 @@ namespace Ec2BootstrapperGUI
                 }
                 else
                 {
-                    MessageBox.Show("No instance id available");
+                    MessageBox.Show("No instance ID available");
                 }
             }
             catch (Exception ex)

@@ -147,7 +147,7 @@
 				
 				<StackPanel Orientation="Horizontal" Height="30" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="0,0,0,0">
                     <Button Style="{DynamicResource ButtonStyle}" Content="Cancel" Click="cancelButton_Click" IsEnabled="True" Margin="0,0,24,0" />
-                    <Button Name="SaveButton" Style="{DynamicResource ButtonStyle}" Content="Save" />
+                    <Button Name="SaveButton" Style="{DynamicResource ButtonStyle}" Content="Save" Click="SaveButton_Click" />
 				</StackPanel>
 			</DockPanel>
 			<!--END START DIALOGBOX CONTENT PANEL -->

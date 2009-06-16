@@ -178,7 +178,7 @@ namespace Ec2BootstrapperGUI
             return true;
         }
 
-        private void saveButton_Click(object sender, RoutedEventArgs e)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if(verifyConfiguration() == true)
                 saveModificationAndClose();

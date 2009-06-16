@@ -31,7 +31,7 @@
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" x:Name="ContentContainer" Background="{x:Null}" Margin="16,80,16,42">
             <Rectangle Fill="{DynamicResource ContentBackgroundFill}" Stroke="{DynamicResource ContentContainerBackgroundStroke}" RadiusX="8" RadiusY="8" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" x:Name="bkgContent"/>
             <DockPanel HorizontalAlignment="Left" Margin="24,36,24,24" x:Name="Deploy_Application_Content" VerticalAlignment="Top" Width="560" Height="Auto" Background="{x:Null}">
-                <TextBlock Text="If you have changed the EC2 instance administrator's password, please enter the changed password here and then enter the program you want to install on the instance." TextWrapping="Wrap" Width="Auto" Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,24" HorizontalAlignment="Left"/>
+                <TextBlock Text="If you have changed the EC2 instance administrator's password, please enter the new password here and then select the program you wish to install on the instance." TextWrapping="Wrap" Width="Auto" Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,24" HorizontalAlignment="Left"/>
 
                 <Grid VerticalAlignment="Top" Width="Auto" Height="Auto" DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="0,0,0,24">
                     <Grid.ColumnDefinitions>
@@ -49,7 +49,7 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <TextBlock Text="Password (Option): " TextWrapping="Wrap" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" />
-                    <TextBlock Text="Enter the program that you want to install on EC2: " TextWrapping="Wrap" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" />
+                    <TextBlock Text="Select the program or installer you wish to run on EC2: " TextWrapping="Wrap" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" />
 
                     <PasswordBox Name="AdminPassword" HorizontalAlignment="Stretch" Style="{DynamicResource PasswordBoxStyle}" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" BorderBrush="{x:Null}" Background="#FFFFFFFF" Grid.ColumnSpan="4" />
                     <src:CueBannerTextBox x:Name="msiPath" HorizontalAlignment="Stretch" 
@@ -66,7 +66,7 @@
                     <CheckBox Name="netInstall" HorizontalAlignment="Left" 
                               Style="{DynamicResource CheckBoxStyle}"
                               VerticalAlignment="Top" 
-                              Content="Check this if the program to be installed in a .NET web site." 
+                              Content="Check this if you're installing a .NET web site." 
                               Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Foreground="#FFFFFFFF"/>
                 </Grid>
 

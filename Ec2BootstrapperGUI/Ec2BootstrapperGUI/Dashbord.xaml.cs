@@ -273,8 +273,11 @@ namespace Ec2BootstrapperGUI
             StatusDesc.Text = status;
             if (string.Compare(status, ConstantString.NoInstance) == 0)
             {
-                MessageBox.Show("No machines were enumerated. If you suspect an error, check the configuration dialog from menu Tools | AWS Configuration.",
-                    "Display Instances", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(
+                    "No machines were enumerated. If you suspect an error, check the configuration dialog via Tools | AWS Configuration.",
+                    "Display Instances", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Information);
             }
         }
 
