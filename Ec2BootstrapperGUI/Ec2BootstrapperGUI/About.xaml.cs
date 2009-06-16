@@ -24,9 +24,13 @@ namespace Ec2BootstrapperGUI
 			// Insert code required on object creation below this point.
 		}
 
-        private void OkButton_Click(object sender, RoutedEventArgs e)
+        private void okButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+        private void TitleBarGloss_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
         }
 	}
 }

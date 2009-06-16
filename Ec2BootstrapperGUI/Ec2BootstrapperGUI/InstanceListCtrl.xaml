@@ -12,58 +12,82 @@
     xmlns:Ec2BootstrapperGUI="clr-namespace:Ec2BootstrapperGUI">
 
     <UserControl.Resources>
+        <ContextMenu x:Key="ContextMenuTemplate" 
+                     Style="{DynamicResource ContextMenuStyle}" 
+                     Foreground="#FFFFFFFF" BitmapEffect="{DynamicResource ContextMenuDropShadow}" Margin="10">
+            <MenuItem Margin="8,1,0,0" Padding="0,2,0,2" Height="30" Header="Get Administrator's Password" Click="password_Click" />
+            <Separator/>
+            <MenuItem Margin="8,1,0,0" Padding="0,2,2,2" Height="30" Header="Remote Connect" Click="remoteConnect_Click"/>
+            <MenuItem Margin="8,1,0,0" Padding="0,2,2,2" Height="30" Header="Deploy" Click="deploy_Click" />
+            <MenuItem Margin="8,1,0,0" Padding="0,2,2,2" Height="30" Header="Reboot" Click="reboot_Click" />
+            <Separator />
+            <MenuItem Margin="8,1,0,0" Padding="0,2,2,2" Height="30" Header="Terminate" Click="terminate_Click"/>
+        </ContextMenu>
+        
         <DataTemplate DataType="{x:Type lib:CEc2Instance}">
-            <Border BorderThickness="1" BorderBrush="Gray"
-                    Padding="7" Name="ListBorder" Margin="3" Loaded="border_Loaded">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <src:Circle Grid.Column="0" Width="20" Height="20" 
-                                FillIn="{Binding Path=statuscolor}"
-                                x:Name="instanceWebStatus"/>
-                    <Expander Grid.Column="1" Margin="0,0,8,0"
-                              Header="{Binding Path=header}"
-                              Content="{Binding Path=content}"
-                              Name="instanceItem">
-                        <Expander.ContextMenu>
-                            <ContextMenu Opened="contextMenu_Opened">
-                                <MenuItem Header="Get Administrator's Password" Click="password_Click"/>
-                                <Separator/>
-                                <MenuItem Name="RemoteConn" Header="Remote Connect" Click="remoteConnect_Click"/>
-                                <MenuItem Header="Deploy" Click="deploy_Click" />
-                                <MenuItem Header="Reboot" Click="reboot_Click" />
-                                <Separator/> 
-                                <MenuItem Header="Terminate" Click="terminate_Click"/>                                    
-                            </ContextMenu>
-                        </Expander.ContextMenu>
-                    </Expander>
-                </Grid>
-            </Border>
+            <StackPanel Orientation="Horizontal" Margin="8">
+                <StackPanel.ContextMenu>
+                    <StaticResource ResourceKey="ContextMenuTemplate" />
+                </StackPanel.ContextMenu>
+                <!-- 
+                //NOTE: If the server is running, dispaly 
+                //ServerRunning resource (ServerRunning.xaml).
+                //Otherwise, dispaly ServerStop resource (ServerStopped.xaml)
+                -->
+                <!--<Button Style="{DynamicResource ServerStopped}" Content="Button" Margin="40,0"/>-->
+                <Image Source="{Binding Path=img}" Width="59" Height="107" />
+                <StackPanel Width="Auto" Height="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="128"/>
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Instance:" Grid.Row="0" Grid.Column="0" TextAlignment="Left"/>
+                        <TextBlock Text="{Binding Path=instanceId}" TextWrapping="Wrap" Grid.Row="0" Grid.Column="2"/>
+                        <TextBlock Text="Public DNS:" Grid.Row="1" Grid.Column="0" TextAlignment="Left"/>
+                        <TextBlock Text="{Binding Path=publicDns}" TextWrapping="Wrap" Grid.Row="1" Grid.Column="2"/>
+                        <TextBlock Text="Platform:" Grid.Row="2" Grid.Column="0" TextAlignment="Left"/>
+                        <TextBlock Text="{Binding Path=platform}" TextWrapping="Wrap" Grid.Row="2" Grid.Column="2"/>
+                        <TextBlock Text="AMI ID:" Grid.Row="3" Grid.Column="0" TextAlignment="Left"/>
+                        <TextBlock Text="{Binding Path=imageId}" TextWrapping="Wrap" Grid.Row="3" Grid.Column="2"/>
+                        <TextBlock Text="Security Groups:" Grid.Column="0" Grid.Row="4" TextAlignment="Left" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Path=securityGroups}" TextWrapping="Wrap" Grid.Row="4" Grid.Column="2"/>
+                        <TextBlock Text="Type:" Grid.Column="0" Grid.Row="5" TextAlignment="Left"/>
+                        <TextBlock Text="{Binding Path=type}" TextWrapping="Wrap" Grid.Row="5" Grid.Column="2"/>
+                        <TextBlock Text="Status:" Grid.Column="0" Grid.Row="6" TextAlignment="Left" />
+                        <TextBlock Text="{Binding Path=status}" TextWrapping="Wrap" Grid.Row="6" Grid.Column="2"/>
+                        <TextBlock Text="Key Pair Name:" Grid.Column="0" Grid.Row="7" TextAlignment="Left" />
+                        <TextBlock Text="{Binding Path=keyPairName}" TextWrapping="Wrap" Grid.Row="7" Grid.Column="2"/>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
-	<Grid x:Name="LayoutRoot">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-		<Label Grid.Row="0" Style="{StaticResource titleStyle}" Name='AllInstLabel' Content="All of your instances:"/>
-        <StackPanel Grid.Row="1">
-            <ListView Name="instancesLV" Margin="8,8,8,0" 
-                    IsSynchronizedWithCurrentItem="True"
-                    ItemsSource="{Binding Path=instances, 
+    <Grid x:Name="LayoutRoot">
+        <Rectangle Fill="{DynamicResource ContentBackgroundFill}" RadiusX="8" RadiusY="8" 
+                   HorizontalAlignment="Stretch" x:Name="bkgContent" 
+                   VerticalAlignment="Stretch" Width="Auto" Height="Auto" 
+                   StrokeThickness="1" Stroke="{DynamicResource ContentContainerBackgroundStroke}"/>
+        <ListBox Name="instancesLV" HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch" Width="Auto" Height="Auto" 
+                 IsSynchronizedWithCurrentItem="True" Background="#FFC24646"
+                 BorderBrush="{x:Null}" Foreground="#FFFFFFFF" 
+                 ItemsSource="{Binding Path=instances, 
                         RelativeSource={RelativeSource AncestorType={x:Type src:InstanceList}},
                         Mode=OneWay}"
-                    SizeChanged="instancesLV_SizeChanged"
-                    SelectionChanged="instancesLV_SelectionChanged"/>
-        </StackPanel>
-	</Grid>
+                 Style="{DynamicResource ListBoxStyle}" Margin="8,8,8,16" 
+                 ItemContainerStyle="{DynamicResource ListBoxItemStyle}" 
+                 SelectionChanged="instancesLV_SelectionChanged"/>
+    </Grid>
 </UserControl>

@@ -3,101 +3,161 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	x:Class="Ec2BootstrapperGUI.AwsConfiguration"
 	x:Name="Window"
+	Title="AWSConfiguration"
+    FontSize="11"
     xmlns:src="clr-namespace:Ec2BootstrapperGUI"
-	Title="AwsConfiguration"
-    ResizeMode="NoResize"
-	Width="640" Height="480">
+	Width="Auto" Height="Auto" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" Foreground="#FFFFFFFF" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" ResizeMode="CanResize" SizeToContent="WidthAndHeight" MinHeight="480" MinWidth="640" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
 
-    <Border Padding="10" Width="580">
-        <Grid x:Name="LayoutRoot">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="128"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="50"/>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource titleStyle}" 
-               Grid.ColumnSpan="2">Please fill in all of the following information:</Label>
-            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="18,5,0,5">
-                <Run Text="Note: If you have not registered with Amazon yet, please do so at "/>
-                <Hyperlink Name="Register" Click="registerHyperlink_Click">
-                    <Run Text="Amazon Web Service."/>
-                </Hyperlink>
-            </TextBlock>
+    <Grid>
+        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" RadiusX="8" RadiusY="8" Margin="8" x:Name="bkgBaseContent" Fill="{DynamicResource WindowBackgroundFill}" Stroke="{DynamicResource WindowBackgroundFill}" BitmapEffect="{DynamicResource WindowOuterGlow}" />
+        <Rectangle Fill="{DynamicResource WindowTitleBarGloss}" Stroke="{x:Null}" RadiusX="8" RadiusY="8" HorizontalAlignment="Stretch" Margin="11,11,11,0" x:Name="TitleBarGloss" VerticalAlignment="Top" Width="Auto" Height="30" Cursor="Hand" MouseLeftButtonDown="TitleBarGloss_MouseLeftButtonDown"/>
+        <DockPanel HorizontalAlignment="Stretch" Margin="14,8,14,0" VerticalAlignment="Top" Height="35" x:Name="TitleBarContainer" d:IsLocked="True">
+            <Canvas Width="26" Height="26" x:Name="Logo" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Path Fill="#fff94a00" Data="F1 M 19.752,24.648 L 18.578,17.983 L 13.303,13.732 L 14.484,20.346 L 19.752,24.648 Z"/>
+                <Path Opacity="0.9" Fill="#fff94a00" Data="F1 M 9.510,26.000 L 13.400,20.457 L 12.682,13.727 L 8.832,19.236 L 9.510,26.000 Z"/>
+                <Path Opacity="0.7" Fill="#fff94a00" Data="F1 M 1.361,19.716 L 8.035,18.543 L 12.293,13.276 L 5.670,14.455 L 1.361,19.716 Z"/>
+                <Path Opacity="0.6" Fill="#fff94a00" Data="F1 M 0.000,9.525 L 5.551,13.410 L 12.291,12.690 L 6.773,8.848 L 0.000,9.525 Z"/>
+                <Path Opacity="0.5" Fill="#fff94a00" Data="F1 M 6.332,1.313 L 7.410,7.994 L 12.623,12.320 L 11.539,5.691 L 6.332,1.313 Z"/>
+                <Path Opacity="0.4" Fill="#fff94a00" Data="F1 M 16.459,0.000 L 12.568,5.542 L 13.289,12.271 L 17.137,6.762 L 16.459,0.000 Z"/>
+                <Path Opacity="0.3" Fill="#fff94a00" Data="F1 M 24.639,6.244 L 17.963,7.417 L 13.705,12.684 L 20.328,11.505 L 24.639,6.244 Z"/>
+                <Path Opacity="0.1" Fill="#fff94a00" Data="F1 M 26.000,16.434 L 20.449,12.551 L 13.709,13.269 L 19.227,17.111 L 26.000,16.434 Z"/>
+            </Canvas>
+            <TextBlock Text="EC2 Bootstrapper" TextWrapping="Wrap" FontFamily="./Fonts/#Franklin Gothic" FontSize="14" Foreground="#FFFA4B00" Width="120" Height="Auto" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="3,0,0,0"/>
+            <Button Style="{StaticResource WindowButton}" x:Name="btnClose" Width="26" Height="35" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top" Click="btnClose_Click">
+                <Path StrokeThickness="0.4" Stroke="#ffbe6d15" StrokeMiterLimit="1.0" Fill="#ffffffff" Data="F1 M 11.750,10.008 L 7.813,6.099 L 11.670,2.270 C 12.109,1.833 12.109,1.125 11.670,0.689 C 11.230,0.253 10.518,0.253 10.078,0.689 L 6.222,4.519 L 2.201,0.525 C 1.761,0.089 1.049,0.089 0.609,0.525 C 0.170,0.961 0.170,1.669 0.609,2.105 L 4.631,6.099 L 0.528,10.172 C 0.088,10.608 0.088,11.315 0.528,11.752 C 0.748,11.970 1.036,12.080 1.324,12.080 C 1.612,12.080 1.899,11.970 2.120,11.752 L 6.222,7.679 L 10.158,11.588 C 10.379,11.807 10.667,11.916 10.955,11.916 C 11.242,11.916 11.531,11.807 11.750,11.588 C 12.190,11.152 12.190,10.444 11.750,10.008 Z" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Button>
+        </DockPanel>
+        <TextBlock HorizontalAlignment="Left" Margin="41,50,0,0" VerticalAlignment="Top" FontFamily="./Fonts/#Franklin Gothic" FontSize="24" FontStretch="Condensed" Text="AWS Configuration..." TextWrapping="Wrap" x:Name="DialogBoxTitle"/>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" x:Name="ContentContainer" Background="{x:Null}" Margin="16,80,16,32">
+            <Rectangle Fill="{DynamicResource ContentBackgroundFill}" Stroke="{DynamicResource ContentContainerBackgroundStroke}" RadiusX="8" RadiusY="8" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" x:Name="bkgContent"/>
 
-            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="AWS Access Key"/>
-            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="AWS Secret Key"/>
-            <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 Certificate Path"/>
-            <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 Home"/>
-            <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" Content="EC2 User Private Key"/>
-            <Label Grid.Row="7" Grid.Column="0" HorizontalAlignment="Right" Content="Java Home"/>
-            <src:CueBannerTextBox x:Name="AwsAccessKey" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="8,5,0,5"
-                                  PromptText="Example: 0DT984JRKUIFNRMER645"
-                                  LostFocus="textBox_LostFocus"
-                                  GotFocus="textBox_GotFocus"
-                                  TabIndex="0"
-                                  TextChanged="config_TextChanged" TextWrapping="NoWrap">
-            </src:CueBannerTextBox>
-            <src:CueBannerTextBox x:Name="AwsSecretKey"
-                                  PromptText="Example: mHJD98+LOIUnHGF78LKDhgsIHD897i+=OILDJKSDD"
-                                  LostFocus="textBox_LostFocus"
-                                  GotFocus="textBox_GotFocus"
-                                  TabIndex="1"
-                                  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" 
-                                  Margin="8,5,0,5" TextChanged="config_TextChanged" TextWrapping="NoWrap">
-            </src:CueBannerTextBox>
-            <src:CueBannerTextBox x:Name="Ec2CertPath"
-                                  PromptText="Example: D:\ec2\cert-OWIW73PRHOB4VTYS6FFNP6BE4SOKG6RF.pem" 
-                                  LostFocus="textBox_LostFocus"
-                                  GotFocus="textBox_GotFocus"
-                                  TabIndex="2"
-                                  Grid.Row="4" Grid.Column="1" Margin="8,5,0,5" 
-                                  TextChanged="config_TextChanged" TextWrapping="NoWrap">
-            </src:CueBannerTextBox>
-            <src:CueBannerTextBox x:Name="Ec2Home"
-                                  PromptText="Example: C:\ec2-api-tools-1.3-34128"
-                                  LostFocus="textBox_LostFocus"
-                                  TabIndex="4"
-                                  GotFocus="textBox_GotFocus"
-                                  Grid.Row="5" Grid.Column="1" Margin="8,5,0,5"
-                                  TextChanged="config_TextChanged" TextWrapping="NoWrap">
-            </src:CueBannerTextBox>
-            <src:CueBannerTextBox x:Name="Ec2UserPrivateKey" 
-                                  PromptText="Example: D:\ec2\pk-OWIW7KUyGO9UpTYSKUINJHBE4SOKG6RF.pem"
-                                  LostFocus="textBox_LostFocus"
-                                  GotFocus="textBox_GotFocus"
-                                  TabIndex="6"
-                                  Grid.Row="6" Grid.Column="1" Margin="8,5,0,5" 
-                                  TextChanged="config_TextChanged" TextWrapping="NoWrap">
-            </src:CueBannerTextBox>
 
-            <src:CueBannerTextBox x:Name="JavaHome"
-                                  PromptText="Example: C:\Program Files\Java\jre6"
-                                  Grid.Row="7" Grid.Column="1" Margin="8,5,0,5"
-                                  LostFocus="textBox_LostFocus"
-                                  GotFocus="textBox_GotFocus"
-                                  TabIndex="8"
-                                  TextChanged="config_TextChanged" TextWrapping="NoWrap">
-            </src:CueBannerTextBox>
-            
-            <Button Margin="0,8,0,5" TabIndex="3" Name="CertPathBt" Content="..." Grid.Column="2" Grid.Row="4" Click="certPathBt_Click"/>
-            <Button Margin="0,8,0,5" TabIndex="5" Name="Ec2HomeBt" Content="..." Grid.Column="2" Grid.Row="5" Click="ec2HomeBt_Click"/>
-            <Button Margin="0,8,0,5" TabIndex="7" Name="Ec2UserPrivKeyBt" Content="..." Grid.Column="2" Grid.Row="6" Click="ec2UserPrivKeyBt_Click"/>
-            <Button Margin="0,8,0,5" TabIndex="9" Name="JavaHomeBt" Content="..." Grid.Column="2" Grid.Row="7" Click="javaHomeBt_Click"/>
-            
-            <Button Name="CancelButton" TabIndex="11" Grid.Row="9" Grid.Column="1" Content="Cancel" Click="CancelButton_Click" Margin="0,5,0,5" HorizontalAlignment="Left"  Width="94" />
-            <Button Name="SaveButton" TabIndex="10" Grid.Row="9" Grid.Column="1" Content="Save" Click="saveButton_Click" Margin="0,5,34,5" HorizontalAlignment="Right" Width="94" />
+
+
+
+
+            <!-- START DIALOGBOX CONTENT PANEL -->
+			<DockPanel HorizontalAlignment="Stretch" Margin="24,36,24,24" x:Name="AWS_Configuration_Content" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Background="{x:Null}">
+				
+				<TextBlock Text="Please fill in all of the following information." TextWrapping="Wrap" Width="Auto" Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,16"/>
+				
+				<GroupBox Margin="0,0,0,16" BorderBrush="#FFFFFFFF" BorderThickness="1,1,1,1" Padding="8,8,8,8" DockPanel.Dock="Top" Header="Note" Style="{DynamicResource GroupBoxStyle}">
+				<TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,0,0,0" Foreground="#FFFFFFFF">
+					If you have not registered with Amazon yet, please do so at
+					    <Hyperlink NavigateUri="http://aws.amazon.com" RequestNavigate="registerHyperlink_Click" Foreground="#FFFA4B00">Amazon Web Service</Hyperlink>.
+				</TextBlock>
+				</GroupBox>
+				<Grid VerticalAlignment="Top" Width="Auto" Height="Auto" DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="0,0,0,16">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="0.2*"/>
+						<ColumnDefinition Width="11" />
+						<ColumnDefinition Width="300"/>
+						<ColumnDefinition Width="11" />
+						<ColumnDefinition Width="0.8*"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition Height="11"/>
+						<RowDefinition />
+						<RowDefinition Height="11"/>
+						<RowDefinition />
+						<RowDefinition Height="11"/>
+						<RowDefinition />
+						<RowDefinition Height="11"/>
+						<RowDefinition />
+						<RowDefinition Height="11"/>
+						<RowDefinition />
+					</Grid.RowDefinitions>
+					<TextBlock Text="AWS Access Key: " TextWrapping="Wrap" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" />
+					<TextBlock Text="AWS Secret Key: " TextWrapping="Wrap" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" />
+					<TextBlock Text="EC2 Certificate Path" TextWrapping="Wrap" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" />
+					<TextBlock Text="EC2 Home:" TextWrapping="Wrap" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" />
+					<TextBlock Text="EC2 User Private Key:" TextWrapping="Wrap" Grid.Row="8" Grid.Column="0" HorizontalAlignment="Right" />					
+					<TextBlock Text="Java Home:" TextWrapping="Wrap" Grid.Row="10" Grid.Column="0" HorizontalAlignment="Right" />
+					
+					<src:CueBannerTextBox x:Name="AwsAccessKey" 
+                                          PromptText="Example: 0DT984JRKUIFNRMER645"
+                                          LostFocus="textBox_LostFocus"
+                                          GotFocus="textBox_GotFocus"
+                                          TextChanged="config_TextChanged" 
+                                          HorizontalAlignment="Stretch" 
+                                          Style="{DynamicResource TextBoxStyle}"
+                                          VerticalAlignment="Center"
+                                          TextWrapping="Wrap" Grid.Row="0" Grid.Column="2"
+                                          BorderBrush="{x:Null}" Background="#FFFFFFFF"
+                                          Grid.ColumnSpan="4" />
+					<src:CueBannerTextBox x:Name="AwsSecretKey" 
+                                          PromptText="Example: mHJD98+LOIUnHGF78LKDhgsIHD897i+=OILDJKSDD"
+                                          LostFocus="textBox_LostFocus"
+                                          GotFocus="textBox_GotFocus"
+                                          TextChanged="config_TextChanged" 
+                                          HorizontalAlignment="Stretch" 
+                                          Style="{DynamicResource TextBoxStyle}"
+                                          VerticalAlignment="Center" 
+                                          TextWrapping="Wrap" Grid.Row="2" Grid.Column="2" 
+                                          Grid.ColumnSpan="4" 
+                                          BorderBrush="{x:Null}" Background="#FFFFFFFF" />
+					<src:CueBannerTextBox x:Name="Ec2CertPath"
+                                          PromptText="Example: D:\ec2\cert-OWIW73PRHOB4VTYS6FFNP6BE4SOKG6RF.pem" 
+                                          LostFocus="textBox_LostFocus"
+                                          GotFocus="textBox_GotFocus"
+                                          TextChanged="config_TextChanged" 
+                                          HorizontalAlignment="Stretch" 
+                                          Style="{DynamicResource TextBoxStyle}" 
+                                          VerticalAlignment="Center" TextWrapping="Wrap"
+                                          Grid.Row="4" Grid.Column="2" BorderBrush="{x:Null}" 
+                                          Background="#FFFFFFFF" />
+					<src:CueBannerTextBox x:Name="Ec2Home"
+                                          PromptText="Example: C:\ec2-api-tools-1.3-34128"
+                                          LostFocus="textBox_LostFocus"
+                                          GotFocus="textBox_GotFocus"
+                                          TextChanged="config_TextChanged" 
+                                          HorizontalAlignment="Stretch" 
+                                          Style="{DynamicResource TextBoxStyle}"
+                                          VerticalAlignment="Center" TextWrapping="Wrap" 
+                                          Grid.Row="6" Grid.Column="2" BorderBrush="{x:Null}"
+                                          Background="#FFFFFFFF" />
+					<src:CueBannerTextBox x:Name="Ec2UserPrivateKey" 
+                                          PromptText="Example: D:\ec2\pk-OWIW7KUyGO9UpTYSKUINJHBE4SOKG6RF.pem"
+                                          HorizontalAlignment="Stretch" 
+                                          LostFocus="textBox_LostFocus"
+                                          GotFocus="textBox_GotFocus"
+                                          TextChanged="config_TextChanged" 
+                                          Style="{DynamicResource TextBoxStyle}" 
+                                          VerticalAlignment="Center" TextWrapping="Wrap" 
+                                          Grid.Row="8" Grid.Column="2" BorderBrush="{x:Null}" 
+                                          Background="#FFFFFFFF" />
+					<src:CueBannerTextBox x:Name="JavaHome" 
+                                          PromptText="Example: C:\Program Files\Java\jre6"
+                                          HorizontalAlignment="Stretch"
+                                          LostFocus="textBox_LostFocus"
+                                          GotFocus="textBox_GotFocus"
+                                          TextChanged="config_TextChanged" 
+                                          Style="{DynamicResource TextBoxStyle}"
+                                          VerticalAlignment="Center" TextWrapping="Wrap" 
+                                          Grid.Row="10" Grid.Column="2" BorderBrush="{x:Null}" 
+                                          Background="#FFFFFFFF"/>
+					
+					<Button Name="CertPathBt" Click="certPathBt_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Content="..." Grid.Row="4" Grid.Column="4" Style="{DynamicResource ButtonStyle}"/>
+					<Button Name="Ec2HomeBt" Click="ec2HomeBt_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Content="..." Grid.Row="6" Grid.Column="4" Style="{DynamicResource ButtonStyle}"/>
+					<Button Name="Ec2UserPrivKeyBt" Click="ec2UserPrivKeyBt_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Content="..." Grid.Row="8" Grid.Column="4" Style="{DynamicResource ButtonStyle}"/>
+					<Button Name="JavaHomeBt" Click="javaHomeBt_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Content="..." Grid.Row="10" Grid.Column="4" Style="{DynamicResource ButtonStyle}"/>
+					
+				</Grid>
+				
+				<StackPanel Orientation="Horizontal" Height="30" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="0,0,0,0">
+                    <Button Style="{DynamicResource ButtonStyle}" Content="Cancel" Click="cancelButton_Click" IsEnabled="True" Margin="0,0,24,0" />
+                    <Button Name="SaveButton" Style="{DynamicResource ButtonStyle}" Content="Save" />
+				</StackPanel>
+			</DockPanel>
+			<!--END START DIALOGBOX CONTENT PANEL -->
+			
+			
+			
+			
+			
+			
+			
         </Grid>
-    </Border>
+    </Grid>
 </Window>

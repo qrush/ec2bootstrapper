@@ -196,7 +196,7 @@ namespace Ec2BootstrapperGUI
 
         private void exit_Click(object sender, RoutedEventArgs e)
         {
-            StatusDesc.Content = ConstantString.WaitingForExit;
+            stopStatusUpdate();
             this.Close();
         }
 
@@ -270,7 +270,7 @@ namespace Ec2BootstrapperGUI
 
         public void showStatus(string status)
         {
-            StatusDesc.Content = status;
+            StatusDesc.Text = status;
             if (string.Compare(status, ConstantString.NoInstance) == 0)
             {
                 MessageBox.Show("No machines were enumerated. If you suspect an error, check the configuration dialog from menu Tools | AWS Configuration.",
@@ -278,12 +278,38 @@ namespace Ec2BootstrapperGUI
             }
         }
 
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+
+        }
+
+        private void ResizingButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Normal)
+                this.WindowState = WindowState.Maximized;
+            else
+                this.WindowState = WindowState.Normal;
+        }
+
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_monitor != null)
             {
                 _monitor.Abort();
                 _monitor.Join();
+            }
+        }
+        private void LogoGloss_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+            if (e.ClickCount == 2)
+            {
+                if (this.WindowState == WindowState.Normal)
+                    this.WindowState = WindowState.Maximized;
+                else
+                    this.WindowState = WindowState.Normal;
             }
         }
     }

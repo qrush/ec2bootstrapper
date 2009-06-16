@@ -1,0 +1,156 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+	<Style x:Key="ServerStopped" BasedOn="{x:Null}" TargetType="{x:Type Button}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<ControlTemplate.Resources>
+						<Storyboard x:Key="PowerLight"/>
+					</ControlTemplate.Resources>
+					<Grid x:Name="grid">
+						<Viewbox>
+							<Canvas Width="43.419" Height="85.47">
+								<Grid x:Name="Computer" Width="41.42" Height="71.735">
+									<!-- Layer 1/Server 3/<Group>/Server 3/<Group>/<Group>/<Path> -->
+									<Path Data="F1 M 19.218,-4.867 C 19.218,-2.476 17.383,-0.536 15.119,-0.536 L -15.118,-0.536 C -17.382,-0.536 -19.217,-2.476 -19.217,-4.867 L -19.217,-67.133 C -19.217,-69.524 -17.382,-71.465 -15.118,-71.465 L 15.119,-71.465 C 17.383,-71.465 19.218,-69.524 19.218,-67.133 L 19.218,-4.867 Z" HorizontalAlignment="Right" Margin="0,0,0.273,0" VerticalAlignment="Bottom">
+										<Path.Fill>
+											<RadialGradientBrush MappingMode="Absolute" GradientOrigin="-17641.324,-14516.865" Center="-17628.242,-14514.152" RadiusX="112.454" RadiusY="112.454">
+												<RadialGradientBrush.Transform>
+													<MatrixTransform Matrix="0.512,0.000,0.000,0.541,5225.911,-3907.028" />
+												</RadialGradientBrush.Transform>
+												<GradientStop Offset="0.00" Color="#ffdfdfdf"/>
+												<GradientStop Offset="0.70" Color="#ffbcbcbc"/>
+												<GradientStop Offset="1.00" Color="#ff989898"/>
+											</RadialGradientBrush>
+										</Path.Fill>
+									</Path>
+									<Path Fill="#ff7f7f7f" Data="F1 M -15.118,-71.193 C -17.228,-71.193 -18.945,-69.372 -18.945,-67.133 L -18.945,-4.867 C -18.945,-2.628 -17.228,-0.806 -15.118,-0.806 L 15.119,-0.806 C 17.228,-0.806 18.945,-2.628 18.945,-4.867 L 18.945,-67.133 C 18.945,-69.372 17.228,-71.193 15.119,-71.193 L -15.118,-71.193 L -15.118,-71.193 Z M 15.119,-0.266 L -15.118,-0.266 C -17.529,-0.266 -19.491,-2.330 -19.491,-4.867 L -19.491,-67.133 C -19.491,-69.670 -17.529,-71.735 -15.118,-71.735 L 15.119,-71.735 C 17.530,-71.735 19.491,-69.670 19.491,-67.133 L 19.491,-4.867 C 19.491,-2.330 17.530,-0.266 15.119,-0.266 L 15.119,-0.266 Z" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+									<Canvas HorizontalAlignment="Right" Margin="0,0,19.491,0" VerticalAlignment="Bottom">
+										<Path Fill="#ff656565" Data="F1 M 17.269,-33.821 C 17.269,-31.586 15.435,-29.773 13.169,-29.773 L -13.137,-29.773 C -15.402,-29.773 -17.237,-31.586 -17.237,-33.821 L -17.237,-65.252 C -17.237,-67.486 -15.402,-69.299 -13.137,-69.299 L 13.169,-69.299 C 15.435,-69.299 17.269,-67.486 17.269,-65.252 L 17.269,-33.821 Z"/>
+										<Path Fill="#ff1e1e1e" Data="F1 M -13.137,-69.028 C -15.248,-69.028 -16.963,-67.334 -16.963,-65.252 L -16.963,-33.821 C -16.963,-31.739 -15.248,-30.044 -13.137,-30.044 L 13.169,-30.044 C 15.280,-30.044 16.997,-31.739 16.997,-33.821 L 16.997,-65.252 C 16.997,-67.334 15.280,-69.028 13.169,-69.028 L -13.137,-69.028 L -13.137,-69.028 Z M 13.169,-29.503 L -13.137,-29.503 C -15.548,-29.503 -17.510,-31.440 -17.510,-33.821 L -17.510,-65.252 C -17.510,-67.632 -15.548,-69.569 -13.137,-69.569 L 13.169,-69.569 C 15.581,-69.569 17.542,-67.632 17.542,-65.252 L 17.542,-33.821 C 17.542,-31.440 15.581,-29.503 13.169,-29.503 L 13.169,-29.503 Z"/>
+									</Canvas>
+									<Canvas HorizontalAlignment="Right" Margin="0,0,19.491,0" VerticalAlignment="Bottom">
+										<Path Data="F1 M 16.612,-59.890 C 16.612,-57.462 14.589,-55.494 12.093,-55.494 L -12.008,-55.494 C -14.504,-55.494 -16.527,-57.462 -16.527,-59.890 L -16.527,-63.188 C -16.527,-65.616 -14.504,-67.585 -12.008,-67.585 L 12.093,-67.585 C 14.589,-67.585 16.612,-65.616 16.612,-63.188 L 16.612,-59.890 Z">
+											<Path.Fill>
+												<LinearGradientBrush MappingMode="Absolute" StartPoint="0.042,-55.494" EndPoint="0.042,-67.585">
+													<GradientStop Offset="0.00" Color="#ff1e1e1e"/>
+													<GradientStop Offset="1.00" Color="#ff383838"/>
+												</LinearGradientBrush>
+											</Path.Fill>
+										</Path>
+										<Path Fill="#ff3f3f3f" Data="F1 M -12.008,-67.313 C -14.349,-67.313 -16.254,-65.463 -16.254,-63.188 L -16.254,-59.890 C -16.254,-57.615 -14.349,-55.765 -12.008,-55.765 L 12.093,-55.765 C 14.434,-55.765 16.339,-57.615 16.339,-59.890 L 16.339,-63.188 C 16.339,-65.463 14.434,-67.313 12.093,-67.313 L -12.008,-67.313 L -12.008,-67.313 Z M 12.093,-55.223 L -12.008,-55.223 C -14.651,-55.223 -16.800,-57.317 -16.800,-59.890 L -16.800,-63.188 C -16.800,-65.761 -14.651,-67.855 -12.008,-67.855 L 12.093,-67.855 C 14.736,-67.855 16.885,-65.761 16.885,-63.188 L 16.885,-59.890 C 16.885,-57.317 14.736,-55.223 12.093,-55.223 L 12.093,-55.223 Z"/>
+
+										<Path Data="F1 M 16.612,-47.617 C 16.612,-45.189 14.589,-43.221 12.093,-43.221 L -12.008,-43.221 C -14.504,-43.221 -16.527,-45.189 -16.527,-47.617 L -16.527,-50.915 C -16.527,-53.343 -14.504,-55.311 -12.008,-55.311 L 12.093,-55.311 C 14.589,-55.311 16.612,-53.343 16.612,-50.915 L 16.612,-47.617 Z">
+											<Path.Fill>
+												<LinearGradientBrush MappingMode="Absolute" StartPoint="0.042,-43.221" EndPoint="0.042,-55.311">
+													<GradientStop Offset="0.00" Color="#ff1e1e1e"/>
+													<GradientStop Offset="1.00" Color="#ff383838"/>
+												</LinearGradientBrush>
+											</Path.Fill>
+										</Path>
+										<Path Fill="#ff3f3f3f" Data="F1 M -12.008,-55.040 C -14.349,-55.040 -16.254,-53.189 -16.254,-50.915 L -16.254,-47.617 C -16.254,-45.343 -14.349,-43.492 -12.008,-43.492 L 12.093,-43.492 C 14.434,-43.492 16.339,-45.343 16.339,-47.617 L 16.339,-50.915 C 16.339,-53.189 14.434,-55.040 12.093,-55.040 L -12.008,-55.040 L -12.008,-55.040 Z M 12.093,-42.950 L -12.008,-42.950 C -14.651,-42.950 -16.800,-45.044 -16.800,-47.617 L -16.800,-50.915 C -16.800,-53.488 -14.651,-55.581 -12.008,-55.581 L 12.093,-55.581 C 14.736,-55.581 16.885,-53.488 16.885,-50.915 L 16.885,-47.617 C 16.885,-45.044 14.736,-42.950 12.093,-42.950 L 12.093,-42.950 Z"/>
+										<Path Data="F1 M 16.636,-35.344 C 16.636,-32.915 14.613,-30.947 12.118,-30.947 L -11.985,-30.947 C -14.480,-30.947 -16.503,-32.915 -16.503,-35.344 L -16.503,-38.641 C -16.503,-41.068 -14.480,-43.037 -11.985,-43.037 L 12.118,-43.037 C 14.613,-43.037 16.636,-41.068 16.636,-38.641 L 16.636,-35.344 Z">
+											<Path.Fill>
+												<LinearGradientBrush MappingMode="Absolute" StartPoint="0.066,-30.947" EndPoint="0.066,-43.038">
+													<GradientStop Offset="0.00" Color="#ff1e1e1e"/>
+													<GradientStop Offset="1.00" Color="#ff383838"/>
+												</LinearGradientBrush>
+											</Path.Fill>
+										</Path>
+										<Path Fill="#ff3f3f3f" Data="F1 M -11.985,-42.768 C -14.326,-42.768 -16.231,-40.916 -16.231,-38.641 L -16.231,-35.344 C -16.231,-33.068 -14.326,-31.218 -11.985,-31.218 L 12.118,-31.218 C 14.458,-31.218 16.363,-33.068 16.363,-35.344 L 16.363,-38.641 C 16.363,-40.916 14.458,-42.768 12.118,-42.768 L -11.985,-42.768 L -11.985,-42.768 Z M 12.118,-30.677 L -11.985,-30.677 C -14.627,-30.677 -16.777,-32.770 -16.777,-35.344 L -16.777,-38.641 C -16.777,-41.215 -14.627,-43.308 -11.985,-43.308 L 12.118,-43.308 C 14.759,-43.308 16.910,-41.215 16.910,-38.641 L 16.910,-35.344 C 16.910,-32.770 14.759,-30.677 12.118,-30.677 L 12.118,-30.677 Z"/>
+									</Canvas>
+									<Canvas HorizontalAlignment="Right" Margin="0,0,19.491,0" VerticalAlignment="Bottom">
+										<Path Data="F1 M 16.613,-22.915 C 16.613,-21.919 15.848,-21.110 14.905,-21.110 L -0.127,-21.110 C -1.072,-21.110 -1.836,-21.919 -1.836,-22.915 L -1.836,-22.915 C -1.836,-23.912 -1.072,-24.720 -0.127,-24.720 L 14.905,-24.720 C 15.848,-24.720 16.613,-23.912 16.613,-22.915 L 16.613,-22.915 Z">
+											<Path.Fill>
+												<LinearGradientBrush MappingMode="Absolute" StartPoint="-1.836,-22.915" EndPoint="16.613,-22.915">
+													<GradientStop Offset="0.00" Color="#ff1e1e1e"/>
+													<GradientStop Offset="1.00" Color="#ff383838"/>
+												</LinearGradientBrush>
+											</Path.Fill>
+										</Path>
+										<Path Fill="#ff3f3f3f" Data="F1 M -0.127,-24.449 C -0.919,-24.449 -1.564,-23.761 -1.564,-22.915 C -1.564,-22.069 -0.919,-21.381 -0.127,-21.381 L 14.905,-21.381 C 15.696,-21.381 16.339,-22.069 16.339,-22.915 C 16.339,-23.761 15.696,-24.449 14.905,-24.449 L -0.127,-24.449 L -0.127,-24.449 Z M 14.905,-20.840 L -0.127,-20.840 C -1.220,-20.840 -2.110,-21.771 -2.110,-22.915 C -2.110,-24.060 -1.220,-24.990 -0.127,-24.990 L 14.905,-24.990 C 15.997,-24.990 16.886,-24.060 16.886,-22.915 C 16.886,-21.771 15.997,-20.840 14.905,-20.840 L 14.905,-20.840 Z"/>
+										<Path Data="F1 M 16.613,-18.343 C 16.613,-17.347 15.848,-16.538 14.905,-16.538 L -0.127,-16.538 C -1.072,-16.538 -1.836,-17.347 -1.836,-18.343 L -1.836,-18.343 C -1.836,-19.340 -1.072,-20.147 -0.127,-20.147 L 14.905,-20.147 C 15.848,-20.147 16.613,-19.340 16.613,-18.343 L 16.613,-18.343 Z">
+											<Path.Fill>
+												<LinearGradientBrush MappingMode="Absolute" StartPoint="-1.836,-18.343" EndPoint="16.613,-18.343">
+													<GradientStop Offset="0.00" Color="#ff1e1e1e"/>
+													<GradientStop Offset="1.00" Color="#ff383838"/>
+												</LinearGradientBrush>
+											</Path.Fill>
+										</Path>
+										<Path Fill="#ff3f3f3f" Data="F1 M -0.127,-19.877 C -0.919,-19.877 -1.564,-19.189 -1.564,-18.343 C -1.564,-17.497 -0.919,-16.810 -0.127,-16.810 L 14.905,-16.810 C 15.696,-16.810 16.339,-17.497 16.339,-18.343 C 16.339,-19.189 15.696,-19.877 14.905,-19.877 L -0.127,-19.877 L -0.127,-19.877 Z M 14.905,-16.268 L -0.127,-16.268 C -1.220,-16.268 -2.110,-17.198 -2.110,-18.343 C -2.110,-19.487 -1.220,-20.419 -0.127,-20.419 L 14.905,-20.419 C 15.997,-20.419 16.886,-19.487 16.886,-18.343 C 16.886,-17.198 15.997,-16.268 14.905,-16.268 L 14.905,-16.268 Z"/>
+										<Path Data="F1 M 16.613,-13.771 C 16.613,-12.773 15.848,-11.966 14.905,-11.966 L -0.127,-11.966 C -1.072,-11.966 -1.836,-12.773 -1.836,-13.771 L -1.836,-13.771 C -1.836,-14.768 -1.072,-15.575 -0.127,-15.575 L 14.905,-15.575 C 15.848,-15.575 16.613,-14.768 16.613,-13.771 L 16.613,-13.771 Z">
+											<Path.Fill>
+												<LinearGradientBrush MappingMode="Absolute" StartPoint="-1.836,-13.771" EndPoint="16.613,-13.771">
+													<GradientStop Offset="0.00" Color="#ff1e1e1e"/>
+													<GradientStop Offset="1.00" Color="#ff383838"/>
+												</LinearGradientBrush>
+											</Path.Fill>
+										</Path>
+										<Path Fill="#ff3f3f3f" Data="F1 M -0.127,-15.305 C -0.919,-15.305 -1.564,-14.617 -1.564,-13.771 C -1.564,-12.925 -0.919,-12.236 -0.127,-12.236 L 14.905,-12.236 C 15.696,-12.236 16.339,-12.925 16.339,-13.771 C 16.339,-14.617 15.696,-15.305 14.905,-15.305 L -0.127,-15.305 L -0.127,-15.305 Z M 14.905,-11.695 L -0.127,-11.695 C -1.220,-11.695 -2.110,-12.626 -2.110,-13.771 C -2.110,-14.915 -1.220,-15.847 -0.127,-15.847 L 14.905,-15.847 C 15.997,-15.847 16.886,-14.915 16.886,-13.771 C 16.886,-12.626 15.997,-11.695 14.905,-11.695 L 14.905,-11.695 Z"/>
+										<Path Data="F1 M 16.613,-9.198 C 16.613,-8.201 15.848,-7.394 14.905,-7.394 L -0.127,-7.394 C -1.072,-7.394 -1.836,-8.201 -1.836,-9.198 L -1.836,-9.198 C -1.836,-10.195 -1.072,-11.003 -0.127,-11.003 L 14.905,-11.003 C 15.848,-11.003 16.613,-10.195 16.613,-9.198 L 16.613,-9.198 Z">
+											<Path.Fill>
+												<LinearGradientBrush MappingMode="Absolute" StartPoint="-1.836,-9.198" EndPoint="16.613,-9.198">
+													<GradientStop Offset="0.00" Color="#ff1e1e1e"/>
+													<GradientStop Offset="1.00" Color="#ff383838"/>
+												</LinearGradientBrush>
+											</Path.Fill>
+										</Path>															
+										<Path Fill="#ff3f3f3f" Data="F1 M -0.127,-10.732 C -0.919,-10.732 -1.564,-10.044 -1.564,-9.198 C -1.564,-8.353 -0.919,-7.664 -0.127,-7.664 L 14.905,-7.664 C 15.696,-7.664 16.339,-8.353 16.339,-9.198 C 16.339,-10.044 15.696,-10.732 14.905,-10.732 L -0.127,-10.732 L -0.127,-10.732 Z M 14.905,-7.123 L -0.127,-7.123 C -1.220,-7.123 -2.110,-8.055 -2.110,-9.198 C -2.110,-10.343 -1.220,-11.273 -0.127,-11.273 L 14.905,-11.273 C 15.997,-11.273 16.886,-10.343 16.886,-9.198 C 16.886,-8.055 15.997,-7.123 14.905,-7.123 L 14.905,-7.123 Z"/>
+									</Canvas>
+									<Path Data="F1 M 18.396,-63.239 C 18.396,-61.004 12.503,-59.192 0.042,-59.192 C -14.803,-59.192 -18.363,-61.004 -18.363,-63.239 L -18.363,-66.335 C -18.363,-68.569 -16.528,-70.382 -14.263,-70.382 L 14.295,-70.382 C 16.560,-70.382 18.396,-68.569 18.396,-66.335 L 18.396,-63.239 Z" HorizontalAlignment="Right" Margin="0,0,1.095,0" VerticalAlignment="Bottom">
+										<Path.Fill>
+											<LinearGradientBrush MappingMode="Absolute" StartPoint="-12.684,-75.071" EndPoint="5.267,-61.244">
+												<GradientStop Offset="0.00" Color="#8CFCFCFD"/>
+												<GradientStop Offset="1.00" Color="#00FDFDFD"/>
+											</LinearGradientBrush>
+										</Path.Fill>
+									</Path>
+									<Path StrokeThickness="1.0" Stroke="#7F989898" StrokeMiterLimit="1.0" Data="F1 M 15.000,58.665 C 15.000,61.425 12.762,63.665 10.000,63.665 C 7.238,63.665 5.000,61.425 5.000,58.665 C 5.000,55.903 7.238,53.665 10.000,53.665 C 12.762,53.665 15.000,55.903 15.000,58.665 Z" HorizontalAlignment="Left" Margin="0,0,0,7.57" x:Name="PowerButtonBase" d:LayoutOverrides="Height">
+										<Path.Fill>
+											<RadialGradientBrush MappingMode="Absolute" GradientOrigin="396.325,531.131" Center="396.325,531.131" RadiusX="6.507" RadiusY="6.507">
+												<RadialGradientBrush.Transform>
+													<MatrixTransform Matrix="0.768,0.000,0.000,-0.768,-294.496,466.787" />
+												</RadialGradientBrush.Transform>
+												<GradientStop Offset="0.00" Color="#FFD8D8D8"/>
+												<GradientStop Offset="1" Color="#FF646464"/>
+											</RadialGradientBrush>
+										</Path.Fill>
+									</Path>
+								</Grid>
+								<Path Stretch="Fill" x:Name="Refrection" Width="38.435" Height="26.479" Canvas.Left="2.712" Canvas.Top="72.271" Data="M4.0989993,0 L34.335995,0 C36.59999,0 38.434997,1.9399898 38.434997,4.3310008 L38.434997,22.147007 C38.434997,24.537966 36.600004,26.479 34.335995,26.479 L4.0989993,26.479 C1.8349816,26.479 -1.1238326E-06,24.538003 1.6293618E-13,22.147007 L5.1159077E-13,4.3310008 C-1.1238249E-06,1.9399962 1.8349968,0 4.0989993,0 z">
+									<Path.OpacityMask>
+										<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+											<GradientStop Color="#BFFFFFFF" Offset="0"/>
+											<GradientStop Color="#00FFFFFF" Offset="0.384"/>
+										</LinearGradientBrush>
+									</Path.OpacityMask>
+									<Path.Fill>
+										<RadialGradientBrush MappingMode="Absolute" GradientOrigin="-17641.324,14138.101" Center="-17628.242,14140.813" RadiusX="112.454" RadiusY="112.454">
+											<RadialGradientBrush.Transform>
+												<MatrixTransform Matrix="0.512,0.000,0.000,-0.541,5225.911,5375.229" />
+											</RadialGradientBrush.Transform>
+											<GradientStop Offset="0.00" Color="#ffdfdfdf"/>
+											<GradientStop Offset="1" Color="#ff989898"/>
+										</RadialGradientBrush>
+									</Path.Fill>
+								</Path>
+							</Canvas>
+						</Viewbox>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsFocused" Value="True"/>
+						<Trigger Property="IsDefaulted" Value="True"/>
+						<Trigger Property="IsMouseOver" Value="True" SourceName="grid">
+							<Trigger.EnterActions>
+								<BeginStoryboard Storyboard="{StaticResource PowerLight}"/>
+							</Trigger.EnterActions>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True"/>
+						<Trigger Property="IsEnabled" Value="False"/>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

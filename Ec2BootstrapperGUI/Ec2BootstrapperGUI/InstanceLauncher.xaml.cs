@@ -128,7 +128,7 @@ namespace Ec2BootstrapperGUI
 
         public string amiId
         {
-            set { AmiIdLb.Content = value; }
+            set { AmiIdLb.Text = value; }
         }
 
         private void backButton_Click(object sender, RoutedEventArgs e)
@@ -155,7 +155,7 @@ namespace Ec2BootstrapperGUI
             mediumInst.IsEnabled = false;
             smallInst.IsEnabled = false;
 
-            StatusDesc.Content = ConstantString.Launching;
+            StatusDesc.Text = ConstantString.Launching;
             LaunchProgBar.Visibility = Visibility.Visible;
             LaunchProgBar.IsIndeterminate = true;
             Duration duration = new Duration(TimeSpan.FromSeconds(10));
@@ -170,10 +170,10 @@ namespace Ec2BootstrapperGUI
             LaunchProgBar.BeginAnimation(System.Windows.Controls.ProgressBar.ValueProperty, null);
             LaunchProgBar.Visibility = Visibility.Hidden;
 
-            if(_launchSucceed)
-                StatusDesc.Content = ConstantString.Done;
+            if (_launchSucceed)
+                StatusDesc.Text = ConstantString.Done;
             else
-                StatusDesc.Content = ConstantString.LaunchFailed;
+                StatusDesc.Text = ConstantString.LaunchFailed;
 
             LaunchButton.IsEnabled = true;
             KeyPairComb.IsEnabled = true;
@@ -215,7 +215,7 @@ namespace Ec2BootstrapperGUI
         private void launchButton_Click(object sender, RoutedEventArgs e)
         {
             //other thread will access these
-            _amiId = AmiIdLb.Content.ToString();
+            _amiId = AmiIdLb.Text;
             if (KeyPairComb.SelectedValue != null)
             {
                 _selectedKeyPair = KeyPairComb.SelectedValue.ToString();
@@ -285,6 +285,10 @@ namespace Ec2BootstrapperGUI
             catch (Exception)
             {
             }
+        }
+        private void TitleBarGloss_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
         }
     }
 }

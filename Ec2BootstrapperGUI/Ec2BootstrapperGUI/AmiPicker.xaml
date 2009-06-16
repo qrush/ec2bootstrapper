@@ -3,104 +3,168 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	x:Class="Ec2BootstrapperGUI.AmiPicker"
 	x:Name="Window"
-	Title="Launch Instance Step 1"
-    ResizeMode="NoResize"
+	Title="LaunchInstanceStep1"
     xmlns:src="clr-namespace:Ec2BootstrapperGUI"
+	FontSize="11"
     xmlns:lib="clr-namespace:Ec2Bootstrapperlib;assembly=Ec2Bootstrapperlib"
-	Width="640" Height="480" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+	Width="Auto" 
+    Height="Auto" 
+    AllowsTransparency="True" 
+    WindowStyle="None" 
+    Background="{x:Null}" 
+    Foreground="#FFFFFFFF" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" 
+    ResizeMode="CanResize" 
+    SizeToContent="WidthAndHeight" 
+    MinHeight="480" 
+    MinWidth="640" 
+    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+        
+    <Grid x:Name="LayoutRoot"> 
+        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" 
+                   RadiusX="8" RadiusY="8" Margin="8" x:Name="bkgBaseContent" 
+                   Fill="{DynamicResource WindowBackgroundFill}" 
+                   Stroke="{DynamicResource WindowBackgroundFill}" 
+                   d:IsLocked="True" BitmapEffect="{DynamicResource WindowOuterGlow}"/>
+        <Rectangle Fill="{DynamicResource WindowTitleBarGloss}" Stroke="{x:Null}" 
+                   RadiusX="8" RadiusY="8" HorizontalAlignment="Stretch" Margin="11,11,11,0"
+                   x:Name="TitleBarGloss" VerticalAlignment="Top" Width="Auto" Height="30" 
+                   Cursor="Hand" MouseLeftButtonDown="TitleBarGloss_MouseLeftButtonDown" />
+        <DockPanel HorizontalAlignment="Stretch" Margin="14,8,14,0" VerticalAlignment="Top" 
+                   Height="35" x:Name="TitleBarContainer">
+            <Canvas Width="26" Height="26" x:Name="Logo" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Path Fill="#fff94a00" Data="F1 M 19.752,24.648 L 18.578,17.983 L 13.303,13.732 L 14.484,20.346 L 19.752,24.648 Z"/>
+                <Path Opacity="0.9" Fill="#fff94a00" Data="F1 M 9.510,26.000 L 13.400,20.457 L 12.682,13.727 L 8.832,19.236 L 9.510,26.000 Z"/>
+                <Path Opacity="0.7" Fill="#fff94a00" Data="F1 M 1.361,19.716 L 8.035,18.543 L 12.293,13.276 L 5.670,14.455 L 1.361,19.716 Z"/>
+                <Path Opacity="0.6" Fill="#fff94a00" Data="F1 M 0.000,9.525 L 5.551,13.410 L 12.291,12.690 L 6.773,8.848 L 0.000,9.525 Z"/>
+                <Path Opacity="0.5" Fill="#fff94a00" Data="F1 M 6.332,1.313 L 7.410,7.994 L 12.623,12.320 L 11.539,5.691 L 6.332,1.313 Z"/>
+                <Path Opacity="0.4" Fill="#fff94a00" Data="F1 M 16.459,0.000 L 12.568,5.542 L 13.289,12.271 L 17.137,6.762 L 16.459,0.000 Z"/>
+                <Path Opacity="0.3" Fill="#fff94a00" Data="F1 M 24.639,6.244 L 17.963,7.417 L 13.705,12.684 L 20.328,11.505 L 24.639,6.244 Z"/>
+                <Path Opacity="0.1" Fill="#fff94a00" Data="F1 M 26.000,16.434 L 20.449,12.551 L 13.709,13.269 L 19.227,17.111 L 26.000,16.434 Z"/>
+            </Canvas>
+            <TextBlock Text="EC2 Bootstrapper" TextWrapping="Wrap" 
+                       FontFamily="./Fonts/#Franklin Gothic" FontSize="14"
+                       Foreground="#FFFA4B00" Width="120" Height="Auto" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Left" Margin="3,0,0,0"/>
+            <Button Style="{StaticResource WindowButton}" x:Name="btnClose" 
+                    Width="26" Height="35" DockPanel.Dock="Right" 
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Click="cancelButton_Click">
+                <Path StrokeThickness="0.4" Stroke="#ffbe6d15" 
+                      StrokeMiterLimit="1.0" Fill="#ffffffff" 
+                      Data="F1 M 11.750,10.008 L 7.813,6.099 L 11.670,2.270 C 12.109,1.833 12.109,1.125 11.670,0.689 C 11.230,0.253 10.518,0.253 10.078,0.689 L 6.222,4.519 L 2.201,0.525 C 1.761,0.089 1.049,0.089 0.609,0.525 C 0.170,0.961 0.170,1.669 0.609,2.105 L 4.631,6.099 L 0.528,10.172 C 0.088,10.608 0.088,11.315 0.528,11.752 C 0.748,11.970 1.036,12.080 1.324,12.080 C 1.612,12.080 1.899,11.970 2.120,11.752 L 6.222,7.679 L 10.158,11.588 C 10.379,11.807 10.667,11.916 10.955,11.916 C 11.242,11.916 11.531,11.807 11.750,11.588 C 12.190,11.152 12.190,10.444 11.750,10.008 Z" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Button>
+        </DockPanel>
+        <TextBlock HorizontalAlignment="Left" Margin="41,50,0,0" VerticalAlignment="Top" 
+                   FontFamily="./Fonts/#Franklin Gothic" FontSize="24" FontStretch="Condensed" 
+                   Text="Launch Instance Step 1 of 2" TextWrapping="Wrap" x:Name="DialogBoxTitle"/>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+              Width="Auto" Height="Auto" x:Name="ContentContainer" Background="{x:Null}" Margin="16,80,16,42">
+            <Rectangle Fill="{DynamicResource ContentBackgroundFill}" 
+                       Stroke="{DynamicResource ContentContainerBackgroundStroke}" 
+                       RadiusX="8" RadiusY="8" HorizontalAlignment="Stretch" Margin="0,0,0,0" 
+                       VerticalAlignment="Stretch" Width="Auto" Height="Auto" x:Name="bkgContent"/>
 
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type lib:CEc2Ami}">
-            <Border BorderThickness="1" BorderBrush="Gray"
-                    Padding="7" Name="border" Margin="3" Width="550" Loaded="border_Loaded" >
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="86"/>
-                        <ColumnDefinition Width="86"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,8,0"
-                               Name="imageIdCol"
-                               Style="{StaticResource smallTitleStyleTextBlock}">imageId:</TextBlock>
-                    <TextBlock Name="imageIdContentCol" Grid.Row="0" Grid.Column="1" 
-                        Text="{Binding Path=imageId}" 
-                        Style="{StaticResource textStyleTextBlock}"/>
+            <!-- START DIALOGBOX CONTENT PANEL -->
+            <DockPanel HorizontalAlignment="Stretch" Margin="24,36,24,24" 
+                       x:Name="Launchi_Instance_Step1" VerticalAlignment="Stretch" Width="Auto" Height="Auto" 
+                       Background="{x:Null}">
+                <TextBlock Text="Please select an AMI and then click Next." TextWrapping="Wrap" 
+                           Width="Auto" Height="Auto" DockPanel.Dock="Top" Margin="0,0,0,24"/>
+                
+                <TabControl Name="AMITabControl" Style="{DynamicResource TabControlStyle}" 
+                            PreviewMouseLeftButtonUp="AMITabControl_PreviewMouseLeftButtonUp" 
+                            IsSynchronizedWithCurrentItem="True" Height="Auto" Width="Auto" 
+                            Foreground="#FFFFFFFF" Background="{x:Null}" BorderBrush="{x:Null}"
+                            DockPanel.Dock="Top" VerticalAlignment="Top" Margin="0,0,0,16" d:IsLocked="True">
 
-                    <TextBlock Grid.Row="0" Grid.Column="2" Margin="0,0,8,0"
-                               Name="platformCol"
-                               Style="{StaticResource smallTitleStyleTextBlock}">platform:</TextBlock>
-                    <TextBlock Name="platformContentCol" Grid.Row="0" Grid.Column="3" 
-                        Text="{Binding Path=platform}" 
-                        Style="{StaticResource textStyleTextBlock}"/>
+                    <TabItem Style="{DynamicResource TabItemStyle}" Header="Quick AMIs"
+                             Foreground="#FFFFFFFF" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="11">
+                        <Grid Height="Auto" Width="Auto" HorizontalAlignment="Left">
+                            <ListView Name="QuickAmis" 
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Top" Width="544" Height="300" 
+                                      IsSynchronizedWithCurrentItem="True" 
+                                      ItemsSource="{Binding Path=amis, RelativeSource={RelativeSource AncestorType={x:Type src:AmiPicker}}, Mode=OneWay}"
+                                      Background="{x:Null}" Foreground="#FFFFFFFF" BorderBrush="#FF897878" 
+                                      ItemContainerStyle="{DynamicResource ListViewItemStyle}" 
+                                      FontSize="11" Margin="8,16,8,0" 
+                                      Style="{DynamicResource ListViewHeaderStyle}"
+                                      SelectionChanged="amis_SelectionChanged">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Image ID" DisplayMemberBinding="{Binding Path=imageId}"/>
+                                        <GridViewColumn Header="Platform" DisplayMemberBinding="{Binding Path=platform}"/>
+                                        <GridViewColumn Header="Manifest" DisplayMemberBinding="{Binding Path=imageLocation}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </TabItem>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,8,0"
-                               Name="manifestCol"
-                               Style="{StaticResource smallTitleStyleTextBlock}">manifest:</TextBlock>
-                    <TextBlock Name="manifestContentCol" Grid.Row="1" Grid.Column="1"
-                        Text="{Binding Path=imageLocation}" 
-                               Grid.ColumnSpan="3"
-                        Style="{StaticResource textStyleTextBlock}"/>
-                </Grid>
-            </Border>
-        </DataTemplate>
-    </Window.Resources>
+                    <TabItem Style="{DynamicResource TabItemStyle}" Header="My AMIs" 
+                             Foreground="#FFFFFFFF" BorderBrush="{x:Null}" Background="{x:Null}" FontSize="11">
+                        <Grid Height="Auto" Width="Auto" HorizontalAlignment="Left">
+                            <ListView Name="OwnAmis" HorizontalAlignment="Left" 
+                                      VerticalAlignment="Top" 
+                                      Width="544" Height="300" 
+                                      IsSynchronizedWithCurrentItem="True" 
+                                      ItemsSource="{Binding Path=amis, RelativeSource={RelativeSource AncestorType={x:Type src:AmiPicker}}, Mode=OneWay}"
+                                      Background="{x:Null}" Foreground="#FFFFFFFF" BorderBrush="#FF897878" 
+                                      ItemContainerStyle="{DynamicResource ListViewItemStyle}" 
+                                      SelectionChanged="amis_SelectionChanged"
+                                      FontSize="11" Margin="8,16,8,0" 
+                                      Style="{DynamicResource ListViewHeaderStyle}">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Image ID" DisplayMemberBinding="{Binding Path=imageId}"/>
+                                        <GridViewColumn Header="Platform" DisplayMemberBinding="{Binding Path=platform}"/>
+                                        <GridViewColumn Header="Manifest" DisplayMemberBinding="{Binding Path=imageLocation}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </TabItem>
 
-    <Grid>
-        <Grid Name="AMILayOut" Width="580">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" MinHeight="52" />
-                <RowDefinition Height="Auto" MinHeight="32" />
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto" MinHeight="70" />
-                <RowDefinition Height="25" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+                    <TabItem Style="{DynamicResource TabItemStyle}" Header="Community AMIs" 
+                             Foreground="#FFFFFFFF" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="11">
+                        <Grid Height="Auto" Width="Auto" HorizontalAlignment="Left">
+                            <ListView Name="CommunityAmis" HorizontalAlignment="Left" 
+                                      VerticalAlignment="Top" Width="544" Height="300" 
+                                      IsSynchronizedWithCurrentItem="True" 
+                                      ItemsSource="{Binding Path=amis, RelativeSource={RelativeSource AncestorType={x:Type src:AmiPicker}}, Mode=OneWay}"
+                                      Background="{x:Null}" Foreground="#FFFFFFFF" BorderBrush="#FF897878" 
+                                      ItemContainerStyle="{DynamicResource ListViewItemStyle}" 
+                                      SelectionChanged="amis_SelectionChanged"
+                                      FontSize="11" Margin="8,16,8,0" Style="{DynamicResource ListViewHeaderStyle}">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Image ID" DisplayMemberBinding="{Binding Path=imageId}"/>
+                                        <GridViewColumn Header="Platform" DisplayMemberBinding="{Binding Path=platform}"/>
+                                        <GridViewColumn Header="Manifest" DisplayMemberBinding="{Binding Path=imageLocation}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </TabItem>
 
-            <TextBlock Grid.Row="0" Grid.ColumnSpan="3"
-             Style="{StaticResource titleStyleTextBox}" Margin="8,20,8,8">Please select an AMI and then click Next</TextBlock>
-            <CheckBox Name="QuickStartAmis" Grid.Row="1" Grid.Column="0" Margin="78,8,19,0"
-                  Style="{StaticResource checkBoxStyle}" 
-                  Height="16" 
-                  VerticalAlignment="Top"
-                  IsChecked="True" 
-                  Click="quickStartAmis_Click" >Quick AMIs</CheckBox>
-            <CheckBox Name="OwnAmis" Grid.Row="1" Grid.Column="1" Margin="45,8,45,0"
-                  Style="{StaticResource checkBoxStyle}" 
-                  Height="16" 
-                  VerticalAlignment="Top"
-                  Click="ownAmis_Click">My AMIs</CheckBox>
-            <CheckBox Name="Community" Grid.Row="1" Grid.Column="3" 
-                  Margin="8"
-                  Style="{StaticResource checkBoxStyle}"
-                  Click="community_Click">Community AMIs</CheckBox>
+                </TabControl>
 
-            <ListView Name="Amis" Grid.Row="2" Grid.ColumnSpan="3" Margin="8,8,8,0" 
-                    IsSynchronizedWithCurrentItem="True"
-                    ItemsSource="{Binding Path=amis, RelativeSource={RelativeSource AncestorType={x:Type src:AmiPicker}}, Mode=OneWay}"
-                    SizeChanged="amis_SizeChanged" SelectionChanged="amis_SelectionChanged"/>
+                <StackPanel Orientation="Horizontal" Height="30" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                    <Button Style="{DynamicResource ButtonStyle}" Content="Cancel" Margin="0,0,24,0" Click="cancelButton_Click"/>
+                    <Button Style="{DynamicResource ButtonStyle}" Name="NextButton" Content="Next" Click="nextButton_Click"/>
+                </StackPanel>
 
-            <Button Name="CancelButton" Grid.Row="3" Grid.Column="0" Content="Cancel" Margin="47,8,40,0" Height="26" VerticalAlignment="Top" Click="cancelButton_Click" />
-            <Button Name="NextButton" Grid.Row="3" Grid.Column="3" Content="Next" Margin="47,8,40,0" Height="26" VerticalAlignment="Top" Click="nextButton_Click" />
+            </DockPanel>
+            <!-- END DIALOGBOX CONTENT PANEL-->
+
         </Grid>
-        <StatusBar Name="AmiStatus" Grid.Row="4" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
-            <StatusBarItem Name="StatusDesc" Width="140">Ready</StatusBarItem>
-            <Separator/>
-            <StatusBarItem>
-                <ProgressBar Name="AmiProgBar" BorderThickness="0" IsIndeterminate="False" Width="400" HorizontalAlignment="Left" Orientation="Horizontal" Height="20" />
-            </StatusBarItem>
-            <Separator/>
-            <StatusBarItem Width="Auto"></StatusBarItem>
+        <StatusBar HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="Auto" Height="Auto" Background="{x:Null}" Foreground="#FFFFFFFF" BorderBrush="{x:Null}" Margin="0,0,24,10">
+            <TextBlock Name="StatusDesc" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Ready" TextWrapping="Wrap" FontSize="11" Margin="0,0,8,0"/>
+            <ProgressBar Name="AmiProgBar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="15" Value="50"/>
         </StatusBar>
     </Grid>
 </Window>

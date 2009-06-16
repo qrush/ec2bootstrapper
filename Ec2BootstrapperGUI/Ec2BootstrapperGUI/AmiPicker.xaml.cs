@@ -27,6 +27,7 @@ namespace Ec2BootstrapperGUI
         List<CEc2Ami> _myAmis;
         CBeginInvokeOC<CEc2Ami> _amis;
         Dashboard _dashboard;
+        int currentIndex = 0; 
 
         public AmiPicker(Dashboard db)
         {
@@ -78,29 +79,29 @@ namespace Ec2BootstrapperGUI
                 _myAmis = serv.describeImages("self");
             }
         }
-        
-        private void border_Loaded(object sender, RoutedEventArgs e)
-        {
-            Border border = (Border)sender;
-            border.Width = Amis.ActualWidth - 15;
-            _lstBorders.Add(border);            
-        }
-
-        private void amis_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (Border b in _lstBorders)
-            {
-                b.Width = Amis.ActualWidth - 15;
-            }
-        }
 
         private void nextButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Amis.SelectedItem != null)
+            CEc2Ami selectedItem = null;
+            switch (AMITabControl.SelectedIndex)
+            {
+                case 0:
+                    selectedItem = (CEc2Ami)QuickAmis.SelectedItem;
+                    break;
+                case 1:
+                    selectedItem = (CEc2Ami)OwnAmis.SelectedItem;
+                    break;
+                case 2:
+                    selectedItem = (CEc2Ami)CommunityAmis.SelectedItem;
+                    break;
+                default:
+                    break;
+            }
+            if (selectedItem != null)
             {
                 InstanceLauncher launcher = new InstanceLauncher(_dashboard);
                 launcher.amiPicker = this;
-                launcher.amiId = ((CEc2Ami)Amis.SelectedItem).imageId;
+                launcher.amiId = selectedItem.imageId;
 
                 launcher.ShowDialog();
             }
@@ -113,28 +114,38 @@ namespace Ec2BootstrapperGUI
 
         private void amis_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Amis.SelectedItem != null)
-                NextButton.IsEnabled = true;
+            switch (AMITabControl.SelectedIndex)
+            {
+                case 0:
+                    NextButton.IsEnabled = (QuickAmis.SelectedItem != null);
+                    break;
+                case 1:
+                    NextButton.IsEnabled = (OwnAmis.SelectedItem != null);
+                    break;
+                case 2:
+                    NextButton.IsEnabled = (CommunityAmis.SelectedItem != null);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void setQuickAmis()
         {
             fetchQuickAmis();
             foreach (CEc2Ami item in _quickAmis)
-                _amis.Add(item);
-        }
-
-        //change the listview binding here
-        private void quickStartAmis_Click(object sender, RoutedEventArgs e)
-        {
-            if (QuickStartAmis.IsChecked == true)
             {
-                OwnAmis.IsChecked = false;
-                Community.IsChecked = false;
-                NextButton.IsEnabled = false;
-                _amis.Clear();
-
-                setQuickAmis();
+                bool exist = false;
+                foreach (CEc2Ami it in _amis)
+                {
+                    if (string.Compare(it.imageId, item.imageId) == 0)
+                    {
+                        exist = true;
+                        break;
+                    }
+                }
+                if (exist == false)
+                    _amis.Add(item);
             }
         }
 
@@ -154,21 +165,6 @@ namespace Ec2BootstrapperGUI
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
         }
 
-        private void ownAmis_Click(object sender, RoutedEventArgs e)
-        {
-            if (OwnAmis.IsChecked == true)
-            {
-                QuickStartAmis.IsChecked = false;
-                Community.IsChecked = false;
-                NextButton.IsEnabled = false;
-                _amis.Clear();
-
-                Thread oThread = new Thread(new ThreadStart(setOwnAmis));
-                oThread.Start();
-                enableProgressBar();
-            }
-        }
-
         private void setCommunityAmis()
         {
             try
@@ -184,25 +180,9 @@ namespace Ec2BootstrapperGUI
             Dispatcher.Invoke(new StopProgressbarCallback(disableProgressBar));
         }
 
-        private void community_Click(object sender, RoutedEventArgs e)
-        {
-            if (Community.IsChecked == true)
-            {
-                QuickStartAmis.IsChecked = false;
-                OwnAmis.IsChecked = false;
-                NextButton.IsEnabled = false;
-
-                _amis.Clear();
-
-                Thread oThread = new Thread(new ThreadStart(setCommunityAmis));
-                oThread.Start();
-                enableProgressBar();
-            }
-        }
-
         private void enableProgressBar()
         {
-            StatusDesc.Content = ConstantString.ContactAmazon;
+            StatusDesc.Text = ConstantString.ContactAmazon;
             AmiProgBar.Visibility = Visibility.Visible;
             AmiProgBar.IsIndeterminate = true;
             Duration duration = new Duration(TimeSpan.FromSeconds(10));
@@ -217,9 +197,53 @@ namespace Ec2BootstrapperGUI
             AmiProgBar.Visibility = Visibility.Hidden;
 
             if (_amis == null || _amis.Count == 0)
-                StatusDesc.Content = ConstantString.NoAmi;
+                StatusDesc.Text = ConstantString.NoAmi;
             else
-                StatusDesc.Content = ConstantString.Done;
+                StatusDesc.Text = ConstantString.Done;
+        }
+        private void TitleBarGloss_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
+        private void AMITabControl_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (AMITabControl.SelectedIndex == currentIndex)
+                return;
+            currentIndex = AMITabControl.SelectedIndex;
+            switch (AMITabControl.SelectedIndex)
+            {
+                case 0:
+                    {
+                        NextButton.IsEnabled = false;
+                        _amis.Clear();
+                        setQuickAmis();
+                        break;
+                    }
+                case 1:
+                    {
+                        NextButton.IsEnabled = false;
+                        _amis.Clear();
+
+                        Thread oThread = new Thread(new ThreadStart(setOwnAmis));
+                        oThread.Start();
+                        enableProgressBar();
+
+                        break;
+                    }
+                case 2:
+                    {
+                        NextButton.IsEnabled = false;
+                        _amis.Clear();
+                        Thread oThread = new Thread(new ThreadStart(setCommunityAmis));
+                        oThread.Start();
+                        enableProgressBar();
+
+                        break;
+                    }
+                default:
+                    break;
+            }
         }
     }
 }

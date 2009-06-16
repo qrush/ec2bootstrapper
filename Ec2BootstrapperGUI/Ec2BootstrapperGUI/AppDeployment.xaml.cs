@@ -215,5 +215,9 @@ namespace Ec2BootstrapperGUI
             {
             }
         }
+        private void TitleBarGloss_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
 	}
 }

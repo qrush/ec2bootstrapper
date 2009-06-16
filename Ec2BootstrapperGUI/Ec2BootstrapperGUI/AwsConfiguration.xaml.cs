@@ -324,8 +324,12 @@ namespace Ec2BootstrapperGUI
                 System.Windows.MessageBox.Show(ex.Message);
             }
         }
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            btnClose_Click(sender, e);
+        }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             if (SaveButton.IsEnabled == true)
             {
@@ -345,6 +349,10 @@ namespace Ec2BootstrapperGUI
             {
                 this.Close();
             }
+        }
+        private void TitleBarGloss_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
         }
     }
 }

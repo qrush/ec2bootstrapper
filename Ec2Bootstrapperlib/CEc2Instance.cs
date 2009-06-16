@@ -22,8 +22,6 @@ namespace Ec2Bootstrapperlib
         const string jwSecurityGroupName          = "JWSecureEc2FileLoad";
         const string jwSecurityGroupDescription   = "Used for msi upload";
         const string jwKeyPairName                = "JWSecureFileUploadKey";
-        const string publicDnsTitle               = " Public DNS:";
-        const string platformTitle                = " Platform:";
 
         AmazonEC2 _service;
         string _instanceId;
@@ -37,7 +35,13 @@ namespace Ec2Bootstrapperlib
         string _platform;
         string _keyPairName;
         bool _defaultSecurityGroup;
-        Brush _statusColor = Brushes.Yellow;
+        string _img;
+
+        public string img
+        {
+            get { return _img; }
+            set { _img = value; }
+        }
 
         public struct SDeployInfo
         {
@@ -99,19 +103,6 @@ namespace Ec2Bootstrapperlib
             set {_keyPairName = value; }
         }
 
-        public Brush statuscolor
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_publicDns) == true)
-                {
-                    _statusColor = Brushes.Red;
-                }
-                return _statusColor;
-            }
-            set { _statusColor = value; }
-        }
-
         private void setDefaults()
         {
             if (string.IsNullOrEmpty(_keyPairName) == true)
@@ -121,11 +112,13 @@ namespace Ec2Bootstrapperlib
                 _securityGroups = jwSecurityGroupName;
                 _defaultSecurityGroup = true;
             }
+            if(string.IsNullOrEmpty(_img) == true)
+                _img = "images/ServerStopped.png";
         }
 
         public bool updateWebStatus()
         {
-            Brush currentCol;
+            string currentImg;
             try
             {
                 if (string.IsNullOrEmpty(_publicDns) == false)
@@ -133,25 +126,25 @@ namespace Ec2Bootstrapperlib
                     System.Net.Sockets.TcpClient clnt = new System.Net.Sockets.TcpClient(_publicDns, 80);
                     clnt.Close();
 
-                    currentCol = Brushes.Green;
+                    currentImg = "images/ServerRunning.png";
                 }
                 else
                 {
-                    currentCol = Brushes.Red;
+                    currentImg = "images/ServerStopped.png";
                 }
             }
             catch (System.Exception)
             {
-                currentCol = Brushes.Red;
+                currentImg = "images/ServerStopped.png";
             }
 
-            if (statuscolor == currentCol)
+            if (string.Compare(img, currentImg) == 0)
             {
                 return false;
             }
             else
             {
-                statuscolor = currentCol;
+                img = currentImg;
                 return true;
             }
         }
@@ -160,54 +153,6 @@ namespace Ec2Bootstrapperlib
         {
             setDefaults();
             _service = new AmazonEC2Client(CAwsConfig.Instance.awsAccessKey, CAwsConfig.Instance.awsSecretKey);
-        }
-
-        public string header
-        {
-            get { return instanceId + publicDnsTitle + publicDns + platformTitle + platform; }
-        }
-
-        public string content
-        {
-            get
-            {
-                return 
-                    "      AMI Id: " + imageId + Environment.NewLine +
-                    "      Security Groups: " + securityGroups + Environment.NewLine +
-                    "      Type: " + type + Environment.NewLine +
-                    "      Status: " + status + Environment.NewLine +
-                    "      Key Pair Name: " + _keyPairName;
-            }
-        }
-
-        static public string getInsanceIdFromHeader(string header)
-        {
-            if (string.IsNullOrEmpty(header) == false)
-            {
-                return header.Substring(0, header.IndexOf(publicDnsTitle));
-            }
-            return "";
-        }
-
-        static public string getPublicDnsFromHeader(string header) 
-        {
-            if (string.IsNullOrEmpty(header) == false)
-            {
-                int dnsIndex = header.IndexOf(publicDnsTitle) + publicDnsTitle.Length;
-                int dnslen = header.IndexOf(platformTitle) - dnsIndex;
-                return header.Substring(dnsIndex, dnslen);
-            }
-            return "";
-        }
-
-        static public bool isWindowsPlatform(string header)
-        {
-            if (string.IsNullOrEmpty(header) == false)
-            {
-                int platformIndex = header.IndexOf(platformTitle) + platformTitle.Length;
-                return string.Compare(header.Substring(platformIndex), "windows", true) == 0;
-            }
-            return false;
         }
 
         static public string deployableAmiImageId

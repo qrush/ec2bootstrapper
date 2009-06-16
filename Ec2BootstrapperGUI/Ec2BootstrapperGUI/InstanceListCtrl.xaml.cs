@@ -101,12 +101,10 @@ namespace Ec2BootstrapperGUI
         void remoteConnect_Click(object sender, RoutedEventArgs e)
         {
             ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
-            string header = ((Expander)cm.PlacementTarget).Header.ToString();
-
-            string publicDns = CEc2Instance.getPublicDnsFromHeader(header);
+            CEc2Instance inst = (CEc2Instance)((FrameworkElement)(((Panel)(cm.PlacementTarget)).Children[0])).DataContext;
 
             System.Diagnostics.ProcessStartInfo procStartInfo =
-                new System.Diagnostics.ProcessStartInfo("mstsc.exe ", "/v:" + publicDns);
+                new System.Diagnostics.ProcessStartInfo("mstsc.exe ", "/v:" + inst.publicDns);
 
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             process.StartInfo = procStartInfo;
@@ -121,12 +119,13 @@ namespace Ec2BootstrapperGUI
         void deploy_Click(object sender, RoutedEventArgs e)
         {
             ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
-            string header = ((Expander)cm.PlacementTarget).Header.ToString();
-
-            CEc2Instance ins = getInstance(CEc2Instance.getInsanceIdFromHeader(header));
-            AppDeployment pw = new AppDeployment(_dashboard);
-            pw.instance = ins;
-            pw.Show();
+            CEc2Instance ins = (CEc2Instance)((FrameworkElement)(((Panel)(cm.PlacementTarget)).Children[0])).DataContext;
+            if (ins != null)
+            {
+                AppDeployment pw = new AppDeployment(_dashboard);
+                pw.instance = ins;
+                pw.Show();
+            }
         }
 
         void password_Click(object sender, RoutedEventArgs e)
@@ -134,9 +133,7 @@ namespace Ec2BootstrapperGUI
             try
             {
                 ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
-                string header = ((Expander)cm.PlacementTarget).Header.ToString();
-
-                CEc2Instance ins = getInstance(CEc2Instance.getInsanceIdFromHeader(header));
+                CEc2Instance ins = (CEc2Instance)((FrameworkElement)(((Panel)(cm.PlacementTarget)).Children[0])).DataContext;
                 if (ins != null)
                 {
                     //check key file 
@@ -174,25 +171,15 @@ namespace Ec2BootstrapperGUI
             try
             {
                 ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
-                string header = ((Expander)cm.PlacementTarget).Header.ToString();
-
-                string instanceId = CEc2Instance.getInsanceIdFromHeader(header);
-                if (!string.IsNullOrEmpty(instanceId))
+                CEc2Instance ins = (CEc2Instance)((FrameworkElement)(((Panel)(cm.PlacementTarget)).Children[0])).DataContext;
+                if (ins != null)
                 {
-                    CEc2Instance ins = getInstance(instanceId);
-                    if (ins != null)
-                    {
-                        ins.reboot();
-                        removeInstance(instanceId);
-                    }
-                    else
-                    {
-                        MessageBox.Show("No instance available with id " + instanceId);
-                    }
+                    ins.reboot();
+                    removeInstance(ins.instanceId);
                 }
                 else
                 {
-                    MessageBox.Show("No instance id available");
+                    MessageBox.Show("No instance available");
                 }
             }
             catch (Exception ex)
@@ -206,7 +193,7 @@ namespace Ec2BootstrapperGUI
             try
             {
                 ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
-                string header = ((Expander)cm.PlacementTarget).Header.ToString();
+                CEc2Instance ins = (CEc2Instance)((FrameworkElement)(((Panel)(cm.PlacementTarget)).Children[0])).DataContext;
 
                 MessageBoxResult result = MessageBox.Show(
                     "You are about to terminate the selected instance. Are you sure you want to continue?",
@@ -217,11 +204,10 @@ namespace Ec2BootstrapperGUI
                 if (result == MessageBoxResult.No)
                     return;
 
-                string instanceId = CEc2Instance.getInsanceIdFromHeader(header);
-                if (!string.IsNullOrEmpty(instanceId))
+                if (!string.IsNullOrEmpty(ins.instanceId))
                 {
                     CEc2Service serv = new CEc2Service();
-                    serv.terminate(instanceId);
+                    serv.terminate(ins.instanceId);
                 }
                 else
                 {
@@ -261,9 +247,7 @@ namespace Ec2BootstrapperGUI
             try
             {
                 ContextMenu cm = (ContextMenu)e.OriginalSource;
-                string header = ((Expander)cm.PlacementTarget).Header.ToString();
-
-                CEc2Instance inst = getInstance(CEc2Instance.getInsanceIdFromHeader(header));
+                CEc2Instance inst = (CEc2Instance)((FrameworkElement)(((Panel)(cm.PlacementTarget)).Children[0])).DataContext;
                 if (string.Compare(inst.status, "running") != 0)
                 {
                     for (int i = 0; i < cm.Items.Count; ++i)
@@ -278,7 +262,7 @@ namespace Ec2BootstrapperGUI
                 }
 
                 //remote connect is not available for non windows system
-                if (!CEc2Instance.isWindowsPlatform(header))
+                if (string.Compare(inst.platform, "windows", true) == 0)
                 {
                     for (int i = 0; i < cm.Items.Count; ++i)
                     {
@@ -317,20 +301,20 @@ namespace Ec2BootstrapperGUI
             }
         }
 
-        private void instancesLV_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            foreach (Border b in lstBorders)
-            {
-                b.Width = instancesLV.ActualWidth - 15;
-            }
-        }
+        //private void instancesLV_SizeChanged(object sender, SizeChangedEventArgs e)
+        //{
+        //    foreach (Border b in lstBorders)
+        //    {
+        //        b.Width = instancesLV.ActualWidth - 15;
+        //    }
+        //}
 
-        private void border_Loaded(object sender, RoutedEventArgs e)
-        {
-            Border border = (Border)sender;
-            border.Width = instancesLV.ActualWidth - 15;
-            lstBorders.Add(border);
-        }
+        //private void border_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    Border border = (Border)sender;
+        //    border.Width = instancesLV.ActualWidth - 15;
+        //    lstBorders.Add(border);
+        //}
 
         private void instancesLV_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
